@@ -1,6 +1,7 @@
 var newplx = floor((objPlayer.x + 32) / chunk_size);
 var newply = floor((objPlayer.y + 32) / chunk_size);
 
+// actualizar chunks
 if (plx != newplx || ply != newply) {
     plx = newplx;
     ply = newply;

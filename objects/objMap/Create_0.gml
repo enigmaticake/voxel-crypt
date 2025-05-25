@@ -3,11 +3,13 @@ var path = global.assets.conf.level_path + "/";
 var map = cargar_objetos(path + "map.vxdata");
 
 
+// tamaño de mapa y chunk
 chunk_size = 32;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
 
+// chunk
 chunk = ds_grid_create(width, height);
 for (var i = 0; i < width; ++i) {
     for (var j = 0; j < height; ++j) {
@@ -15,6 +17,7 @@ for (var i = 0; i < width; ++i) {
     }
 }
 
+// chunk cargados
 chunk_loading = ds_grid_create(width, height);
 for (var i = 0; i < width; ++i) {
     for (var j = 0; j < height; ++j) {
@@ -23,6 +26,7 @@ for (var i = 0; i < width; ++i) {
 }
 
 
+// posicion del jugador en chunks
 plx = 0;
 ply = 0;
 
@@ -38,6 +42,8 @@ for (var i = 0; i < array_length(map); ++i) {
         var cx = floor((pos[0] * 32) / chunk_size);
         var cy = floor((pos[1] * 32) / chunk_size);
         
+        
+        // propiedad del objeto
         var p = {
             spr : obj.texture,
             x : pos[0],
@@ -50,6 +56,8 @@ for (var i = 0; i < array_length(map); ++i) {
 
 instance_create_depth(room_width / 2, room_height / 2, -1, objPlayer);
 
+
+// cargar chunk (FUNCION)
 function chunk_load(xx, yy) {
     var objs = ds_grid_get(chunk, xx, yy);
     
