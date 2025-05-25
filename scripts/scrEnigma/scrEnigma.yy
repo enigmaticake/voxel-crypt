@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEnigma",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEnigma",
+  "parent":{
+    "name":"recursos",
+    "path":"folders/Scripts/recursos.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
