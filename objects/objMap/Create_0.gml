@@ -1,10 +1,12 @@
+gpu_set_texfilter(false);
+
 var path = global.assets.conf.level_path + "/";
 
 var map = cargar_objetos(path + "map.vxdata");
 
 
 // tamaño de mapa y chunk
-chunk_size = 32 * 4;
+chunk_size = 32 * 8;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
@@ -42,17 +44,16 @@ for (var i = 0; i < array_length(map); ++i) {
         var cx = floor((pos[0] * 32) / chunk_size);
         var cy = floor((pos[1] * 32) / chunk_size);
         
-        var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objBlock);
+        var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, (obj.z <= 0) ? objBlock : objBlockMask);
         
-        inst.depth = -(pos[1] * 32);
+        inst.depth = -(pos[1] * 32 + (obj.z * 16));
         inst.spr = rsc_find_tex("Block_" + obj.texture);
+        inst.y -= obj.z * 16;
         
         // propiedad del objeto
         var p = {
             type : 0,
             inst : inst,
-            x : pos[0],
-            y : pos[1]
         }
         
         ds_list_add(chunk[# cx, cy], p);

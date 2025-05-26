@@ -34,9 +34,6 @@
     "name":"sprColisionBlock",
     "path":"sprites/sprColisionBlock/sprColisionBlock.yy",
   },
-  "spriteMaskId":{
-    "name":"sprColisionBlock",
-    "path":"sprites/sprColisionBlock/sprColisionBlock.yy",
-  },
+  "spriteMaskId":null,
   "visible":true,
 }

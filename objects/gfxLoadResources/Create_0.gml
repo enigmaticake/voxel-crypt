@@ -87,8 +87,8 @@ enum buttonState {
 	released
 }
 
-#macro versionMajor 3256235235
-#macro versionMinor 1
+#macro versionMajor 1
+#macro versionMinor 0
 #macro versionPatch 0
 
 // Variables

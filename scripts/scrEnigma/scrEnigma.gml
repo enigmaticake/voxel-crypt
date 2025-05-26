@@ -120,7 +120,7 @@ function cargar_objetos(fname) {
         switch (objeto.id) {
             case 0:
                 objeto.texture = buffer_read(buffer, buffer_string);
-                objeto.z = (_minor >= 1) ? buffer_read(buffer, buffer_u8) : 0;
+                objeto.z = buffer_read(buffer, buffer_u8);
                 
                 // arreglar bugs de texturas
                 if (rsc_find_tex("Block_" + objeto.texture) == -1) {
