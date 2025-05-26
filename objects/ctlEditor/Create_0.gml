@@ -38,12 +38,15 @@ enum window_type_edit {
     edit_object,
     edit_trigger
 }
+
+
+// ventana de edicion de objetos
 state_edit = window_type_edit.none;
-textbox_trigger_edit = textbox_create(128, 64, "", 128);
 obj_edit = {
     obj : -1,
     pos : [-1, -1],
 }
+textboxes_list = [];
 
 
 #region crear primer capa

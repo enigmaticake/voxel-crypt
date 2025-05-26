@@ -39,6 +39,8 @@ function textbox_step(tb, xx, yy) {
 		if (mouse_check_button_pressed(mb_left) and !tb.active) {
 			tb.active = true;
 			tb.time = 0;
+            
+            keyboard_string = "";
 		}
 		
 		if (mouse_check_button_pressed(mb_left)) {
@@ -286,6 +288,14 @@ function textbox_draw(tb, xx, yy) {
 		draw_set_color(c_white);
 		draw_rectangle(width, yy + 8, width + 1, yy - 8, false);
 	}
+}
+
+
+function draw_textbox(tb, xx, yy) {
+    textbox_draw(tb, xx, yy);
+    if (textbox_step(tb, xx, yy)) {
+        return true;
+    }
 }
 
 #endregion

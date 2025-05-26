@@ -53,6 +53,10 @@ if (mouse_depth == 1) {
             obj_edit.pos = [cursorX, cursorY];
             
             state_edit = window_type_edit.edit_object;
+            
+            if (obj[? "id"] == 0) {
+                array_push(textboxes_list, textbox_create(64, 64, "", 120));
+            }
         }
     }
     

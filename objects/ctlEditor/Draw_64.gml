@@ -206,7 +206,7 @@ if (question == -1) {
     // editar objeto
     if (state_edit == window_type_edit.edit_object) {
         var bx = w_x + 8 * sf;
-        var by = w_y + 8 * sf;
+        var by = w_y + 72 * sf;
         
         // text: edit object
         var _obj = obj_edit.obj;
@@ -214,51 +214,29 @@ if (question == -1) {
         draw_set_color(c_black);
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
-        draw_text(w_x + 72, w_y + 8, "edit object");
+        draw_text(w_x + 8 * sf, w_y + 8 * sf, "edit object");
         
         
         // leave
         if (draw_button_gui(64, 64, bx, by, 2, mouse_depth, c_red) == buttonState.released) {
             state_edit = window_type_edit.none;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, bx + 32, by + 32);
+        draw_sprite(rsc_find_tex("gui_leave"), 0, bx + 32 * sf, by + 32 * sf);
         
         
-        // propiedades del objeto
-        var tbx = ww / 2;
-        var tby = hh / 2 - 64 * sf;
-        
-        var trigger_obj = _obj[? "trigger_id"];
-        
-        if (textbox_step(textbox_trigger_edit, tbx, tby)) {
-            var new_id = real(string_digits(textbox_trigger_edit.text));
-            
-            if (!array_contains(trigger_obj, new_id)) {
-                array_push(trigger_obj, clamp(new_id, 0, 65535));
-                textbox_trigger_edit.text = "";
-            }
-        }
-        textbox_draw(textbox_trigger_edit, tbx, tby);
-        
-        
-        draw_set_halign(fa_right);
-        draw_set_valign(fa_top);
-        draw_set_color(c_black);
-        draw_text(bx, by, _obj[? "z"]);
-        
-        
-        draw_set_halign(fa_center);
+        draw_set_halign(fa_left);
         draw_set_valign(fa_middle);
         
+        by += 68 * sf;
         
-        // botones de trigger id
-        for (var i = array_length(trigger_obj) - 1; i >= 0; --i) {
-            if (draw_button_v("64x64", w_x + 32 + (i * (68 * sf)), hh / 2 + 64 * sf) == buttonState.released) {
-                array_delete(trigger_obj, i, 1);
-                continue;
-            }
-            draw_text(w_x + 32 + (i * (68 * sf)), hh / 2 + 64 * sf, trigger_obj[i]);
+        // propiedades del objeto
+        if (draw_textbox(textboxes_list[0], bx + 32, by + 32)) {
+            var value = string_digits(textboxes_list[0].text);
+            
+            _obj[? "z"] = real((value != "") ? value : "0");
+            textboxes_list[0].text = "";
         }
+        draw_set_color(c_black) draw_text(bx + 68, by + 32, $"z: {_obj[? "z"]}");
     }
 }
 else {
