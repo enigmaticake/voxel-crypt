@@ -106,11 +106,9 @@ function scale_factor() {
 }
 
 
-function renderize(xx, yy) {
-    var cx = camera_get_view_x(view_camera[0]) + 16;
-    var cy = camera_get_view_y(view_camera[0]) + 16;
-    var cw = camera_get_view_width(view_camera[0]) - 64;
-    var ch = camera_get_view_height(view_camera[0]) - 64; 
-    
-    if ((x > cx and x < cx + cw) and (y > cy and y < cy + ch)) return true;
+/// @param {real} x
+/// @param {real} y
+/// @return {struct}
+function vector2D(xx, yy) {
+    return {x:xx, y:yy};
 }

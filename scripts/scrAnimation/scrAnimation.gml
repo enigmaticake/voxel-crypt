@@ -25,7 +25,7 @@ function model_set_animation(type, animation) {
     switch (type) {
     	case "idle":
             // head
-            animation[? type][0][1] = -5 + sin(animation[? "anim_time"] * 3);
+            animation[? type][0].y = -5 + sin(animation[? "anim_time"] * 3);
     }
 }
 
@@ -37,14 +37,14 @@ function model_draw_body(animation, skin) {
     
     
     // body
-    draw_sprite_ext(skin[1], 0, x + anim[1][0] * image_xscale, y + anim[1][1], image_xscale, 1, 0, c_white, 1);
+    draw_sprite_ext(skin[1], 0, x + anim[1].x * image_xscale, y + anim[1].y, image_xscale, 1, 0, c_white, 1);
     
     // head
-    draw_sprite_ext(skin[0], 0, x + anim[0][0] * image_xscale, y + anim[0][1], image_xscale, 1, 0, c_white, 1);
+    draw_sprite_ext(skin[0], 0, x + anim[0].x * image_xscale, y + anim[0].y, image_xscale, 1, 0, c_white, 1);
     
     // hand left
-    draw_sprite_ext(skin[2], 0, x + anim[2][0] * image_xscale, y + anim[2][1], image_xscale, 1, 0, c_white, 1);
+    draw_sprite_ext(skin[2], 0, x + anim[2].x * image_xscale, y + anim[2].y, image_xscale, 1, 0, c_white, 1);
     
     // hand right
-    draw_sprite_ext(skin[2], 0, x + anim[3][0] * image_xscale, y + anim[3][1], image_xscale, 1, 0, c_white, 1);
+    draw_sprite_ext(skin[2], 0, x + anim[3].x * image_xscale, y + anim[3].y, image_xscale, 1, 0, c_white, 1);
 }

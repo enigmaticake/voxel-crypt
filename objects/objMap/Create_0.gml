@@ -4,7 +4,7 @@ var map = cargar_objetos(path + "map.vxdata");
 
 
 // tamaño de mapa y chunk
-chunk_size = 32;
+chunk_size = 32 * 4;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
@@ -42,10 +42,15 @@ for (var i = 0; i < array_length(map); ++i) {
         var cx = floor((pos[0] * 32) / chunk_size);
         var cy = floor((pos[1] * 32) / chunk_size);
         
+        var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objBlock);
+        
+        inst.depth = -(pos[1] * 32);
+        inst.spr = rsc_find_tex("Block_" + obj.texture);
         
         // propiedad del objeto
         var p = {
-            spr : obj.texture,
+            type : 0,
+            inst : inst,
             x : pos[0],
             y : pos[1]
         }
@@ -64,9 +69,22 @@ function chunk_load(xx, yy) {
     for (var i = 0; i < ds_list_size(objs); ++i) {
         var obj = objs[| i];
         
-        var inst = instance_create_depth(obj.x * 32, obj.y * 32, 0, objBlock);
+        if (obj.type == 0) {
+            instance_activate_object(obj.inst);
+        }
+    }
+}
+
+
+// eliminar chunk (FUNCION)
+function chunk_delete(xx, yy) {
+    var objs = ds_grid_get(chunk, xx, yy);
+    
+    for (var i = 0; i < ds_list_size(objs); ++i) {
+        var obj = objs[| i];
         
-        inst.depth = -(obj.y * 32);
-        inst.spr = rsc_find_tex("Block_" + obj.spr);
+        if (obj.type == 0) {
+            instance_deactivate_object(obj.inst);
+        }
     }
 }
