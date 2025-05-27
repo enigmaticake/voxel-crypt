@@ -22,17 +22,55 @@ if (question == -1) {
     // Ventanas
     // --------------------------------------
     
+    
+    // ====== panel de creacion ======
+    
     // principal
     if (state == states_editor.principal) {
+        // boton de objetos
         if (draw_button_gui(64, 64, 16 * sf, 16 * sf, 0, mouse_depth, c_lime) == buttonState.released) {
             state = states_editor.objetos;
         }
-        draw_sprite(rsc_find_tex("create_levelEditor"), 0, 48, 48);
+        draw_sprite(rsc_find_tex("create_levelEditor"), 0, 48 * sf, 48 * sf);
         
+        // boton de capas (layers)
+        if (draw_button_gui(64, 64, 96 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
+            window_edit_layer.active = !window_edit_layer.active;
+        }
+        draw_sprite(rsc_find_tex("gui_layer_cape"), 0, 96 * sf, 16 * sf);
+        
+        // boton de configuracion
         if (draw_button_gui(64, 64, ww - 80 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
             state = states_editor.configuration;
         }
-        draw_sprite(rsc_find_tex("gui_config"), 0, ww - 48, 48);
+        draw_sprite(rsc_find_tex("gui_config"), 0, ww - 48 * sf, 48 * sf);
+        
+        // para objetos de tipo 0
+        if (object_data[? "id"] == 0) {
+            // texto 0
+            draw_set_halign(fa_left);
+            draw_set_valign(fa_middle);
+            draw_set_color(c_black);
+            draw_text(ww - 368 * sf, 16 * sf, "z:");
+             
+            // boton que suma el posy_global con flecha derecha
+            if (draw_button_gui(64, 64, ww - 192 * sf, 16 * sf, 0, mouse_depth, c_black) == buttonState.released) {
+                posy_global = min(5, posy_global + 1);
+            }
+            draw_sprite(rsc_find_tex("gui_arrowR"), 0, ww - 192 * sf, 16 * sf);
+            
+            // texto que muestra el valor de posy_global actual
+            draw_set_halign(fa_center);
+            draw_set_valign(fa_middle);
+            draw_set_color(c_white);
+            draw_text_transformed(ww - 240 * sf, 48 * sf, posy_global, 2, 2, 0);
+            
+            // boton que resta el posy_global con flecha izquierda
+            if (draw_button_gui(64, 64, ww - 352 * sf, 16 * sf, 0, mouse_depth, c_black) == buttonState.released) {
+                posy_global = max(0, posy_global - 1);
+            }
+            draw_sprite(rsc_find_tex("gui_arrowL"), 0, ww - 352 * sf, 16 * sf);
+        }
     }
     
     // configuracion
@@ -192,11 +230,40 @@ if (question == -1) {
     }
     
     
-    // ====== ventanas de edicion ======
-    var w_x = 64 * sf;
-    var w_y = 64 * sf;
-    var w_w = ww - 64 * sf;
-    var w_h = hh - 64 * sf;
+    // ====== panel de capas (layers) ======
+    if (window_edit_layer.active) {
+        var w_x = ww - 512 * sf;
+        var w_y = hh - 256 * sf;
+        var w_w = ww;
+        var w_h = hh;
+        
+        draw_set_color(c_gray);
+        draw_rectangle_outline(w_x, w_y, w_w, w_h, c_white, 3);
+        
+        // boton que suma la capa (layer) con la flecha izquierda
+        if (draw_button_gui(64, 64, w_x + 16 * sf, w_y + 96 * sf, 3, mouse_depth, c_black) == buttonState.released) {
+            layer_current = max(0, layer_current - 1);
+        }
+        draw_sprite(rsc_find_tex("gui_arrowL"), 0, w_x + 16 * sf, w_y + 96 * sf);
+        
+        // boton que resta la capa (layer) con la flecha derecha
+        if (draw_button_gui(64, 64, w_x + 96 * sf, w_y + 96 * sf, 3, mouse_depth, c_black) == buttonState.released) {
+            layer_current = min(200, layer_current + 1);
+            
+            if (layer_current >= array_length(layers)) {
+                array_push(layers, ds_grid_create(width, height));
+                ds_grid_clear(layers[layer_current], -1);
+            }
+        }
+        draw_sprite(rsc_find_tex("gui_arrowR"), 0, w_x + 96 * sf, w_y + 96 * sf);
+    }
+    
+    
+    // ====== panel de edicion de objetos ======
+    w_x = 64 * sf;
+    w_y = 64 * sf;
+    w_w = ww - 64 * sf;
+    w_h = hh - 64 * sf;
     
     if (state_edit != window_type_edit.none) {
         draw_set_color(c_gray);
@@ -233,7 +300,7 @@ if (question == -1) {
         if (draw_textbox(textboxes_list[0], bx + 32, by + 32)) {
             var value = string_digits(textboxes_list[0].text);
             
-            _obj[? "z"] = real((value != "") ? value : "0");
+            _obj[? "z"] = clamp(real((value != "") ? value : "0"), 0, 5);
             textboxes_list[0].text = "";
         }
         draw_set_color(c_black) draw_text(bx + 68, by + 32, $"z: {_obj[? "z"]}");

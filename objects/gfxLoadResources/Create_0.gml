@@ -195,15 +195,20 @@ load_pack = [
         if (!load_texture("create_levelEditor", "resource/gui/add.png", 64, 64, 32, 32)) return;
         if (!load_texture("gui_leave", "resource/gui/exit.png", 64, 64, 32, 32)) return;
         if (!load_texture("gui_config", "resource/gui/configuration.png", 64, 64, 32, 32)) return;
-            
+        
+        // flechas
+        if (!load_texture("gui_arrowR", "resource/gui/arrow_right.png", 64, 64, 0, 0)) return;
+        if (!load_texture("gui_arrowL", "resource/gui/arrow_left.png", 64, 64, 0, 0)) return;
+        
         // cursor
 		if (!load_texture("cursor_idle", "resource/gui/cursor_move.png", 32, 32, 1, 1)) return;
 		if (!load_texture("cursor_attack", "resource/gui/cursor_attack.png", 32, 32, 1, 1)) return;
-            
+        
         // editor
 		if (!load_texture("editor_object_block", "resource/gui/obj_block.png", 32, 32, 16, 16)) return;
 		if (!load_texture("editor_object_cmd", "resource/gui/obj_cmd.png", 32, 32, 16, 16)) return;
 		if (!load_texture("editor_object_entity", "resource/gui/obj_entity.png", 32, 32, 16, 16)) return;
+        if (!load_texture("gui_layer_cape", "resource/gui/layer_ui.png", 64, 64, 0, 0)) return;
 	},
 
 	function() {

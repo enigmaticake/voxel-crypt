@@ -27,7 +27,7 @@ for (var i = 0; i < array_length(layers); ++i) {
             
             // dibujar si no hay un espacio
             if (cell != -1) {
-                var color_obj = (mousex == xx and mousey == yy and mouse_depth == 1) ? c_gray : c_white;
+                var color_obj = (mousex == xx and mousey == yy and mouse_depth == 1 and layer_current == i) ? c_gray : c_white;
                 var alpha_obj = (i == layer_current) ? 1 : 0.5;
                 
                 // verificar si esta seleccionado
@@ -38,6 +38,17 @@ for (var i = 0; i < array_length(layers); ++i) {
                 var spr = (cell[? "id"] == 0) ? rsc_find_tex("Block_" + tex) : rsc_find_tex(tex);
                 
                 if (spr != -1) draw_sprite_part_ext(spr, 0, 0, 0, 32, 32, xx * 32, yy * 32, 1, 1, color_obj, alpha_obj);
+                
+                // para objetos tipo 0
+                if (cell[? "id"] == 0 ) {
+                    draw_set_alpha(0.5);
+                    draw_set_halign(fa_center);
+                    draw_set_valign(fa_middle);
+                    draw_set_color(c_white);
+                    draw_text(xx * 32 + 16, yy * 32 + 16, $"z:{cell[? "z"]}");
+                    
+                    draw_set_alpha(1);
+                }
             }
         }
     }

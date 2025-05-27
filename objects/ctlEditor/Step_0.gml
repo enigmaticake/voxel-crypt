@@ -7,9 +7,21 @@ if (question != -1) {
 }
 
 
+// tamaño de pantalla
+var ww = display_get_gui_width();
+var hh = display_get_gui_height();
+
+
 // depth del mouse
 if (state_edit != window_type_edit.none) mouse_depth = 2;
 else if (device_mouse_y_to_gui(0) <= height_window_principal * sf) mouse_depth = 0;
+else if (point_in_rectangle(
+    device_mouse_x_to_gui(0),
+    device_mouse_y_to_gui(0),
+    ww - 512 * sf,
+    hh - 256 * sf,
+    ww,
+    hh) and window_edit_layer.active) mouse_depth = 3;
 else mouse_depth = 1;
 
 

@@ -15,7 +15,7 @@ type_cursor = 0;
 object_data = ds_map_create();
 ds_map_add(object_data, "id", 0);
 ds_map_add(object_data, "z", 1);
-ds_map_add(object_data, "sprite", "stone");
+ds_map_add(object_data, "sprite", global.lists.block[0]);
 ds_map_add(object_data, "trigger_id", []);
 
 
@@ -37,6 +37,12 @@ enum window_type_edit {
     none,
     edit_object,
     edit_trigger
+}
+
+
+// ventana de layer
+window_edit_layer = {
+    active : false,
 }
 
 
@@ -93,7 +99,7 @@ function guardarmapa() {
                 switch (data.id) { 
                     case 0: // bloque
                         data.texture = dataObj[? "sprite"];
-                        data.z = dataObj[? "z"];
+                        data.z = clamp(dataObj[? "z"], 0, 5);
                         break;
                     case 1: // comando
                         data.command = dataObj[? "command"];
@@ -200,7 +206,7 @@ for (var i = 0; i < array_length(map); ++i) {
     switch (obj.id) {
         case 0: // bloque
             ds_map_add(data, "sprite", obj.texture ?? "stone");
-            ds_map_add(data, "z", obj.z ?? 0);
+            ds_map_add(data, "z", clamp(obj.z, 0, 5) ?? 0);
             break;
         case 1: // comando
             ds_map_add(data, "command", obj.command ?? "");
@@ -210,6 +216,12 @@ for (var i = 0; i < array_length(map); ++i) {
             ds_map_add(data, "entity", obj.entity ?? "zombie");
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_entity");
             break;
+    }
+    
+    // crear capas antes de establecer en una capa inexistente
+    while (obj.layer >= array_length(layers)) {
+        array_push(layers, ds_grid_create(width, height));
+        ds_grid_clear(layers[array_length(layers) - 1], -1);
     }
     
     ds_grid_set(layers[obj.layer], obj.pos[0], obj.pos[1], data);
