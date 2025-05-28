@@ -213,7 +213,7 @@ if (question == -1) {
                 ds_map_add(object_data, "entity", global.assets.entity[ent].type);
                 ds_map_add(object_data, "trigger_id", []);
             }
-            draw_sprite(rsc_find_tex(global.assets.entity[ent].sprite + "_head"), 0, bx, by);
+            draw_sprite(rsc_find_tex(global.assets.entity[ent].type + "_head"), 0, bx, by);
             
             draw_text(bx, by, global.assets.entity[ent].type);
             

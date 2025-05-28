@@ -1,0 +1,1 @@
+model_draw_body(animation, skin);

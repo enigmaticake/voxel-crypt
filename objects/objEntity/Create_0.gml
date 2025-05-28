@@ -1,3 +1,3 @@
-create_entity(100, 2, 200);
+skin = [];
 
-skin = rsc_find_tex("TextureZombie");
+animation = model_create(vector2D(0, -5), vector2D(0, 6), vector2D(-6, 7), vector2D(6, 7));

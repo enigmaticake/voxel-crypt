@@ -47,7 +47,7 @@ function move_entity(moveX, moveY) {
             }
         }
         
-        if (moveX != 0) image_xscale = moveX;
+        if (moveX != 0) image_xscale = sign(moveX);
     }
     else speed_current = 0;
 }

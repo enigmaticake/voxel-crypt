@@ -6,7 +6,7 @@ var map = cargar_objetos(path + "map.vxdata");
 
 
 // tamaño de mapa y chunk
-chunk_size = 32 * 8;
+chunk_size = 32 * 10;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
@@ -56,6 +56,22 @@ for (var i = 0; i < array_length(map); ++i) {
             inst : inst,
         }
         
+        // desactivar al finalizar
+        instance_deactivate_object(inst);
+        
+        ds_list_add(chunk[# cx, cy], p);
+    }
+    else if (obj.id == 2) {
+        var cx = floor((pos[0] * 32) / chunk_size);
+        var cy = floor((pos[1] * 32) / chunk_size);
+        
+        // propiedad del objeto
+        var p = {
+            type : 2,
+            pos : pos,
+            inst : -1,
+        }
+        
         ds_list_add(chunk[# cx, cy], p);
     }
 }
@@ -67,11 +83,31 @@ instance_create_depth(room_width / 2, room_height / 2, -1, objPlayer);
 function chunk_load(xx, yy) {
     var objs = ds_grid_get(chunk, xx, yy);
     
-    for (var i = 0; i < ds_list_size(objs); ++i) {
+    for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
         if (obj.type == 0) {
             instance_activate_object(obj.inst);
+        }
+        else if (obj.type == 2) {
+            // spawnear si no existe la entidad
+            if (obj.inst == -1) {
+                var ent = instance_create_depth(obj.pos[0] * 32, obj.pos[1] * 32, 0, objEntity);
+                
+                ent.skin = [rsc_find_tex("zombie_head"), rsc_find_tex("zombie_body"), rsc_find_tex("zombie_hand")];
+                ent.cx = floor((obj.pos[0] * 32) / chunk_size);
+                ent.cy = floor((obj.pos[1] * 32) / chunk_size);
+                with (ent) {
+                    create_entity(100, 10, 80);
+                }
+                
+                obj.inst = ent;
+            }
+            
+            // activar la entidad si existe
+            else if (obj.inst != -1) {
+                instance_activate_object(objEntity);
+            }
         }
     }
 }
@@ -81,10 +117,14 @@ function chunk_load(xx, yy) {
 function chunk_delete(xx, yy) {
     var objs = ds_grid_get(chunk, xx, yy);
     
-    for (var i = 0; i < ds_list_size(objs); ++i) {
+    for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
         if (obj.type == 0) {
+            instance_deactivate_object(obj.inst);
+        }
+        else if (obj.type == 2) {
+            // desactivar entidad
             instance_deactivate_object(obj.inst);
         }
     }

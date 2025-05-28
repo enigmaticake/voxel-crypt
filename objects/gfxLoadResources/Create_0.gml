@@ -40,7 +40,7 @@ global.assets = {
         {
             type : "zombie",
             tag : {speed:230,health:100,strength:8},
-            sprite : "zombie",
+            type_animation : 0,
             attribute:{attack_player:true}
         }
     ],
