@@ -297,13 +297,21 @@ if (question == -1) {
         by += 68 * sf;
         
         // propiedades del objeto
-        if (draw_textbox(textboxes_list[0], bx + 32, by + 32)) {
-            var value = string_digits(textboxes_list[0].text);
-            
-            _obj[? "z"] = clamp(real((value != "") ? value : "0"), 0, 5);
-            textboxes_list[0].text = "";
+        if (_obj[? "id"] == 0) { // id del bloque
+            if (draw_textbox(textboxes_list[0], bx + 32, by + 32)) {
+                var value = string_digits(textboxes_list[0].text);
+                
+                _obj[? "z"] = clamp(real((value != "") ? value : "0"), 0, 5);
+                textboxes_list[0].text = "";
+            }
+            draw_set_color(c_black) draw_text(bx + 68, by + 32, $"z: {_obj[? "z"]}");
         }
-        draw_set_color(c_black) draw_text(bx + 68, by + 32, $"z: {_obj[? "z"]}");
+        else if (_obj[? "id"] == 1) { // id del comando
+            if (draw_textbox(textboxes_list[0], bx + 256, by + 32)) {
+                _obj[? "command"] = textboxes_list[0].text;
+            }
+            draw_set_color(c_black) draw_text(bx + 520, by + 32, $"cmd");
+        } 
     }
 }
 else {

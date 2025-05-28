@@ -66,8 +66,9 @@ if (mouse_depth == 1) {
             
             state_edit = window_type_edit.edit_object;
             
-            if (obj[? "id"] == 0) {
-                array_push(textboxes_list, textbox_create(64, 64, "", 120));
+            if (obj[? "id"] == 0 or obj[? "id"] == 1) {
+                array_push(textboxes_list, textbox_create(512, 64, "", 504));
+                textboxes_list[0].text = obj[? "command"];
             }
         }
     }

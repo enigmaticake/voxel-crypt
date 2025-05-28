@@ -87,16 +87,20 @@ function textbox_step(tb, xx, yy) {
 	}
 	
 	if (tb.active) {
-			var maxChar = (tb.maxText > 0) ? tb.maxText : -1;
-			
 			tb.time++;
 			if (tb.time > tb.timeFull * 2) tb.time = 0;
 			
 			var mousexPrev = tb.mousex;
 			
+            // limpiar
+            if (keyboard_check_direct(vk_control) and keyboard_check_released(vk_backspace)) keyboard_string = "";
+            
+            
 			// Escribir con las teclas
-			if (!keyboard_check_direct(vk_control) and string_length(keyboard_string) > 0 and
-				string_width(tb.text) <= maxChar) {
+			var maxChar = (tb.maxText > 0) ? tb.maxText : -1;
+            
+            if (!keyboard_check_direct(vk_control) and keyboard_string != "" and
+                (maxChar < 0 or string_length(tb.text) + string_length(keyboard_string) <= maxChar)) {
 				if (tb.selx > -1) {
 					if (tb.mousex > tb.selx) {
 						tb.text = string_delete(tb.text, tb.selx + 1, tb.mousex - tb.selx);
@@ -114,8 +118,9 @@ function textbox_step(tb, xx, yy) {
 				
 				tb.text = string_insert(txt, tb.text, tb.mousex + 1);
 				tb.mousex += string_length(txt);
+                
+                keyboard_string = "";
 			}
-			keyboard_string = "";
 			
 			// Iniciar seleccion
 			if (tb.selx < 0 and keyboard_check_direct(vk_shift) and (keyboard_check_pressed(vk_left) or keyboard_check_pressed(vk_right))) {

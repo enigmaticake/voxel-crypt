@@ -91,6 +91,7 @@ enum buttonState {
 #macro versionMinor 0
 #macro versionPatch 0
 
+
 // Variables
 return_code = 1;
 
@@ -100,7 +101,6 @@ loading = "loading resource: ";
 label = "";
 load_i = -1;
 
-
 #region Funciones
 // Función helper para cargar texturas
 function load_texture(name, path, w, h, xo = 0, yo = 0) {
@@ -109,11 +109,13 @@ function load_texture(name, path, w, h, xo = 0, yo = 0) {
 	if (spr == -1) {
         if (file_exists(path)) log_to_file("❌ Failed to load texture: " + path + ", The file could not be loaded.");
         else log_to_file("❌ Failed to load texture: " + path + ", The file does not exist.");
+        show_debug_message("error de recursos");
 		game_end(return_code);
 		return false;
 	}
     else if (spr == -2) {
         log_to_file("❌ Failed to load texture: " + path + ", Invalid format.");
+        show_debug_message("error de recursos");
 		game_end(return_code);
 		return false;
 	}
@@ -127,6 +129,7 @@ function load_sound(name, path) {
 	if (snd == -1) {
 		if (file_exists(path)) log_to_file("❌ Failed to load sound: " + path + ", The file could not be loaded.");
         else log_to_file("❌ Failed to load sound: " + path + ", The file does not exist.");
+        show_debug_message("error de recursos");
 		game_end(return_code);
 		return false;
 	}
@@ -140,7 +143,8 @@ function load_data(name, path, key) {
 	if (data == -1) {
 		if (file_exists(path)) log_to_file("❌ Failed to load data: " + path + ", The file could not be loaded.");
         else log_to_file("❌ Failed to load data: " + path + ", The file does not exist.");
-		game_end(return_code);
+		show_debug_message("error de recursos");
+        game_end(return_code);
 		return false;
 	}
 	return true;
@@ -163,15 +167,17 @@ load_pack = [
 	},
     
     function() {
-        label = "finding blocks texture";
+        label = "finding texture";
         
-        var texture = file_find_first("resource/block/*.png", fa_none);
+        // buscar texturas
+        var _tex = file_find_first("resource/block/*.png", fa_none);
         
-        while (texture != "") {
-            array_push(global.lists.block, texture);
-            show_debug_message("textura encontrado: {0}", texture);
-            
-            texture = file_find_next();
+        while (_tex != "") {
+            if (string_ends_with(_tex, ".png")) {
+                _tex = string_copy(_tex, 1, string_length(_tex) - 4); // copia sin los últimos 4 caracteres
+                array_push(global.lists.block, _tex);
+            }
+            _tex = file_find_next();
         }
     },
     
@@ -180,7 +186,7 @@ load_pack = [
         
         // block
         for (var i = 0; i < array_length(global.lists.block); ++i) {
-		    if (!load_texture("Block_" + global.lists.block[i], "resource/block/" + global.lists.block[i], 32, 48)) return;
+		    if (!load_texture("Block_" + global.lists.block[i], "resource/block/" + global.lists.block[i] + ".png", 32, 48)) return;
         }
 	},
     
