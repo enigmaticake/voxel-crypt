@@ -135,7 +135,7 @@ if (question == -1) {
             ds_map_add(object_data, "command", "");
             ds_map_add(object_data, "trigger_id", []);
         }
-        draw_sprite(rsc_find_tex("editor_object_entity"), 0, 252 * sf, 48 * sf);
+        draw_sprite(rsc_find_tex("editor_object_cmd"), 0, 252 * sf, 48 * sf);
     }
     
     
@@ -213,9 +213,9 @@ if (question == -1) {
                 ds_map_add(object_data, "entity", global.assets.entity[ent].type);
                 ds_map_add(object_data, "trigger_id", []);
             }
-            draw_sprite(rsc_find_tex(global.assets.entity[ent].type + "_head"), 0, bx, by);
+            draw_sprite(rsc_find_tex(global.assets.entity[ent].type + "_head"), 0, bx + 32, by + 32);
             
-            draw_text(bx, by, global.assets.entity[ent].type);
+            draw_text(bx + 32, by + 56, global.assets.entity[ent].type);
             
             
             // sumar posicion
@@ -232,8 +232,8 @@ if (question == -1) {
     
     // ====== panel de capas (layers) ======
     if (window_edit_layer.active) {
-        var w_x = ww - 512 * sf;
-        var w_y = hh - 256 * sf;
+        var w_x = ww - 176 * sf;
+        var w_y = hh - 128 * sf;
         var w_w = ww;
         var w_h = hh;
         
@@ -241,13 +241,13 @@ if (question == -1) {
         draw_rectangle_outline(w_x, w_y, w_w, w_h, c_white, 3);
         
         // boton que suma la capa (layer) con la flecha izquierda
-        if (draw_button_gui(64, 64, w_x + 16 * sf, w_y + 96 * sf, 3, mouse_depth, c_black) == buttonState.released) {
+        if (draw_button_gui(64, 64, w_x + 16 * sf, w_y + 32 * sf, 3, mouse_depth, c_black) == buttonState.released) {
             layer_current = max(0, layer_current - 1);
         }
-        draw_sprite(rsc_find_tex("gui_arrowL"), 0, w_x + 16 * sf, w_y + 96 * sf);
+        draw_sprite(rsc_find_tex("gui_arrowL"), 0, w_x + 16 * sf, w_y + 32 * sf);
         
         // boton que resta la capa (layer) con la flecha derecha
-        if (draw_button_gui(64, 64, w_x + 96 * sf, w_y + 96 * sf, 3, mouse_depth, c_black) == buttonState.released) {
+        if (draw_button_gui(64, 64, w_x + 96 * sf, w_y + 32 * sf, 3, mouse_depth, c_black) == buttonState.released) {
             layer_current = min(200, layer_current + 1);
             
             if (layer_current >= array_length(layers)) {
@@ -255,7 +255,7 @@ if (question == -1) {
                 ds_grid_clear(layers[layer_current], -1);
             }
         }
-        draw_sprite(rsc_find_tex("gui_arrowR"), 0, w_x + 96 * sf, w_y + 96 * sf);
+        draw_sprite(rsc_find_tex("gui_arrowR"), 0, w_x + 96 * sf, w_y + 32 * sf);
     }
     
     
@@ -287,6 +287,8 @@ if (question == -1) {
         // leave
         if (draw_button_gui(64, 64, bx, by, 2, mouse_depth, c_red) == buttonState.released) {
             state_edit = window_type_edit.none;
+            textboxes_list = [];
+            exit;
         }
         draw_sprite(rsc_find_tex("gui_leave"), 0, bx + 32 * sf, by + 32 * sf);
         

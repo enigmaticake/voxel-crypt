@@ -82,6 +82,7 @@
     {"id":{"name":"gfxMainMenu","path":"objects/gfxMainMenu/gfxMainMenu.yy",},},
     {"id":{"name":"objBlock","path":"objects/objBlock/objBlock.yy",},},
     {"id":{"name":"objBlockMask","path":"objects/objBlockMask/objBlockMask.yy",},},
+    {"id":{"name":"objCommandBlock","path":"objects/objCommandBlock/objCommandBlock.yy",},},
     {"id":{"name":"objEntity","path":"objects/objEntity/objEntity.yy",},},
     {"id":{"name":"objMap","path":"objects/objMap/objMap.yy",},},
     {"id":{"name":"objPlayer","path":"objects/objPlayer/objPlayer.yy",},},

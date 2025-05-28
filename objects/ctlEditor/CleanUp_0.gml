@@ -16,3 +16,4 @@ for (var i = array_length(layers) - 1; i >= 0; --i) {
 
 // eliminar capa seleccion
 ds_grid_destroy(objectos_seleccionados);
+ds_map_destroy(object_data);

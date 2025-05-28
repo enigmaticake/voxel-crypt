@@ -6,7 +6,7 @@ var map = cargar_objetos(path + "map.vxdata");
 
 
 // tamaño de mapa y chunk
-chunk_size = 32 * 10;
+chunk_size = 32 * 4;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
@@ -49,6 +49,25 @@ for (var i = 0; i < array_length(map); ++i) {
         inst.depth = -(pos[1] * 32 + (obj.z * 16));
         inst.spr = rsc_find_tex("Block_" + obj.texture);
         inst.y -= obj.z * 16;
+        
+        // propiedad del objeto
+        var p = {
+            type : 0,
+            inst : inst,
+        }
+        
+        // desactivar al finalizar
+        instance_deactivate_object(inst);
+        
+        ds_list_add(chunk[# cx, cy], p);
+    }
+    else if (obj.id == 1) {
+        var cx = floor((pos[0] * 32) / chunk_size);
+        var cy = floor((pos[1] * 32) / chunk_size);
+        
+        var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objCommandBlock);
+        
+        inst.command = obj.command;
         
         // propiedad del objeto
         var p = {
@@ -120,11 +139,7 @@ function chunk_delete(xx, yy) {
     for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
-        if (obj.type == 0) {
-            instance_deactivate_object(obj.inst);
-        }
-        else if (obj.type == 2) {
-            // desactivar entidad
+        if (obj.type >= 0 and obj.type <= 2) {
             instance_deactivate_object(obj.inst);
         }
     }
