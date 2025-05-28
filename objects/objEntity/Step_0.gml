@@ -16,14 +16,7 @@ var new_cy = floor((y + 32) / objMap.chunk_size);
 
 if (new_cx != cx || new_cy != cy) {
     // Sacarse del chunk viejo
-    var old_list = objMap.chunk[# cx, cy];
-    for (var i = 0; i < ds_list_size(old_list); ++i) {
-        var p = old_list[| i];
-        if (p.inst == id) {
-            ds_list_delete(old_list, i);
-            break;
-        }
-    }
+    chunk_delete_data(cx, cy);
 
     // Meterse al chunk nuevo
     var p = {

@@ -306,3 +306,15 @@ function version_comparator(major, minor, patch) {
         
     return 0;
 }
+
+function chunk_delete_data(xx, yy) {
+    // Sacarse del chunk viejo
+    var old_list = objMap.chunk[# xx, yy];
+    for (var i = 0; i < ds_list_size(old_list); ++i) {
+        var p = old_list[| i];
+        if (p.inst == id) {
+            ds_list_delete(old_list, i);
+            break;
+        }
+    }
+}
