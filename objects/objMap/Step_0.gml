@@ -10,26 +10,7 @@ for (var i = array_length(events) - 1; i >= 0; --i) {
     if (ev.time <= 0) {
         
         // tipo de evento
-        switch (ev.type ?? "message") {
-        	case "message":
-                show_message(ev.msg ?? "");
-                break;
-            
-            case "player_position":
-                if (ev.operator == 0) {
-                    objPlayer.x = ev.posx * 32 ?? 0;
-                    objPlayer.y = ev.posy * 32 ?? 0;
-                }
-                else if (ev.operator == 1) {
-                    objPlayer.x += ev.posx * 32 ?? 0;
-                    objPlayer.y += ev.posy * 32 ?? 0;
-                }
-                break;
-            
-            case "player_speed":
-                objPlayer.speed_full = ev.speed ?? 200;
-                break;
-        }
+        
         
         array_delete(events, i, 1);
     }

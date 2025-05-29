@@ -313,13 +313,13 @@ if (question == -1) {
                 _obj[? "command"] = textboxes_list[0].text;
             }
             draw_set_color(c_black) draw_text(bx + 520, by + 32, $"cmd");
-        } 
+        }
     }
 }
 else {
     var que = question_draw(question);
     
-    if (que == false or que == true) {
+    if (is_bool(que)) {
         question = -1;
     }
 }

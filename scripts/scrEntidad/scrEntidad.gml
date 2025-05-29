@@ -19,7 +19,7 @@ function create_entity(_health, attack_strength, _speed) {
  */
 function move_entity(moveX, moveY) {
     // movimiento
-    var delta = delta_time / 1_000_000;
+    var delta = clamp(delta_time / 1_000_000, 0, 0.033);
     
     if (moveX != 0 || moveY != 0) {
         var t = clamp(delta_time / 100_000, 0, 1); // ajustamos para framerate variable

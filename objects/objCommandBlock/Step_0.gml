@@ -10,6 +10,10 @@ else if (place_meeting(x, y, objPlayer) and !touch) {
     _active = true;
 }
 
+else if (!place_meeting(x, y, objPlayer) and touch) {
+    touch = false;
+}
+
 
 // activar comando
 if (_active)

@@ -32,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":true,
-  "spriteId":{
-    "name":"sprColisionBlock",
-    "path":"sprites/sprColisionBlock/sprColisionBlock.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":{
     "name":"sprColisionBlock",
     "path":"sprites/sprColisionBlock/sprColisionBlock.yy",

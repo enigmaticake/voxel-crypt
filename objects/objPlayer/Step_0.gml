@@ -24,10 +24,14 @@ model_set_animation("idle", animation);
 
 
 // camara
+var delta_camara = delta_time / 1_000_000;
+
 var camx = camera_get_view_x(view_camera[0]);
 var camy = camera_get_view_y(view_camera[0]);
 
-var targetx = lerp(camx, x - camera_get_view_width(view_camera[0]) / 2, 0.1);
-var targety = lerp(camy, y - camera_get_view_height(view_camera[0]) / 2, 0.1);
+var lerp_factor = clamp(2 * delta_camara, 0, 1);
+
+var targetx = lerp(camx, x - camera_get_view_width(view_camera[0]) / 2, lerp_factor);
+var targety = lerp(camy, y - camera_get_view_height(view_camera[0]) / 2, lerp_factor);
 
 camera_set_view_pos(view_camera[0], targetx, targety);

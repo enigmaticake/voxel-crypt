@@ -7,23 +7,6 @@ var map = cargar_objetos(path + "map.vxdata");
 
 // eventos
 events = [
-    {
-        time : 3, // segundos
-        type : "message",
-        msg : "hola pibes xd"
-    },
-    {
-        time : 6, // segundos
-        type : "player_speed",
-        speed : 1200
-    },
-    {
-        time : 5, // segundos
-        type : "player_position",
-        operator : 1,
-        posx : 2,
-        posy : 3
-    }
 ]
 
 // tamaño de mapa y chunk
