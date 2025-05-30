@@ -108,6 +108,10 @@ function guardarmapa() {
                     case 2: // entidad
                         data.entity = dataObj[? "entity"];
                         break;
+                    case 3: // cofre
+                        data.type_chest = dataObj[? "type_chest"];
+                        data.content = dataObj[? "content"];
+                        break;
                 }
                 
                 data.triggers = dataObj[? "trigger_id"];
@@ -217,6 +221,11 @@ for (var i = 0; i < array_length(map); ++i) {
         case 2: // entidad (mob)
             ds_map_add(data, "entity", obj.entity ?? "zombie");
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_entity");
+            break;
+        case 3: // cofre
+            ds_map_add(data, "type_chest", obj.type_chest ?? "normal");
+            ds_map_add(data, "content", obj.content ?? []);
+            ds_map_add(data, "sprite", obj.texture ?? "chest/normal");
             break;
     }
     

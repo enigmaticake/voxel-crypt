@@ -1,6 +1,6 @@
 depth = -y;
 
-model_set_animation("idle", animation);
+model_set_animation(animation, "idle", 0);
 
 if (distance_to_object(objPlayer) < 64) {
     var dir = point_direction(x, y, objPlayer.x, objPlayer.y);

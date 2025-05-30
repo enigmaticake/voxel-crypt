@@ -49,12 +49,28 @@ function guardar_objetos(_objetos, fname) {
                 buffer_write(buffer, buffer_string, objeto.texture);
                 buffer_write(buffer, buffer_u8, objeto.z);
                 break;
+            
             case 1:
                 buffer_write(buffer, buffer_string, objeto.path_cmd);
                 buffer_write(buffer, buffer_bool, objeto.destroy);
                 break;
+            
             case 2:
                 buffer_write(buffer, buffer_string, objeto.entity);
+                break;
+            
+            case 3:
+                // tipo de cofre
+                buffer_write(buffer, buffer_string, objeto.type_chest);
+                
+                // contenido
+                len = array_length(objeto.content);
+                
+                buffer_write(buffer, buffer_u8, len); // cantidad de contenido
+                
+                for (var j = 0; j < len; ++j) {
+                    buffer_write(buffer, buffer_u8, objeto.content[j]); // cualquier cosa, no?
+                }
                 break;
         }
         
@@ -125,18 +141,33 @@ function cargar_objetos(fname) {
                 
                 // arreglar bugs de texturas
                 if (rsc_find_tex("Block_" + objeto.texture) == -1) {
-                    objeto.texture = global.lists.block[0] ?? "stone";
+                    objeto.texture = global.lists.block[0];
                 }
                 
                 break;
+            
             case 1:
                 objeto.texture = "editor_object_cmd";
                 objeto.path_cmd = buffer_read(buffer, buffer_string);
-                objeto.destroy = (_minor >= 1) ? buffer_read(buffer, buffer_bool) : true;
+                objeto.destroy = buffer_read(buffer, buffer_bool);
                 break;
+            
             case 2:
                 objeto.texture = "editor_object_entity";
                 objeto.entity = buffer_read(buffer, buffer_string);
+                break;
+            
+            case 3:
+                objeto.type_chest = buffer_read(buffer, buffer_string);
+                objeto.texture = "chest/" + objeto.type_chest;
+                
+                objeto.content = [];
+                var len = buffer_read(buffer, buffer_u8);
+                for (var j = 0; j < len; ++j) {
+                    array_push(objeto.content, buffer_read(buffer, buffer_u8));
+                }
+                
+                show_debug_message(objeto);
                 break;
         }
         

@@ -132,10 +132,24 @@ if (question == -1) {
             
             ds_map_add(object_data, "id", 1);
             ds_map_add(object_data, "sprite", "editor_object_cmd");
-            ds_map_add(object_data, "command", "");
+            ds_map_add(object_data, "path_cmd", "tu_caca.json");
+            ds_map_add(object_data, "destroy", true);
             ds_map_add(object_data, "trigger_id", []);
         }
         draw_sprite(rsc_find_tex("editor_object_cmd"), 0, 252 * sf, 48 * sf);
+        
+        
+        // cofre
+        if (draw_button_gui(64, 64, 288 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
+            ds_map_clear(object_data);
+            
+            ds_map_add(object_data, "id", 3);
+            ds_map_add(object_data, "sprite", "chest/normal");
+            ds_map_add(object_data, "type_chest", "normal");
+            ds_map_add(object_data, "content", [24, 6]);
+            ds_map_add(object_data, "trigger_id", []);
+        }
+        draw_sprite(rsc_find_tex("chest/normal"), 0, 304 * sf, 24 * sf);
     }
     
     
@@ -312,7 +326,13 @@ if (question == -1) {
             if (draw_textbox(textboxes_list[0], bx + 256, by + 32)) {
                 _obj[? "path_cmd"] = textboxes_list[0].text;
             }
-            draw_set_color(c_black) draw_text(bx + 520, by + 32, $"cmd");
+            draw_set_color(c_black) draw_text(bx + 520, by + 32, $"file path (example: my_level/commands/example.json)");
+            
+            if (draw_button_gui(64, 64, bx, by + 96, 2, mouse_depth, c_black) == buttonState.released) {
+                _obj[? "destroy"] = !_obj[? "destroy"];
+            }
+            draw_set_color((_obj[? "destroy"]) ? c_lime : c_red); draw_rectangle(bx + 1, by + 98, bx + 63, by + 158, false);
+            draw_set_color(c_black); draw_text(bx + 68, by + 128, "Destroy (default green)");
         }
     }
 }

@@ -35,7 +35,7 @@ for (var i = 0; i < array_length(layers); ++i) {
                 
                 var tex = cell[? "sprite"];
                 
-                var spr = (cell[? "id"] == 0) ? rsc_find_tex("Block_" + tex) : rsc_find_tex(tex);
+                var spr = (cell[? "id"] == 0) ? rsc_find_tex("block/" + tex) : rsc_find_tex(tex);
                 
                 if (spr != -1) draw_sprite_part_ext(spr, 0, 0, 0, 32, 32, xx * 32, yy * 32, 1, 1, color_obj, alpha_obj);
                 

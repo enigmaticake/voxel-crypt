@@ -20,7 +20,7 @@ y = clamp(y, 0, room_height - 32);
 
 
 // animacion
-model_set_animation("idle", animation);
+model_set_animation(animation, "idle", 0);
 
 
 // camara

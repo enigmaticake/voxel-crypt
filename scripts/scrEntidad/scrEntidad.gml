@@ -39,10 +39,10 @@ function move_entity(moveX, moveY) {
         var stepY = dirY * (dist / steps);
         
         for (var i = 0; i < steps; i++) {
-            if (!place_meeting(x + stepX, y, objBlock)) {
+            if (!place_meeting(x + stepX, y, [objBlock, objChest])) {
                 x += stepX;
             }
-            if (!place_meeting(x, y + stepY, objBlock)) {
+            if (!place_meeting(x, y + stepY, [objBlock, objChest])) {
                 y += stepY;
             }
         }

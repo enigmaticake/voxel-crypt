@@ -6,11 +6,10 @@ var map = cargar_objetos(path + "map.vxdata");
 
 
 // eventos
-events = [
-]
+events = array_create(0); // crear array vacio
 
 // tamaño de mapa y chunk
-chunk_size = 32 * 5;
+chunk_size = 32 * 1;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
@@ -51,12 +50,12 @@ for (var i = 0; i < array_length(map); ++i) {
         var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, (obj.z <= 0) ? objBlock : objBlockMask);
         
         inst.depth = -(pos[1] * 32 + (obj.z * 16));
-        inst.spr = rsc_find_tex("Block_" + obj.texture);
+        inst.spr = rsc_find_tex("block/" + obj.texture);
         inst.y -= obj.z * 16;
         
         // propiedad del objeto
         var p = {
-            type : 0,
+            type : obj.id,
             inst : inst,
         }
         
@@ -94,7 +93,7 @@ for (var i = 0; i < array_length(map); ++i) {
         
         // propiedad del objeto
         var p = {
-            type : 0,
+            type : obj.id,
             inst : inst,
         }
         
@@ -109,10 +108,33 @@ for (var i = 0; i < array_length(map); ++i) {
         
         // propiedad del objeto
         var p = {
-            type : 2,
+            type : obj.id,
             pos : pos,
             inst : -1,
         }
+        
+        ds_list_add(chunk[# cx, cy], p);
+    }
+    else if (obj.id == 3) {
+        var cx = floor((pos[0] * 32) / chunk_size);
+        var cy = floor((pos[1] * 32) / chunk_size);
+        
+        var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objChest);
+        
+        
+        // contenido en el cofre
+        inst.content = obj.content;
+        
+        
+        // propiedad del objeto
+        var p = {
+            type : obj.id,
+            inst : inst,
+        }
+        
+        
+        // desactivar al finalizar
+        instance_deactivate_object(inst);
         
         ds_list_add(chunk[# cx, cy], p);
     }
@@ -128,28 +150,36 @@ function chunk_load(xx, yy) {
     for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
-        if (obj.type == 0) {
-            instance_activate_object(obj.inst);
-        }
-        else if (obj.type == 2) {
-            // spawnear si no existe la entidad
-            if (obj.inst == -1) {
-                var ent = instance_create_depth(obj.pos[0] * 32, obj.pos[1] * 32, 0, objEntity);
-                
-                ent.skin = [rsc_find_tex("zombie_head"), rsc_find_tex("zombie_body"), rsc_find_tex("zombie_hand")];
-                ent.cx = floor((obj.pos[0] * 32) / chunk_size);
-                ent.cy = floor((obj.pos[1] * 32) / chunk_size);
-                with (ent) {
-                    create_entity(100, 10, 80);
+        // tipo de objeto
+        switch (obj.type) {
+            // bloque, comando o cofre
+            case 0:
+            case 1:
+            case 3:
+                instance_activate_object(obj.inst);
+                break;
+            
+            // entidad
+            case 2:
+                // spawnear si no existe la entidad
+                if (obj.inst == -1) {
+                    var ent = instance_create_depth(obj.pos[0] * 32, obj.pos[1] * 32, 0, objEntity);
+                    
+                    ent.skin = [rsc_find_tex("zombie_body"), rsc_find_tex("zombie_hand"), rsc_find_tex("zombie_hand"), rsc_find_tex("zombie_head")];
+                    ent.cx = floor((obj.pos[0] * 32) / chunk_size);
+                    ent.cy = floor((obj.pos[1] * 32) / chunk_size);
+                    with (ent) {
+                        create_entity(100, 10, 80);
+                    }
+                    
+                    obj.inst = ent;
                 }
                 
-                obj.inst = ent;
-            }
-            
-            // activar la entidad si existe
-            else if (obj.inst != -1) {
-                instance_activate_object(objEntity);
-            }
+                // activar la entidad si existe
+                else if (obj.inst != -1) {
+                    instance_activate_object(objEntity);
+                }
+                break;
         }
     }
 }
@@ -162,7 +192,7 @@ function chunk_delete(xx, yy) {
     for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
-        if (obj.type >= 0 and obj.type <= 2) {
+        if (obj.type >= 0 and obj.type <= 3) {
             instance_deactivate_object(obj.inst);
         }
     }

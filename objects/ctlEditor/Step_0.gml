@@ -71,7 +71,7 @@ if (mouse_depth == 1) {
             }
             else if (obj[? "id"] == 1) {
                 array_push(textboxes_list, textbox_create(512, 64, "", 504));
-                textboxes_list[0].text = obj[? "command"];
+                textboxes_list[0].text = obj[? "path_cmd"];
             }
         }
     }
