@@ -14,7 +14,7 @@ type_cursor = 0;
 
 object_data = ds_map_create();
 ds_map_add(object_data, "id", 0);
-ds_map_add(object_data, "z", 1);
+ds_map_add(object_data, "z", 0);
 ds_map_add(object_data, "sprite", global.lists.block[0]);
 ds_map_add(object_data, "trigger_id", []);
 
@@ -102,7 +102,8 @@ function guardarmapa() {
                         data.z = clamp(dataObj[? "z"], 0, 5);
                         break;
                     case 1: // comando
-                        data.command = dataObj[? "command"];
+                        data.path_cmd = dataObj[? "path_cmd"];
+                        data.destroy = dataObj[? "destroy"];
                         break;
                     case 2: // entidad
                         data.entity = dataObj[? "entity"];
@@ -209,8 +210,9 @@ for (var i = 0; i < array_length(map); ++i) {
             ds_map_add(data, "z", clamp(obj.z, 0, 5) ?? 0);
             break;
         case 1: // comando
-            ds_map_add(data, "command", obj.command ?? "");
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_cmd");
+            ds_map_add(data, "path_cmd", obj.path_cmd ?? "");
+            ds_map_add(data, "destroy", obj.destroy ?? true);
             break;
         case 2: // entidad (mob)
             ds_map_add(data, "entity", obj.entity ?? "zombie");

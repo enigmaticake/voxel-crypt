@@ -90,7 +90,6 @@
     {"id":{"name":"rmLevel","path":"rooms/rmLevel/rmLevel.yy",},},
     {"id":{"name":"rmLoading","path":"rooms/rmLoading/rmLoading.yy",},},
     {"id":{"name":"rmMenu","path":"rooms/rmMenu/rmMenu.yy",},},
-    {"id":{"name":"RoomUI","path":"roomui/RoomUI/RoomUI.yy",},},
     {"id":{"name":"scrAnimation","path":"scripts/scrAnimation/scrAnimation.yy",},},
     {"id":{"name":"scrArray","path":"scripts/scrArray/scrArray.yy",},},
     {"id":{"name":"scrEnigma","path":"scripts/scrEnigma/scrEnigma.yy",},},

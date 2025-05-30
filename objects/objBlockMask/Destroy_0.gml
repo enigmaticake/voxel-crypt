@@ -1,0 +1,1 @@
+chunk_delete_data(floor(x / objMap.chunk_size), floor(y / objMap.chunk_size));

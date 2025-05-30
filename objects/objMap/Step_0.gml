@@ -10,7 +10,11 @@ for (var i = array_length(events) - 1; i >= 0; --i) {
     if (ev.time <= 0) {
         
         // tipo de evento
-        
+        switch (ev.type ?? "message") {
+        	case "message":
+                show_message(ev.msg ?? "");
+                break;
+        }
         
         array_delete(events, i, 1);
     }
@@ -26,7 +30,7 @@ var new_ply = floor(objPlayer.y / chunk_size);
 if (new_plx != plx || new_ply != ply) {
     
     // Rango de carga (3x3)
-    var range = 1;
+    var range = 3;
 
     // Descargar chunks que ya no están cerca
     for (var i = 0; i < width; ++i) {

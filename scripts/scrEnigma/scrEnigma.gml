@@ -50,7 +50,8 @@ function guardar_objetos(_objetos, fname) {
                 buffer_write(buffer, buffer_u8, objeto.z);
                 break;
             case 1:
-                buffer_write(buffer, buffer_string, objeto.command);
+                buffer_write(buffer, buffer_string, objeto.path_cmd);
+                buffer_write(buffer, buffer_bool, objeto.destroy);
                 break;
             case 2:
                 buffer_write(buffer, buffer_string, objeto.entity);
@@ -130,7 +131,8 @@ function cargar_objetos(fname) {
                 break;
             case 1:
                 objeto.texture = "editor_object_cmd";
-                objeto.command = buffer_read(buffer, buffer_string);
+                objeto.path_cmd = buffer_read(buffer, buffer_string);
+                objeto.destroy = (_minor >= 1) ? buffer_read(buffer, buffer_bool) : true;
                 break;
             case 2:
                 objeto.texture = "editor_object_entity";

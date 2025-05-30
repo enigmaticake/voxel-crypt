@@ -16,5 +16,9 @@ else if (!place_meeting(x, y, objPlayer) and touch) {
 
 
 // activar comando
-if (_active)
-    show_message(command);
+if (_active) {
+    for (var i = 0; i < array_length(path_cmd); ++i) {
+        array_push(objMap.events, path_cmd[i]);
+        if (destroy) instance_destroy();
+    }
+}

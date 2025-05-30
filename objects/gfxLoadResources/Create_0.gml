@@ -88,7 +88,7 @@ enum buttonState {
 }
 
 #macro versionMajor 1
-#macro versionMinor 0
+#macro versionMinor 1
 #macro versionPatch 0
 
 

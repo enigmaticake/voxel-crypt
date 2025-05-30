@@ -310,7 +310,7 @@ if (question == -1) {
         }
         else if (_obj[? "id"] == 1) { // id del comando
             if (draw_textbox(textboxes_list[0], bx + 256, by + 32)) {
-                _obj[? "command"] = textboxes_list[0].text;
+                _obj[? "path_cmd"] = textboxes_list[0].text;
             }
             draw_set_color(c_black) draw_text(bx + 520, by + 32, $"cmd");
         }

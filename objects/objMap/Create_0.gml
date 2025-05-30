@@ -10,7 +10,7 @@ events = [
 ]
 
 // tamaño de mapa y chunk
-chunk_size = 32 * 4;
+chunk_size = 32 * 5;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);
@@ -71,7 +71,26 @@ for (var i = 0; i < array_length(map); ++i) {
         
         var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objCommandBlock);
         
-        inst.command = obj.command;
+        
+        // propiedades
+        inst.destroy = obj.destroy;
+        
+        // comando
+        var _PathFile = obj.path_cmd;
+        
+        if (file_exists(path + "commands/" + _PathFile)) {
+            // si encuentra error seguir con otro objeto para prevenir errores
+            try {
+                var json = json_parse(scrFile(path + "commands/" + _PathFile));
+            }
+            catch (e) {
+                show_debug_message("error: {0}", e);
+                continue;
+            }
+            
+            inst.path_cmd = (is_array(json.events)) ? json.events : [];
+        }
+        
         
         // propiedad del objeto
         var p = {
