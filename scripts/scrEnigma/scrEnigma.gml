@@ -140,7 +140,7 @@ function cargar_objetos(fname) {
                 objeto.z = buffer_read(buffer, buffer_u8);
                 
                 // arreglar bugs de texturas
-                if (rsc_find_tex("Block_" + objeto.texture) == -1) {
+                if (rsc_find_tex("block/" + objeto.texture) == -1) {
                     objeto.texture = global.lists.block[0];
                 }
                 

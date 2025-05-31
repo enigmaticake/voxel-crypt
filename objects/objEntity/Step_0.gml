@@ -1,7 +1,9 @@
 depth = -y;
 
+// animacion
 model_set_animation(animation, "idle", 0);
 
+// seguir al jugador
 if (distance_to_object(objPlayer) < 64) {
     var dir = point_direction(x, y, objPlayer.x, objPlayer.y);
     
@@ -11,8 +13,14 @@ if (distance_to_object(objPlayer) < 64) {
     move_entity(xx, yy);
 }
 
-var new_cx = floor((x + 32) / objMap.chunk_size);
-var new_cy = floor((y + 32) / objMap.chunk_size);
+// morir al tener 0 vidas
+if (tag.health <= 0) {
+    instance_destroy();
+}
+
+// cambiar de chunks
+var new_cx = floor(x / objMap.chunk_size);
+var new_cy = floor(y / objMap.chunk_size);
 
 if (new_cx != cx || new_cy != cy) {
     // Sacarse del chunk viejo

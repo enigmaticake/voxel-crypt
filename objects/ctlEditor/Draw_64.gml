@@ -182,7 +182,7 @@ if (question == -1) {
                 ds_map_add(object_data, "sprite", global.lists.block[tex]);
                 ds_map_add(object_data, "trigger_id", []);
             }
-            draw_sprite(rsc_find_tex("Block_" + global.lists.block[tex]), 0, (bx + 16) * sf, (by + 8) * sf);
+            draw_sprite(rsc_find_tex("block/" + global.lists.block[tex]), 0, (bx + 16) * sf, (by + 8) * sf);
             
             
             // sumar posicion

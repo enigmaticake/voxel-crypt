@@ -1,10 +1,19 @@
 var moveX = 0;
 var moveY = 0;
+delay_shot = min(tag.delay_shot, delay_shot + 1);
 
 // input
 if (InputActive) {
     moveX = keyboard_check_direct(ord("D")) - keyboard_check_direct(ord("A"));
     moveY = keyboard_check_direct(ord("S")) - keyboard_check_direct(ord("W"));
+    
+    if (mouse_check_button_pressed(mb_right) and delay_shot == tag.delay_shot) {
+        delay_shot = 0;
+        
+        var arrow = instance_create_depth(x, y, 0, objArrow);
+        
+        arrow.dir = point_direction(x, y, mouse_x, mouse_y);
+    }
 }
 
 if (keyboard_check_pressed(vk_escape)) {

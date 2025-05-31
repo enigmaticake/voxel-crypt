@@ -5,7 +5,7 @@ path = global.assets.conf.level_path + "/";
 events = array_create(0); // crear array vacio
 
 // tamaño de mapa y chunk
-chunk_size = 32 * 1;
+chunk_size = 32 * 5;
 
 width = floor(room_width div chunk_size);
 height = floor(room_height div chunk_size);

@@ -1,5 +1,8 @@
 create_entity(100, 10, 200);
 
+tag.delay_shot = 20;
+delay_shot = 20;
+
 xx = x - 1;
 yy = y;
 

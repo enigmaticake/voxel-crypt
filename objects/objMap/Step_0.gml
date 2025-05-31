@@ -35,12 +35,10 @@ if (new_plx != plx || new_ply != ply) {
     // Descargar chunks que ya no están cerca
     for (var i = 0; i < width; ++i) {
         for (var j = 0; j < height; ++j) {
-            if (chunk_loading[# i, j]) {
-                // Si el chunk está FUERA del rango del nuevo chunk del jugador
-                if (abs(i - new_plx) > range || abs(j - new_ply) > range) {
-                    chunk_delete(i, j);
-                    chunk_loading[# i, j] = false;
-                }
+            // Si el chunk está FUERA del rango del nuevo chunk del jugador
+            if (abs(i - new_plx) > range || abs(j - new_ply) > range) {
+                chunk_delete(i, j);
+                chunk_loading[# i, j] = false;
             }
         }
     }

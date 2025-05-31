@@ -81,6 +81,7 @@
     {"id":{"name":"ctlEditor","path":"objects/ctlEditor/ctlEditor.yy",},},
     {"id":{"name":"gfxLoadResources","path":"objects/gfxLoadResources/gfxLoadResources.yy",},},
     {"id":{"name":"gfxMainMenu","path":"objects/gfxMainMenu/gfxMainMenu.yy",},},
+    {"id":{"name":"objArrow","path":"objects/objArrow/objArrow.yy",},},
     {"id":{"name":"objBlock","path":"objects/objBlock/objBlock.yy",},},
     {"id":{"name":"objBlockMask","path":"objects/objBlockMask/objBlockMask.yy",},},
     {"id":{"name":"objChest","path":"objects/objChest/objChest.yy",},},
