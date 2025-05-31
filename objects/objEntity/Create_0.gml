@@ -1,3 +1,5 @@
+target_id = [];
+
 skin = [];
 
 cx = 0;

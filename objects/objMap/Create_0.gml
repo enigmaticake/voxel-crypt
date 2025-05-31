@@ -1,5 +1,3 @@
-gpu_set_texfilter(false);
-
 path = global.assets.conf.level_path + "/";
 
 
@@ -35,19 +33,20 @@ ply = 0;
 
 
 // cargar nivel (FUNCION)
-function level_start(fname) {
-    var map = cargar_objetos(fname);
-    
+function level_start(map) {
     // cargar objetos por listas
     for (var i = 0; i < array_length(map); ++i) {
         var obj = map[i];
-    
+        
         var pos = [obj.pos[0], obj.pos[1]];
         
         var p = {
             type : obj.id,
-            remove : false
+            remove : false,
+            pos : pos
         }
+        
+        show_debug_message(pos);
         
         // bloque
         if (obj.id == 0) {
@@ -65,8 +64,6 @@ function level_start(fname) {
             
             // desactivar al finalizar
             instance_deactivate_object(inst);
-            
-            ds_list_add(chunk[# cx, cy], p);
         }
         else if (obj.id == 1) {
             var cx = floor((pos[0] * 32) / chunk_size);
@@ -100,8 +97,6 @@ function level_start(fname) {
             
             // desactivar al finalizar
             instance_deactivate_object(inst);
-            
-            ds_list_add(chunk[# cx, cy], p);
         }
         else if (obj.id == 2) {
             var cx = floor(((pos[0] * 32) + 32) / chunk_size);
@@ -122,8 +117,6 @@ function level_start(fname) {
             
             // desactivar al finalizar
             instance_deactivate_object(inst);
-            
-            ds_list_add(chunk[# cx, cy], p);
         }
         else if (obj.id == 3) {
             var cx = floor((pos[0] * 32) / chunk_size);
@@ -133,6 +126,7 @@ function level_start(fname) {
             
             
             // contenido en el cofre
+            inst.spr = rsc_find_tex(obj.texture);
             inst.content = obj.content;
             
             
@@ -142,79 +136,15 @@ function level_start(fname) {
             
             // desactivar al finalizar
             instance_deactivate_object(inst);
-            
-            ds_list_add(chunk[# cx, cy], p);
         }
         
-        show_debug_message(p);
-    }
-}
-
-
-// guardar progreso
-function level_save_progress(fname) {
-    var buff = buffer_create(1024, buffer_grow, 1);
-    
-    buffer_write(buff, buffer_u16, objPlayer.x);
-    buffer_write(buff, buffer_u16, objPlayer.y);
-    
-    for (var xx = 0; xx < width; ++xx) {
-        for (var yy = 0; yy < height; ++yy) {
-            var _chunk = chunk[# xx, yy];
-            
-            for (var i = 0; i < ds_list_size(_chunk); ++i) {
-                var cell = _chunk[| i];
-                
-                show_debug_message(cell);
-                buffer_write(buff, buffer_bool, cell.remove);
-                
-                if (cell.type == 2) {
-                    buffer_write(buff, buffer_u16, cell.inst.x);
-                    buffer_write(buff, buffer_u16, cell.inst.y);
-                }
-            }
+        if (cx >= 0 && cx < width && cy >= 0 && cy < height) {
+            ds_list_add(chunk[# cx, cy], p);
+        } else {
+            show_debug_message("Objeto fuera de los límites: (" + string(cx) + ", " + string(cy) + ")");
         }
     }
-    
-    buffer_save(buff, fname);
-    buffer_delete(buff);
 }
-
-// cargar progreso
-function level_load_progress(fname) {
-    var buff = buffer_load(fname);
-    
-    objPlayer.x = buffer_read(buff, buffer_u16);
-    objPlayer.y = buffer_read(buff, buffer_u16);
-    
-    for (var xx = 0; xx < width; ++xx) {
-        for (var yy = 0; yy < height; ++yy) {
-            var _chunk = chunk[# xx, yy];
-            
-            for (var i = 0; i < ds_list_size(_chunk); ++i) {
-                var cell = _chunk[| i];
-                
-                var is_destroy = buffer_read(buff, buffer_bool);
-                
-                if (is_destroy) {
-                    if (instance_exists(cell.inst)) instance_destroy(cell.inst);
-                    
-                    cell.remove = true;
-                    cell.inst = -1;
-                }
-                
-                switch (cell.type) {
-                	case 2:
-                        cell.inst.x = buffer_read(buff, buffer_u16);
-                        cell.inst.y = buffer_read(buff, buffer_u16);
-                }
-            }
-        }
-    }
-    
-    buffer_delete(buff);
-}
-
 
 // cargar chunk (FUNCION)
 function chunk_load(xx, yy) {
@@ -263,11 +193,8 @@ function chunk_delete(xx, yy) {
 
 
 // cargar nivel
-
 instance_create_depth(room_width / 2, room_height / 2, 0, objPlayer);
 
-level_start(path + "map.vxdata");
-if (global.assets.conf.level_load) {
-    level_load_progress(path + "progress.vxsave");
-    global.assets.conf.level_load = false;
-}
+map = cargar_objetos(path + "map.vxdata");
+
+level_start(map);

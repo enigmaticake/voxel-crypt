@@ -59,7 +59,6 @@ global.assets = {
         
         // Otro
         level_path : "",
-        level_load : false,
         level_type : 0 // 0 = normal, 1 = editor
     }
 }
