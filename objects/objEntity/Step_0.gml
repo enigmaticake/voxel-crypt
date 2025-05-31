@@ -16,14 +16,18 @@ var new_cy = floor((y + 32) / objMap.chunk_size);
 
 if (new_cx != cx || new_cy != cy) {
     // Sacarse del chunk viejo
-    chunk_delete_data(cx, cy);
+    var old_list = objMap.chunk[# cx, cy];
+    for (var i = 0; i < ds_list_size(old_list); ++i) {
+        var p = old_list[| i];
+        if (p.inst == id) {
+            var p_new = p;
+            ds_list_delete(old_list, i);
+            break;
+        }
+    }
 
     // Meterse al chunk nuevo
-    var p = {
-        type : 2,
-        inst : id
-    };
-    ds_list_add(objMap.chunk[# new_cx, new_cy], p);
+    ds_list_add(objMap.chunk[# new_cx, new_cy], p_new);
 
     // Actualizar el chunk actual de la entidad
     cx = new_cx;
