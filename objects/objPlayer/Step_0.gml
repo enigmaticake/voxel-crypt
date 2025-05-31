@@ -5,6 +5,14 @@ var moveY = 0;
 if (InputActive) {
     moveX = keyboard_check_direct(ord("D")) - keyboard_check_direct(ord("A"));
     moveY = keyboard_check_direct(ord("S")) - keyboard_check_direct(ord("W"));
+    
+    if (keyboard_check_pressed(vk_f1)) {
+        objMap.level_save_progress(global.assets.conf.level_path + "/progress.vxsave");
+    }
+    if (keyboard_check_pressed(vk_f2)) {
+        global.assets.conf.level_load = true;
+        room_restart();
+    }
 }
 
 if (keyboard_check_pressed(vk_escape)) {
