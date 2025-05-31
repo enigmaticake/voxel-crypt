@@ -1,36 +1,3 @@
-var buffer = buffer_create(1024, buffer_grow, 1);
-
-// Header
-buffer_write(buffer, buffer_string, "level_game");
-buffer_write(buffer, buffer_u16, 1); // major
-buffer_write(buffer, buffer_u8, 1);  // minor
-buffer_write(buffer, buffer_u8, 0);  // patch
-
-buffer_write(buffer, buffer_u16, 2); // 2 objetos
-
-// === Objeto 1 === (bloque)
-buffer_write(buffer, buffer_u8, 5); // x
-buffer_write(buffer, buffer_u8, 8); // y
-buffer_write(buffer, buffer_u16, 0); // ID 0 - bloque
-buffer_write(buffer, buffer_u8, 0); // 0 triggers
-buffer_write(buffer, buffer_string, "stone"); // textura
-buffer_write(buffer, buffer_u8, 1); // z
-buffer_write(buffer, buffer_u8, 0); // layer
-
-// === Objeto 2 === (comando)
-buffer_write(buffer, buffer_u8, 2); // x
-buffer_write(buffer, buffer_u8, 3); // y
-buffer_write(buffer, buffer_u16, 1); // ID 1 - comando
-buffer_write(buffer, buffer_u8, 0); // 0 triggers
-buffer_write(buffer, buffer_string, "run_script"); // path_cmd
-buffer_write(buffer, buffer_bool, false); // destroy
-buffer_write(buffer, buffer_u8, 1); // layer
-
-// Guardar y liberar
-buffer_save(buffer, "map.vxdata");
-buffer_delete(buffer);
-
-
 draw_set_font(fnt_normal);
 
 if (!file_exists("save/config.xml")) {
