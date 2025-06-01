@@ -15,4 +15,4 @@ trail = [];
 trail_max = 10; // número máximo de partículas activas
 trail_delay = 30; // delay de creacion de particulas
 
-animation = model_create(0, vector2D(0, 6), vector2D(-6, 7), vector2D(6, 7), vector2D(0, -5));
+animation = model_create(0, vector2D(0, 4), vector2D(-6, 5), vector2D(6, 5), vector2D(0, -3));

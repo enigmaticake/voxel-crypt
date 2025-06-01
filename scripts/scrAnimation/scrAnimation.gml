@@ -24,22 +24,27 @@ function model_create(type_model) {
 /// @param {string} type tipo de animacion (por ejemplo IDLE)
 /// @param {real} type_model tipo de modelo
 function model_set_animation(animation, type, type_model) {
+    var frame = animation[? "anim_time"]; // copiar el tiempo actual
+    
     if (animation[? "anim_current"] != type) {
-        animation[? "anim_time"] = 0;
+        frame = 0;
         animation[? "anim_current"] = type;
     }
     
-    animation[? "anim_time"] += delta_time / 1_000_000;
+    frame += delta_time / 1_000_000; // sumar por microsegundos real
     
     switch (type_model) {
         case 0:
             switch (type) {
             	case "idle":
                     // head
-                    animation[? "anim"][3].y = -5 + sin(animation[? "anim_time"] * 3);
+                    animation[? "anim"][3].y = -3 + sin(animation[? "anim_time"] * 3) * 1.5;
+                break;
             }
-            break;
+        break;
     }
+    
+    animation[? "anim_time"] = frame; // establecer al tiempo original
 }
 
 
