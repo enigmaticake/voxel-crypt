@@ -13,10 +13,10 @@ layer_current = 0;
 type_cursor = 0;
 
 object_data = ds_map_create();
-ds_map_add(object_data, "id", 0);
-ds_map_add(object_data, "z", 0);
-ds_map_add(object_data, "sprite", global.lists.block[0]);
-ds_map_add(object_data, "trigger_id", []);
+ds_map_add(object_data, "id", 0); // tipo de objeto
+ds_map_add(object_data, "z", 0); // posicion z
+ds_map_add(object_data, "sprite", global.lists.block[0]); // textura
+ds_map_add(object_data, "trigger_id", []); // trigger
 
 
 // ventanas y estados
@@ -92,7 +92,7 @@ function guardarmapa() {
                 
                 var data = {
                     id : dataObj[? "id"],
-                    pos : [xx, yy],
+                    pos : [xx + (dataObj[? "offset_x"] ?? 0.0), yy + (dataObj[? "offset_y"] ?? 0.0)],
                     layer : i,
                 }
                 
@@ -208,25 +208,35 @@ for (var i = 0; i < array_length(map); ++i) {
     ds_map_add(data, "trigger_id", obj.triggers);
     ds_map_add(data, "id", obj.id);
     
+    ds_map_add(data, "offset_x", obj.pos[0] - int64(obj.pos[0]));
+    ds_map_add(data, "offset_y", obj.pos[1] - int64(obj.pos[1]));
+    
     switch (obj.id) {
         case 0: // bloque
             ds_map_add(data, "sprite", obj.texture ?? "stone");
             ds_map_add(data, "z", clamp(obj.z, 0, 5) ?? 0);
-            break;
+        break;
+        
         case 1: // comando
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_cmd");
             ds_map_add(data, "path_cmd", obj.path_cmd ?? "");
             ds_map_add(data, "destroy", obj.destroy ?? true);
-            break;
+        break;
+        
         case 2: // entidad (mob)
             ds_map_add(data, "entity", obj.entity ?? "zombie");
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_entity");
-            break;
+        break;
+        
         case 3: // cofre
             ds_map_add(data, "type_chest", obj.type_chest ?? "normal");
             ds_map_add(data, "content", obj.content ?? []);
             ds_map_add(data, "sprite", obj.texture ?? "chest/normal");
-            break;
+        break;
+        
+        case 4: // punto de inicio
+            ds_map_add(data, "sprite", obj.texture ?? "editor_object_startpoint");
+        break;
     }
     
     // crear capas antes de establecer en una capa inexistente
@@ -301,3 +311,7 @@ objectos_seleccionados = ds_grid_create(width, height);
 ds_grid_clear(objectos_seleccionados, false);
 
 posy_global = 0;
+
+key_only = function() {
+    return !keyboard_check(vk_shift) and !keyboard_check(vk_control) and !keyboard_check(vk_alt);
+}

@@ -25,8 +25,8 @@ function guardar_objetos(_objetos, fname) {
         
         
         // Guardar la posición 2D (vector2D)
-        buffer_write(buffer, buffer_u8, objeto.pos[0]); // x
-        buffer_write(buffer, buffer_u8, objeto.pos[1]); // y
+        buffer_write(buffer, buffer_f16, objeto.pos[0]); // x
+        buffer_write(buffer, buffer_f16, objeto.pos[1]); // y
         
         
         // Guardar de objeto como id
@@ -48,16 +48,16 @@ function guardar_objetos(_objetos, fname) {
             case 0:
                 buffer_write(buffer, buffer_string, objeto.texture);
                 buffer_write(buffer, buffer_u8, objeto.z);
-                break;
+            break;
             
             case 1:
                 buffer_write(buffer, buffer_string, objeto.path_cmd);
                 buffer_write(buffer, buffer_bool, objeto.destroy);
-                break;
+            break;
             
             case 2:
                 buffer_write(buffer, buffer_string, objeto.entity);
-                break;
+            break;
             
             case 3:
                 // tipo de cofre
@@ -71,7 +71,7 @@ function guardar_objetos(_objetos, fname) {
                 for (var j = 0; j < len; ++j) {
                     buffer_write(buffer, buffer_u8, objeto.content[j]); // cualquier cosa, no?
                 }
-                break;
+            break;
         }
         
         
@@ -117,8 +117,8 @@ function cargar_objetos(fname) {
         var objeto = {};
         
         // posicion del objeto
-        var xx = buffer_read(buffer, buffer_u8); // x
-        var yy = buffer_read(buffer, buffer_u8); // y
+        var xx = buffer_read(buffer, buffer_f16); // x
+        var yy = buffer_read(buffer, buffer_f16); // y
         objeto.pos = [xx, yy];
         
         // id del objeto
@@ -144,18 +144,18 @@ function cargar_objetos(fname) {
                     objeto.texture = global.lists.block[0];
                 }
                 
-                break;
+            break;
             
             case 1:
                 objeto.texture = "editor_object_cmd";
                 objeto.path_cmd = buffer_read(buffer, buffer_string);
                 objeto.destroy = buffer_read(buffer, buffer_bool);
-                break;
+            break;
             
             case 2:
                 objeto.texture = "editor_object_entity";
                 objeto.entity = buffer_read(buffer, buffer_string);
-                break;
+            break;
             
             case 3:
                 objeto.type_chest = buffer_read(buffer, buffer_string);
@@ -168,7 +168,11 @@ function cargar_objetos(fname) {
                 }
                 
                 show_debug_message(objeto);
-                break;
+            break;
+            
+            case 4:
+                objeto.texture = "editor_object_startpoint";
+            break;
         }
         
         // capa
@@ -271,51 +275,41 @@ function cargar_config_editor(fname) {
 }
 
 
-#region xml
-/**
- * @param {string} xml
- * @param {string} xml_text
- * @param {any} value
- * @returns {string}
- */
-function xml_parse(xml_text, xml, value) {
-    var start_pos = string_pos("<" + xml + ">", xml_text) + string_length("<" + xml + ">");
-    var end_pos = string_pos("</" + xml + ">", xml_text);
+#region properties
+/// @param {string} properties
+/// @param {string} key
+/// @returns {string,undefined}
+function properties_find_string(properties, key) {
+    var lines = string_split(properties, "\n");
     
-    if (start_pos > 0 && end_pos > 0) {
-        return string_copy(xml_text, start_pos, end_pos - start_pos);
-    } else {
-        return value
+    for (var i = 0; i < array_length(lines); ++i) {
+        var line = string_trim(lines[i]);
+        
+        // Saltar comentarios y líneas vacías
+        if (string_length(line) == 0 || string_starts_with(line, "#") || string_starts_with(line, "!")) {
+            continue;
+        }
+        
+        var eq_index = string_pos("=", line);
+        if (eq_index > 0) {
+            var k = string_trim(string_copy(line, 1, eq_index - 1));
+            var v = string_trim(string_copy(line, eq_index + 1, string_length(line)));
+            
+            if (k == key) {
+                return v;
+            }
+        }
     }
+    
+    return undefined;
 }
-#endregion
-
-#region hexadecimal
-function dec_to_hex(n) {
-    var hex = "0123456789ABCDEF";
-    var res = "";
-    repeat(8) {
-        var index = (n mod 16); // Usamos "mod" en lugar de "& 15"
-        res = string_copy(hex, index + 1, 1) + res;
-        n = n div 16; // Desplazamos dividiendo
-        if (n == 0) break;
-    }
-    return res;
-}
-function hex_to_dec(hex_str) {
-    hex_str = string_upper(hex_str); // Asegura que esté en mayúsculas
-    var hex = "0123456789ABCDEF";
-    var result = 0;
-    var len = string_length(hex_str);
+/// @param {string} properties
+/// @param {string} key
+/// @returns {real,undefined}
+function properties_find_real(properties, key) {
+    var value = properties_find_string(properties, key);
     
-    for (var i = 0; i < len; i++) {
-        var char = string_char_at(hex_str, i + 1);
-        var value = string_pos(char, hex) - 1;
-        if (value < 0) return -1; // Caracter no válido
-        result = result * 16 + value;
-    }
-    
-    return result;
+    return (EsNumero(value)) ? real(value) : undefined;
 }
 #endregion
 
@@ -351,3 +345,4 @@ function chunk_delete_data(xx, yy) {
         }
     }
 }
+

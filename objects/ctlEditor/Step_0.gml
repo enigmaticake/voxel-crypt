@@ -18,8 +18,8 @@ else if (device_mouse_y_to_gui(0) <= height_window_principal * sf) mouse_depth =
 else if (point_in_rectangle(
     device_mouse_x_to_gui(0),
     device_mouse_y_to_gui(0),
-    ww - 512 * sf,
-    hh - 256 * sf,
+    ww - 176 * sf,
+    hh - 128 * sf,
     ww,
     hh) and window_edit_layer.active) mouse_depth = 3;
 else mouse_depth = 1;
@@ -33,7 +33,10 @@ if (mouse_depth == 1) {
     var objCell = ds_grid_get(layers[layer_current], cursorX, cursorY);
     
     // crear objeto
-    if (type_cursor == 0 and !keyboard_check(vk_shift) and mouse_check_button(mb_left) and objCell == -1) {
+    if (type_cursor == 0 and key_only() and mouse_check_button_pressed(mb_left) and objCell == -1) {
+        ds_grid_clear(objectos_seleccionados, false);
+    }
+    else if (type_cursor == 0 and key_only() and mouse_check_button(mb_left) and objCell == -1) {
         var data = ds_map_create();
         
         ds_map_copy(data, object_data);
@@ -44,20 +47,21 @@ if (mouse_depth == 1) {
         ds_grid_set(layers[layer_current], cursorX, cursorY, data);
         ds_grid_set(objectos_seleccionados, cursorX, cursorY, true);
     }
-    else if (mouse_check_button_released(mb_left)) ds_grid_clear(objectos_seleccionados, false);
     
     // eliminar objeto
-    else if (type_cursor == 0 and keyboard_check(vk_shift) and mouse_check_button(mb_left)) {
+    else if (type_cursor == 0 and keyboard_check(vk_control) and mouse_check_button(mb_left)) {
         var obj = layers[layer_current][# cursorX, cursorY];
         
         if (obj != -1) {
+            ds_grid_clear(objectos_seleccionados, false);
+            
             ds_map_destroy(obj);
             ds_grid_set(layers[layer_current], cursorX, cursorY, -1);
         }
     }
     
     // editar objeto
-    else if (type_cursor == 0 and mouse_check_button(mb_right)) {
+    else if (key_only() and mouse_check_button(mb_right)) {
         var obj = layers[layer_current][# cursorX, cursorY];
         
         if (obj != -1) {
@@ -74,6 +78,11 @@ if (mouse_depth == 1) {
                 textboxes_list[0].text = obj[? "path_cmd"];
             }
         }
+    }
+    
+    // seleccionar objetos
+    else if (keyboard_check(vk_shift) and mouse_check_button(mb_left)) {
+        ds_grid_set(objectos_seleccionados, cursorX, cursorY, layers[layer_current][# cursorX, cursorY] != -1);
     }
     
     // movimiento de cámara con input

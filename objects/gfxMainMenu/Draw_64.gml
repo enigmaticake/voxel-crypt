@@ -26,17 +26,17 @@ if (!is_struct(question)) {
             draw_set_color(color_txt);
     		draw_text(bx, by, button[i]);
     	
-    		by += 64;
+    		by += 64 * sf;
     	}
     }
     else if (state == states.option) {
         draw_set_color(#1e1e1e);
         draw_rectangle(0, 0, ww, hh, false);
         
-        if (draw_button_v("64x64", 32, 32, c_gray, 2) == buttonState.released) {
+        if (draw_button_v("64x64", 32 * sf, 32 * sf, c_gray, 2) == buttonState.released) {
             state = states.menu;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, 32, 32);
+        draw_sprite(rsc_find_tex("gui_leave"), 0, 32 * sf, 32 * sf);
     }
     else if (state == states.editor) {
         draw_set_color(#1e1e1e);
@@ -47,7 +47,7 @@ if (!is_struct(question)) {
         else mouse_depth = 0;
         
         // niveles
-        var yy = 66 - level_posy;
+        var yy = (66 - level_posy) * sf;
         for (var i = 0; i < array_length(level_editor); ++i) {
             var lvl = level_editor[i];
             
@@ -130,22 +130,22 @@ if (!is_struct(question)) {
             draw_set_color(c_white);
             draw_text(8, yy + 32, lvl.name);
             
-            yy += 67;
+            yy += 67 * sf;
         }
         
         // regresar
-        if (draw_button_v("64x64", 32, 32, c_gray, 0) == buttonState.released) {
+        if (draw_button_v("64x64", 32 * sf, 32 * sf, c_gray, 0) == buttonState.released) {
             state = states.menu;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, 32, 32);
+        draw_sprite(rsc_find_tex("gui_leave"), 0, 32 * sf, 32 * sf);
         
         // recargar niveles de editor
-        if (draw_button_v("64x64", 96, 32, c_gray, 0) == buttonState.released) {
+        if (draw_button_v("64x64", 96 * sf, 32 * sf, c_gray, 0) == buttonState.released) {
             reload_lvleditor();
         }
         
         // limitar posicion y de los niveles
-        level_posy = min((array_length(level_editor) - 1) * 67, level_posy);
+        level_posy = min(((array_length(level_editor) - 1) * 67) * sf, level_posy);
     }
     else if (state == states.level) {
         draw_set_color(#1e1e1e);

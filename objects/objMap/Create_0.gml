@@ -135,12 +135,12 @@ function level_start(map) {
             // desactivar al finalizar
             instance_deactivate_object(inst);
         }
-        
-        if (cx >= 0 && cx < width && cy >= 0 && cy < height) {
-            ds_list_add(chunk[# cx, cy], p);
-        } else {
-            show_debug_message("Objeto fuera de los límites: (" + string(cx) + ", " + string(cy) + ")");
+        else if (obj.id == 4) {
+            objPlayer.x = pos[0] * 32;
+            objPlayer.y = pos[1] * 32;
         }
+        
+        if not (obj.id == 4) ds_list_add(chunk[# cx, cy], p);
     }
 }
 

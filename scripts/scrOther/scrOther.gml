@@ -102,7 +102,7 @@ function scale_factor() {
 	
 	var result = dpi / base_dpi;
 	
-	return clamp(result, 0.75, 1.5);
+	return result * global.assets.conf.scale_ui;
 }
 
 

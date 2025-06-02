@@ -31,19 +31,19 @@ if (question == -1) {
         if (draw_button_gui(64, 64, 16 * sf, 16 * sf, 0, mouse_depth, c_lime) == buttonState.released) {
             state = states_editor.objetos;
         }
-        draw_sprite(rsc_find_tex("create_levelEditor"), 0, 48 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("create_levelEditor"), 0, 48 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         // boton de capas (layers)
         if (draw_button_gui(64, 64, 96 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
             window_edit_layer.active = !window_edit_layer.active;
         }
-        draw_sprite(rsc_find_tex("gui_layer_cape"), 0, 96 * sf, 16 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_layer_cape"), 0, 96 * sf, 16 * sf, sf, sf, 0, c_white, 1);
         
         // boton de configuracion
         if (draw_button_gui(64, 64, ww - 80 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
             state = states_editor.configuration;
         }
-        draw_sprite(rsc_find_tex("gui_config"), 0, ww - 48 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_config"), 0, ww - 48 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         // para objetos de tipo 0
         if (object_data[? "id"] == 0) {
@@ -57,7 +57,7 @@ if (question == -1) {
             if (draw_button_gui(64, 64, ww - 192 * sf, 16 * sf, 0, mouse_depth, c_black) == buttonState.released) {
                 posy_global = min(5, posy_global + 1);
             }
-            draw_sprite(rsc_find_tex("gui_arrowR"), 0, ww - 192 * sf, 16 * sf);
+            draw_sprite_ext(rsc_find_tex("gui_arrowR"), 0, ww - 192 * sf, 16 * sf, sf, sf, 0, c_white, 1);
             
             // texto que muestra el valor de posy_global actual
             draw_set_halign(fa_center);
@@ -69,7 +69,7 @@ if (question == -1) {
             if (draw_button_gui(64, 64, ww - 352 * sf, 16 * sf, 0, mouse_depth, c_black) == buttonState.released) {
                 posy_global = max(0, posy_global - 1);
             }
-            draw_sprite(rsc_find_tex("gui_arrowL"), 0, ww - 352 * sf, 16 * sf);
+            draw_sprite_ext(rsc_find_tex("gui_arrowL"), 0, ww - 352 * sf, 16 * sf, sf, sf, 0, c_white, 1);
         }
     }
     
@@ -82,23 +82,23 @@ if (question == -1) {
         draw_set_valign(fa_middle);
         
         // salida
-        if (draw_button_gui(64, 64, bx, by, 0, mouse_depth, c_red) == buttonState.released) {
+        if (draw_button_gui(64, 64, bx * sf, by * sf, 0, mouse_depth, c_red) == buttonState.released) {
             state = states_editor.principal;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, bx + 32, by + 32);
+        draw_sprite_ext(rsc_find_tex("gui_leave"), 0, (bx + 32) * sf, (by + 32) * sf, sf, sf, 0, c_white, 1);
         
         
         // dia o noche
         by += 68 * sf;
-        if (draw_button_gui(64, 64, bx, by, 0, mouse_depth, c_white) == buttonState.pressed) {
+        if (draw_button_gui(64, 64, bx * sf, by * sf, 0, mouse_depth, c_white) == buttonState.pressed) {
             time_day = !time_day;
         }
         draw_set_color((time_day) ? c_lime : c_red);
-        draw_rectangle(bx + 1, by + 1, bx + 63, by + 63, false);
+        draw_rectangle((bx * sf) + 1 * sf, (by * sf) + 1 * sf, (bx * sf) + 63 * sf, (by * sf) + 63 * sf, false);
         
         draw_set_color(c_black);
         draw_set_halign(fa_left);
-        draw_text(bx + 68, by + 32, "day (default in green)");
+        draw_text((bx + 68) * sf, (by + 32) * sf, "day (default in green)");
     }
     
     // objetos
@@ -109,21 +109,21 @@ if (question == -1) {
         if (draw_button_gui(64, 64, 16 * sf, 16 * sf, 0, mouse_depth, c_red) == buttonState.released) {
             state = states_editor.principal;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, 48 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_leave"), 0, 48 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         
         // bloque
         if (draw_button_gui(64, 64, 84 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
             state = states_editor.objetos_bloques;
         }
-        draw_sprite(rsc_find_tex("editor_object_block"), 0, 116 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("editor_object_block"), 0, 116 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         
         // entidad
         if (draw_button_gui(64, 64, 152 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
             state = states_editor.objetos_entidades;
         }
-        draw_sprite(rsc_find_tex("editor_object_entity"), 0, 184 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("editor_object_entity"), 0, 184 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         
         // comando
@@ -136,7 +136,7 @@ if (question == -1) {
             ds_map_add(object_data, "destroy", true);
             ds_map_add(object_data, "trigger_id", []);
         }
-        draw_sprite(rsc_find_tex("editor_object_cmd"), 0, 252 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("editor_object_cmd"), 0, 252 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         
         // cofre
@@ -149,7 +149,18 @@ if (question == -1) {
             ds_map_add(object_data, "content", [24, 6]);
             ds_map_add(object_data, "trigger_id", []);
         }
-        draw_sprite(rsc_find_tex("chest/normal"), 0, 304 * sf, 24 * sf);
+        draw_sprite_ext(rsc_find_tex("chest/normal"), 0, 304 * sf, 24 * sf, sf, sf, 0, c_white, 1);
+        
+        
+        // punto de inicio
+        if (draw_button_gui(64, 64, 356 * sf, 16 * sf, 0, mouse_depth, c_gray) == buttonState.released) {
+            ds_map_clear(object_data);
+            
+            ds_map_add(object_data, "id", 4);
+            ds_map_add(object_data, "sprite", "editor_object_startpoint");
+            ds_map_add(object_data, "trigger_id", []);
+        }
+        draw_sprite_ext(rsc_find_tex("editor_object_startpoint"), 0, 356 * sf, 24 * sf, sf, sf, 0, c_white, 1);
     }
     
     
@@ -161,7 +172,7 @@ if (question == -1) {
         if (draw_button_gui(64, 64, 16 * sf, 16 * sf, 0, mouse_depth, c_red) == buttonState.released) {
             state = states_editor.principal;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, 48 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_leave"), 0, 48 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         
         // separador
@@ -170,8 +181,8 @@ if (question == -1) {
         
         
         // crear botones con texturas de bloques del juego
-        var bx = 48; // boton x
-        var by = 96; // boton y
+        var bx = 48 * sf; // boton x
+        var by = 96 * sf; // boton y
         
         for (var tex = 0; tex < array_length(global.lists.block); ++tex) {
             // boton de textura del bloque
@@ -182,7 +193,7 @@ if (question == -1) {
                 ds_map_add(object_data, "sprite", global.lists.block[tex]);
                 ds_map_add(object_data, "trigger_id", []);
             }
-            draw_sprite(rsc_find_tex("block/" + global.lists.block[tex]), 0, (bx + 16) * sf, (by + 8) * sf);
+            draw_sprite_ext(rsc_find_tex("block/" + global.lists.block[tex]), 0, (bx + 16) * sf, (by + 8) * sf, sf, sf, 0, c_white, 1);
             
             
             // sumar posicion
@@ -205,17 +216,17 @@ if (question == -1) {
         if (draw_button_gui(64, 64, 16 * sf, 16 * sf, 0, mouse_depth, c_red) == buttonState.released) {
             state = states_editor.principal;
         }
-        draw_sprite(rsc_find_tex("gui_leave"), 0, 48 * sf, 48 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_leave"), 0, 48 * sf, 48 * sf, sf, sf, 0, c_white, 1);
         
         
         // separador
         draw_set_color(c_black);
-        draw_rectangle(16 * sf, 88 * sf, ww - 16 * sf, 88 * sf, false);
+        draw_rectangle(16 * sf, 88 * sf, (ww - 16) * sf, 88 * sf, false);
         
         
         // crear botones con entidades del juego
-        var bx = 48; // boton x
-        var by = 96; // boton y
+        var bx = 48 * sf; // boton x
+        var by = 96 * sf; // boton y
         
         for (var ent = 0; ent < array_length(global.assets.entity); ++ent) {
             // boton de tipo de entidad
@@ -227,19 +238,19 @@ if (question == -1) {
                 ds_map_add(object_data, "entity", global.assets.entity[ent].type);
                 ds_map_add(object_data, "trigger_id", []);
             }
-            draw_sprite(rsc_find_tex(global.assets.entity[ent].type + "_head"), 0, bx + 32, by + 32);
+            draw_sprite_ext(rsc_find_tex(global.assets.entity[ent].type + "_head"), 0, (bx + 32) * sf, (by + 32) * sf, sf, sf, 0, c_white, 1);
             
-            draw_text(bx + 32, by + 56, global.assets.entity[ent].type);
+            draw_text((bx + 32) * sf, (by + 56) * sf, global.assets.entity[ent].type);
             
             
             // sumar posicion
-            if (bx * sf > ww - 128 * sf) {
-                by += 68;
-                bx = 48;
+            if (bx * sf > (ww - 128 * sf) * sf) {
+                by += 68 * sf;
+                bx = 48 * sf;
                 continue;
             }
             
-            bx += 68;
+            bx += 68 * sf;
         }
     }
     
@@ -258,7 +269,7 @@ if (question == -1) {
         if (draw_button_gui(64, 64, w_x + 16 * sf, w_y + 32 * sf, 3, mouse_depth, c_black) == buttonState.released) {
             layer_current = max(0, layer_current - 1);
         }
-        draw_sprite(rsc_find_tex("gui_arrowL"), 0, w_x + 16 * sf, w_y + 32 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_arrowL"), 0, w_x + 16 * sf, w_y + 32 * sf, sf, sf, 0, c_white, 1);
         
         // boton que resta la capa (layer) con la flecha derecha
         if (draw_button_gui(64, 64, w_x + 96 * sf, w_y + 32 * sf, 3, mouse_depth, c_black) == buttonState.released) {
@@ -269,7 +280,7 @@ if (question == -1) {
                 ds_grid_clear(layers[layer_current], -1);
             }
         }
-        draw_sprite(rsc_find_tex("gui_arrowR"), 0, w_x + 96 * sf, w_y + 32 * sf);
+        draw_sprite_ext(rsc_find_tex("gui_arrowR"), 0, w_x + 96 * sf, w_y + 32 * sf, sf, sf, 0, c_white, 1);
     }
     
     

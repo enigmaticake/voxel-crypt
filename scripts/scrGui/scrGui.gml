@@ -439,7 +439,7 @@ function draw_button_v(resolution, xx, yy, _color = c_gray, _type = 0) {
 	draw_set_color(c_white);
 	if (_type == 2) draw_rectangle(x1, y1, x2, y2, true);
 	
-	if (_type == 0) draw_sprite(spr, 0, xx, yy);
+	if (_type == 0) draw_sprite_ext(spr, 0, xx, yy, scale_factor(), scale_factor(), 0, c_white, 1);
 	
 	return stateToReturn;
 }

@@ -12,6 +12,6 @@ if (state == states.level or state == states.editor) {
         level_posy = max(0, level_posy - 16);
     }
     else if (mouse_wheel_down()) {
-        level_posy += 16;
+        level_posy += 16 * scale_factor();
     }
 }

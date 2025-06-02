@@ -59,6 +59,7 @@
     {"$GMIncludedFile":"","%Name":"obj_block.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"obj_block.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"obj_cmd.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"obj_cmd.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"obj_entity.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"obj_entity.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"obj_startpoint.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"obj_startpoint.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"outline_1024x96.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"outline_1024x96.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"outline_128x64.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"outline_128x64.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"outline_256x64.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"outline_256x64.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

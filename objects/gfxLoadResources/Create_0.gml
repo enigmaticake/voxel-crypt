@@ -1,34 +1,9 @@
 draw_set_font(fnt_normal);
 
-if (!file_exists("save/config.xml")) {
-    file_save_string("save/config.xml", @"<gameConfig>
-    <audio>
-        <musicOn>1</musicOn>
-        <sfxOn>1</sfxOn>
-    </audio>
-    
-    <video>
-        <fullscreen>0</fullscreen>
-    </video>
-    
-    <player>
-        <name>Username</name>
-    </player>
-</gameConfig>");
+if (!file_exists("save/config.properties")) {
+    file_save_string("save/config.properties", "sfx=1\nmusic=1\nscale_gui=1\nname=username");
 }
-
-
-var config = xml_parse(scrFile("save/config.xml"), "gameConfig", "-1");
- var audio = xml_parse(config, "audio", "-1");
-  var _msc = xml_parse(audio, "musicOn", "1");
-  var _sfx = xml_parse(audio, "sfxOn", "1");
-
- var video = xml_parse(config, "video", "-1");
-  var _fullscreen = xml_parse(video, "fullscreen", "0");
-  window_set_fullscreen(bool(real(_fullscreen)));
-
- var user = xml_parse(config, "player", "-1");
-  var _name = xml_parse(user, "name", "Username");
+var config = scrFile("save/config.properties");
 
 // Crear una "carpeta" de recursos
 global.assets = {
@@ -49,11 +24,14 @@ global.assets = {
         log_number : 0,
         
         // Audio
-        sfx : bool(real(_sfx)),
-        msc : bool(real(_msc)),
+        sfx : bool(properties_find_real(config, "sfx") ?? 1),
+        msc : bool(properties_find_real(config, "music") ?? 1),
+        
+        // ui
+        scale_ui : properties_find_real(config, "scale_gui") ?? 1,
         
         // Jugador
-        name : _name,
+        name : properties_find_string(config, "name") ?? "undefined",
         level : 0,
         xp : 0,
         
@@ -62,6 +40,8 @@ global.assets = {
         level_type : 0 // 0 = normal, 1 = editor
     }
 }
+
+show_debug_message("config: {0}", global.assets.conf);
 
 global.lists = {
     block : [],
@@ -226,6 +206,7 @@ load_pack = [
 		if (!load_texture("editor_object_block", "resource/gui/obj_block.png", 32, 32, 16, 16)) return;
 		if (!load_texture("editor_object_cmd", "resource/gui/obj_cmd.png", 32, 32, 16, 16)) return;
 		if (!load_texture("editor_object_entity", "resource/gui/obj_entity.png", 32, 32, 16, 16)) return;
+		if (!load_texture("editor_object_startpoint", "resource/gui/obj_startpoint.png", 32, 32, 16, 16)) return;
         if (!load_texture("gui_layer_cape", "resource/gui/layer_ui.png", 64, 64, 0, 0)) return;
 	},
 
