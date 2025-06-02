@@ -6,7 +6,7 @@ var camh = floor(camera_get_view_height(view_camera[0]) / 32);
 var startx = max(0, camx);
 var starty = max(0, camy);
 var endx = min(room_width / 32, camx + camw + 2);
-var endy = min(room_height / 32, camy + camh + 1);
+var endy = min(room_height / 32, camy + camh + 2);
 
 for (var i = startx; i < endx; ++i) {
     for (var j = starty; j < endy; ++j) {

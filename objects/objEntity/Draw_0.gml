@@ -1,1 +1,1 @@
-model_draw_body(animation, skin);
+model_draw_body(animation, skin, c_red, view or distance_to_object(objPlayer) < 96);

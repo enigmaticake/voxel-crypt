@@ -46,8 +46,6 @@ function level_start(map) {
             pos : pos
         }
         
-        show_debug_message(pos);
-        
         // bloque
         if (obj.id == 0) {
             var cx = floor((pos[0] * 32) / chunk_size);

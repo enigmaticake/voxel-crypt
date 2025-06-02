@@ -1,5 +1,5 @@
 /// @param {real} type_model tipo de modelo
-/// @param {array<real>} part_body... tiene que ser un vector2D
+/// @param {array<struct>} ... tiene que ser un vector2D
 /// @return {Id.DsMap}
 function model_create(type_model) {
     var anim = ds_map_create();
@@ -20,6 +20,10 @@ function model_create(type_model) {
     return anim;
 }
 
+function model_free(animation) {
+    ds_map_destroy(animation);
+}
+
 /// @param {Id.DsMap} animation la animacion que existe
 /// @param {string} type tipo de animacion (por ejemplo IDLE)
 /// @param {real} type_model tipo de modelo
@@ -38,7 +42,7 @@ function model_set_animation(animation, type, type_model) {
             switch (type) {
             	case "idle":
                     // head
-                    animation[? "anim"][3].y = -3 + sin(animation[? "anim_time"] * 3) * 1.5;
+                    animation[? "anim"][BODY_OFFSET.head].y = -3 + sin(animation[? "anim_time"] * 3) * 1.5;
                 break;
             }
         break;
@@ -50,10 +54,10 @@ function model_set_animation(animation, type, type_model) {
 
 /// @param {id.dsmap} animation
 /// @param {array<asset.gmsprite>} skin
-function model_draw_body(animation, skin) {
+function model_draw_body(animation, skin, color = c_white, alpha = 1) {
     var anim = animation[? "anim"];
     
     for (var i = 0; i < array_length(anim); ++i) {
-        draw_sprite_ext(skin[i], 0, x + anim[i].x * image_xscale, y + anim[i].y, image_xscale, 1, 0, c_white, 1);
+        draw_sprite_ext(skin[i], 0, x + anim[i].x * image_xscale, y + anim[i].y, image_xscale, 1, 0, color, alpha);
     }
 }

@@ -87,6 +87,13 @@ enum buttonState {
 	released
 }
 
+enum BODY_OFFSET {
+	torso,
+    handL,
+    handR,
+    head
+}
+
 #macro versionMajor 1
 #macro versionMinor 0
 #macro versionPatch 0

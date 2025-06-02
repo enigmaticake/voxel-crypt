@@ -1,10 +1,12 @@
+view = bool(!collision_line(x, y, objPlayer.x, objPlayer.y + 9, objBlock, false, false));
+
 depth = -y;
 
 // animacion
 model_set_animation(animation, "idle", 0);
 
 // seguir al jugador
-if (distance_to_object(objPlayer) < 64) {
+if (distance_to_object(objPlayer) < 128 and view) {
     var dir = point_direction(x, y, objPlayer.x, objPlayer.y);
     
     var xx = lengthdir_x(1, dir);
