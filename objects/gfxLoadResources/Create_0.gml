@@ -74,6 +74,12 @@ enum BODY_OFFSET {
     head
 }
 
+enum VarType {
+    int,
+    float,
+    string
+}
+
 #macro versionMajor 1
 #macro versionMinor 0
 #macro versionPatch 0

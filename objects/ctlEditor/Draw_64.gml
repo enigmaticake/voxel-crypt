@@ -298,7 +298,7 @@ if (question == -1) {
     // editar objeto
     if (state_edit == window_type_edit.edit_object) {
         var bx = w_x + 8 * sf;
-        var by = w_y + 72 * sf;
+        var by = w_y + 32 * sf;
         
         // text: edit object
         var _obj = obj_edit.obj;
@@ -312,7 +312,7 @@ if (question == -1) {
         // leave
         if (draw_button_gui(64, 64, bx, by, 2, mouse_depth, c_red) == buttonState.released) {
             state_edit = window_type_edit.none;
-            textboxes_list = [];
+            buttons_list = [];
             exit;
         }
         draw_sprite(rsc_find_tex("gui_leave"), 0, bx + 32 * sf, by + 32 * sf);
@@ -321,30 +321,41 @@ if (question == -1) {
         draw_set_halign(fa_left);
         draw_set_valign(fa_middle);
         
-        by += 68 * sf;
+        by += 104 * sf;
         
-        // propiedades del objeto
-        if (_obj[? "id"] == 0) { // id del bloque
-            if (draw_textbox(textboxes_list[0], bx + 32, by + 32)) {
-                var value = string_digits(textboxes_list[0].text);
-                
-                _obj[? "z"] = clamp(real((value != "") ? value : "0"), 0, 5);
-                textboxes_list[0].text = "";
-            }
-            draw_set_color(c_black) draw_text(bx + 68, by + 32, $"z: {_obj[? "z"]}");
-        }
-        else if (_obj[? "id"] == 1) { // id del comando
-            if (draw_textbox(textboxes_list[0], bx + 256, by + 32)) {
-                _obj[? "path_cmd"] = textboxes_list[0].text;
-            }
-            draw_set_color(c_black) draw_text(bx + 520, by + 32, $"file path (example: my_level/commands/example.json)");
+        // propiedades
+        var surf = surface_create(ww - 64 * sf, hh - 64 * sf);
+        surface_set_target(surf);
+        
+        for (var i = 0; i < array_length(buttons_list); ++i) {
+            buttons_list[i].textbox.active = (mouse_depth != 4) ? false : buttons_list[i].textbox.active;
             
-            if (draw_button_gui(64, 64, bx, by + 96, 2, mouse_depth, c_black) == buttonState.released) {
-                _obj[? "destroy"] = !_obj[? "destroy"];
+            textbox_draw(buttons_list[i].textbox, bx + 256 * sf, by);
+            if (textbox_step(buttons_list[i].textbox, bx + 256 * sf, by)) {
+                var value = buttons_list[i].textbox.text;
+                
+                switch (buttons_list[i].type) {
+                	case VarType.float:
+                        value = (EsNumero(value)) ? real(value) : 0.0;
+                        break;
+                	case VarType.int:
+                        value = (EsNumero(value)) ? int64(real(value)) : 0;
+                        break;
+                	case VarType.string:
+                        value = string(value);
+                        break;
+                }
+                
+                ds_map_set(_obj, buttons_list[i].name, value);
+                buttons_list[i].textbox.text = string(value);
             }
-            draw_set_color((_obj[? "destroy"]) ? c_lime : c_red); draw_rectangle(bx + 1, by + 98, bx + 63, by + 158, false);
-            draw_set_color(c_black); draw_text(bx + 68, by + 128, "Destroy (default green)");
+            
+            by += 68 * sf;
         }
+        surface_reset_target();
+        
+        draw_surface(surf, 64 * sf, 160 * sf);
+        surface_free(surf);
     }
 }
 else {

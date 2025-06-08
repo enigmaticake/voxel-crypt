@@ -60,6 +60,11 @@ function level_start(map) {
             // propiedad del objeto
             p.inst = inst;
             
+            var flags = 0;
+            flags |= 1 << 0; // 0001
+            flags |= 1 << 1; // 0011
+            flags |= 1 << 2; // 0111
+            
             // desactivar al finalizar
             instance_deactivate_object(inst);
         }

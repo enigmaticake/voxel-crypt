@@ -13,7 +13,8 @@ var hh = display_get_gui_height();
 
 
 // depth del mouse
-if (state_edit != window_type_edit.none) mouse_depth = 2;
+if (state_edit != window_type_edit.none and device_mouse_y_to_gui(0) > 160 * sf) mouse_depth = 4;
+else if (state_edit != window_type_edit.none and device_mouse_y_to_gui(0) <= 160 * sf) mouse_depth = 2;
 else if (device_mouse_y_to_gui(0) <= height_window_principal * sf) mouse_depth = 0;
 else if (point_in_rectangle(
     device_mouse_x_to_gui(0),
@@ -71,11 +72,11 @@ if (mouse_depth == 1) {
             state_edit = window_type_edit.edit_object;
             
             if (obj[? "id"] == 0) {
-                array_push(textboxes_list, textbox_create(64, 64, "", 504));
-            }
-            else if (obj[? "id"] == 1) {
-                array_push(textboxes_list, textbox_create(512, 64, "", 504));
-                textboxes_list[0].text = obj[? "path_cmd"];
+                array_push(buttons_list, {
+                    name : "z",
+                    type : VarType.int,
+                    textbox : textbox_create(512 * sf, 64 * sf, "", 504 * sf)
+                });
             }
         }
     }

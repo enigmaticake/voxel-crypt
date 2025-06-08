@@ -52,7 +52,7 @@ obj_edit = {
     obj : -1,
     pos : [-1, -1],
 }
-textboxes_list = [];
+buttons_list = [];
 
 
 #region crear primer capa
