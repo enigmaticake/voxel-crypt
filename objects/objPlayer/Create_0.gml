@@ -1,3 +1,5 @@
+var _animation = json_parse(scrFile("animation.json"));
+
 create_entity(100, 10, 200);
 
 tag.delay_shot = 20;
@@ -15,4 +17,4 @@ trail = [];
 trail_max = 10; // número máximo de partículas activas
 trail_delay = 30; // delay de creacion de particulas
 
-animation = model_create(0, vector2D(0, 4), vector2D(-6, 5), vector2D(6, 5), vector2D(0, -3));
+model = model_create(_animation, Vec2r(0, 0, 0), Vec2r(0, 0, 0), Vec2r(0, 0, 0), Vec2r(0, 0, 0));

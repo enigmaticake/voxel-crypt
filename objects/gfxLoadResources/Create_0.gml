@@ -67,6 +67,12 @@ enum buttonState {
 	released
 }
 
+enum EntityEvent {
+    idle = 1 << 0,
+    die = 1 << 1,
+    attack = 1 << 2,
+}
+
 enum BODY_OFFSET {
 	torso,
     handL,

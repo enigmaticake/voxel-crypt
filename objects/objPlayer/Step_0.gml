@@ -1,3 +1,5 @@
+event |= EntityEvent.idle;
+
 var moveX = 0;
 var moveY = 0;
 delay_shot = min(tag.delay_shot, delay_shot + 1);
@@ -13,6 +15,7 @@ if (InputActive) {
         var arrow = instance_create_depth(x, y, 0, objArrow);
         
         arrow.dir = point_direction(x, y, mouse_x, mouse_y);
+        event |= EntityEvent.attack;
     }
 }
 
@@ -20,6 +23,11 @@ if (keyboard_check_pressed(vk_escape)) {
     room_goto((global.assets.conf.level_type == 0) ? rmMenu : rmEditor);
 }
 
+
+// muerte
+if (tag.health <= 0) {
+    event |= EntityEvent.die;
+}
 
 // movimiento
 move_entity(moveX, moveY);
@@ -29,7 +37,15 @@ y = clamp(y, 0, room_height - 32);
 
 
 // animacion
-model_set_animation(animation, "idle", 0);
+if ((event & EntityEvent.die) != 0) {
+    model_set_animation(model, "animation.death", EntityEvent.die);
+}
+else if ((event & EntityEvent.attack) != 0) {
+    model_set_animation(model, "animation.attack", EntityEvent.attack);
+}
+else if ((event & EntityEvent.idle) != 0) {
+    model_set_animation(model, "animation.idle");
+}
 
 
 // camara

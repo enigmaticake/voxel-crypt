@@ -5,6 +5,6 @@ skin = [];
 cx = 0;
 cy = 0;
 
-animation = model_create(0, vector2D(0, 4), vector2D(-6, 5), vector2D(6, 5), vector2D(0, -3));
+model = model_create(json_parse(scrFile("animation.json")), Vec2r(0, 0, 0), Vec2r(0, 0, 0), Vec2r(0, 0, 0), Vec2r(0, 0, 0));
 
 view = bool(false);

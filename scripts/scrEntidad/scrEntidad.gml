@@ -11,6 +11,7 @@ function create_entity(_health, attack_strength, _speed) {
     
     speed_full = _speed;
     speed_current = 0;
+    event = 0;
 }
 
 /**

@@ -36,4 +36,4 @@ draw_set_alpha(1);
 
 
 // dibujar jugador
-model_draw_body(animation, skin);
+model_draw_body(model, skin);

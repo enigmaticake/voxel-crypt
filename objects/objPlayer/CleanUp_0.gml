@@ -1,1 +1,1 @@
-model_free(animation);
+model_free(model);

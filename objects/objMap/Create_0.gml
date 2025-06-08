@@ -42,7 +42,6 @@ function level_start(map) {
         
         var p = {
             type : obj.id,
-            remove : false,
             pos : pos
         }
         
@@ -59,11 +58,6 @@ function level_start(map) {
             
             // propiedad del objeto
             p.inst = inst;
-            
-            var flags = 0;
-            flags |= 1 << 0; // 0001
-            flags |= 1 << 1; // 0011
-            flags |= 1 << 2; // 0111
             
             // desactivar al finalizar
             instance_deactivate_object(inst);
@@ -102,10 +96,11 @@ function level_start(map) {
             instance_deactivate_object(inst);
         }
         else if (obj.id == 2) {
-            var cx = floor(((pos[0] * 32) + 32) / chunk_size);
-            var cy = floor(((pos[1] * 32) + 32) / chunk_size);
+            var cx = floor((pos[0] * 32) / chunk_size);
+            var cy = floor((pos[1] * 32) / chunk_size);
             
             var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objEntity);
+            show_debug_message("x:{0} y:{1}", inst.x, inst.y);
             
             inst.skin = [rsc_find_tex("zombie_body"), rsc_find_tex("zombie_hand"), rsc_find_tex("zombie_hand"), rsc_find_tex("zombie_head")];
             inst.cx = cx;
@@ -156,17 +151,15 @@ function chunk_load(xx, yy) {
     for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
-        if (!obj.remove) {
-            // tipo de objeto
-            switch (obj.type) {
-                // bloque, comando, entidad o cofre
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                    instance_activate_object(obj.inst);
-                    break;
-            }
+        // tipo de objeto
+        switch (obj.type) {
+            // bloque, comando, entidad o cofre
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                instance_activate_object(obj.inst);
+                break;
         }
     }
 }
@@ -179,17 +172,15 @@ function chunk_delete(xx, yy) {
     for (var i = ds_list_size(objs) - 1; i >= 0; --i) {
         var obj = objs[| i];
         
-        if (!obj.remove) {
-            // tipo de objeto
-            switch (obj.type) {
-                // bloque, comando, entidad o cofre
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                    instance_deactivate_object(obj.inst);
-                    break;
-            }
+        // tipo de objeto
+        switch (obj.type) {
+            // bloque, comando, entidad o cofre
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                instance_deactivate_object(obj.inst);
+                break;
         }
     }
 }

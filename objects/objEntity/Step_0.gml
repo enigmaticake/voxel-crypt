@@ -3,10 +3,12 @@ view = bool(!collision_line(x, y, objPlayer.x, objPlayer.y + 9, objBlock, false,
 depth = -y;
 
 // animacion
-model_set_animation(animation, "idle", 0);
+event |= EntityEvent.idle;
 
 // seguir al jugador
 if (distance_to_object(objPlayer) < 128 and view) {
+    event |= EntityEvent.attack;
+    
     var dir = point_direction(x, y, objPlayer.x, objPlayer.y);
     
     var xx = lengthdir_x(1, dir);
@@ -17,7 +19,19 @@ if (distance_to_object(objPlayer) < 128 and view) {
 
 // morir al tener 0 vidas
 if (tag.health <= 0) {
+    event |= EntityEvent.die;
     instance_destroy();
+}
+
+// animaciones
+if ((event & EntityEvent.die) != 0) {
+    model_set_animation(model, "animation.death");
+}
+else if ((event & EntityEvent.attack) != 0) {
+    model_set_animation(model, "animation.attack");
+}
+else if ((event & EntityEvent.idle) != 0) {
+    model_set_animation(model, "animation.idle");
 }
 
 // cambiar de chunks
@@ -43,3 +57,6 @@ if (new_cx != cx || new_cy != cy) {
     cx = new_cx;
     cy = new_cy;
 }
+
+event &= ~EntityEvent.attack;
+event &= ~EntityEvent.die;

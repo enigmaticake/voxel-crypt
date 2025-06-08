@@ -112,3 +112,11 @@ function scale_factor() {
 function vector2D(xx, yy) {
     return {x:xx, y:yy};
 }
+
+/// @param {real} x
+/// @param {real} y
+/// @param {real} rot
+/// @return {struct}
+function Vec2r(xx, yy, r) {
+    return {x:xx, y:yy, angle:r};
+}
