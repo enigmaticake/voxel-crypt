@@ -1,3 +1,6 @@
+var mousex = floor(device_mouse_x(0) / 32);
+var mousey = floor(device_mouse_y(0) / 32);
+
 // desactivar script
 if (question != -1) {
     exit;
@@ -5,9 +8,6 @@ if (question != -1) {
 
 // dibujar objetos por capas
 for (var i = 0; i < array_length(layers); ++i) {
-    var mousex = floor(device_mouse_x(0) / 32);
-    var mousey = floor(device_mouse_y(0) / 32);
-    
     var xView = floor(camera_get_view_x(view_camera[0]) / 32);
     var yView = floor(camera_get_view_y(view_camera[0]) / 32);
     var wView = floor(camera_get_view_width(view_camera[0]) / 32) + 2;
@@ -55,4 +55,12 @@ for (var i = 0; i < array_length(layers); ++i) {
             }
         }
     }
+}
+
+if (mouse_depth == 1 and (keyboard_check_direct(vk_shift) and mouse_check_button(mb_left))) {
+    draw_set_alpha(0.5);
+    draw_set_color(c_blue);
+    draw_rectangle_outline(seleccion_start[0], seleccion_start[1], device_mouse_x(0), device_mouse_y(0), c_aqua, 2 * scale_factor());
+    
+    draw_set_alpha(1);
 }

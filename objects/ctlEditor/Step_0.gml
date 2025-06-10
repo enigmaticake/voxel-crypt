@@ -13,8 +13,9 @@ var hh = display_get_gui_height();
 
 
 // depth del mouse
-if (state_edit != window_type_edit.none and device_mouse_y_to_gui(0) > 160 * sf) mouse_depth = 4;
-else if (state_edit != window_type_edit.none and device_mouse_y_to_gui(0) <= 160 * sf) mouse_depth = 2;
+if (CustomMenu > 0) mouse_depth = 5;
+else if (state_edit != window_type_edit.none and device_mouse_y_to_gui(0) > 96 * sf) mouse_depth = 4;
+else if (state_edit != window_type_edit.none and device_mouse_y_to_gui(0) <= 96 * sf) mouse_depth = 2;
 else if (device_mouse_y_to_gui(0) <= height_window_principal * sf) mouse_depth = 0;
 else if (point_in_rectangle(
     device_mouse_x_to_gui(0),
@@ -49,6 +50,15 @@ if (mouse_depth == 1) {
         ds_grid_set(objectos_seleccionados, cursorX, cursorY, true);
     }
     
+    // eliminar objetos seleccionados con SUPR
+    else if (keyboard_check_pressed(46)) {
+        for (var i = 0; i < width; ++i) {
+            for (var j = 0; j < height; ++j) {
+                if (objectos_seleccionados[# i, j]) ds_grid_set(layers[layer_current], i, j, -1);
+            }
+        }
+    }
+    
     // eliminar objeto
     else if (type_cursor == 0 and keyboard_check(vk_control) and mouse_check_button(mb_left)) {
         var obj = layers[layer_current][# cursorX, cursorY];
@@ -63,6 +73,23 @@ if (mouse_depth == 1) {
     
     // editar objeto
     else if (key_only() and mouse_check_button(mb_right)) {
+        var CrearBoton = function(name, type, width, obj) {
+            array_push(windowObjectEdit.buttons_list, {
+                name : name,
+                type : type,
+                textbox : textbox_create(width * scale_factor(), 64 * scale_factor(), "", (width - 8) * scale_factor(), function(char, index, text) {
+                    return (string_pos(char, "[] {} 0123456789.") > 0) ? #ffe299 : c_white;
+                })
+            });
+            windowObjectEdit.buttons_list[array_length(windowObjectEdit.buttons_list) - 1].textbox.text = obj[? name];
+        }
+        var CrearBotonMenu = function(name, obj) {
+            array_push(windowObjectEdit.buttons_list, {
+                name : name,
+                type : VarType.menu_panel,
+            });
+        }
+        
         var obj = layers[layer_current][# cursorX, cursorY];
         
         if (obj != -1) {
@@ -71,19 +98,36 @@ if (mouse_depth == 1) {
             
             state_edit = window_type_edit.edit_object;
             
-            if (obj[? "id"] == 0) {
-                array_push(buttons_list, {
-                    name : "z",
-                    type : VarType.int,
-                    textbox : textbox_create(512 * sf, 64 * sf, "", 504 * sf)
-                });
+            CrearBotonMenu("trigger_id", obj);
+            switch (obj[? "id"]) {
+            	case 0:
+                    CrearBoton("sprite", VarType.string, 256, obj);
+                    CrearBoton("z", VarType.int, 64, obj);
+                break;
+                
+                case 1:
+                    CrearBoton("path_cmd", VarType.string, 512, obj);
+                    CrearBoton("destroy", VarType.bool, 64, obj);
+                break;
+                
+                case 2:
+                    CrearBoton("entity", VarType.string, 256, obj);
+                break;
+                
+                case 3:
+                    CrearBoton("type_chest", VarType.string, 256, obj);
+                break;
             }
         }
     }
     
     // seleccionar objetos
+    else if (keyboard_check(vk_shift) and mouse_check_button_pressed(mb_left)) {
+        seleccion_start = [device_mouse_x(0), device_mouse_y(0)];
+    }
     else if (keyboard_check(vk_shift) and mouse_check_button(mb_left)) {
-        ds_grid_set(objectos_seleccionados, cursorX, cursorY, layers[layer_current][# cursorX, cursorY] != -1);
+        ds_grid_clear(objectos_seleccionados, false);
+        ds_grid_set_region(objectos_seleccionados, floor(seleccion_start[0]/32), floor(seleccion_start[1]/32), cursorX, cursorY, true);
     }
     
     // movimiento de cámara con input
@@ -96,6 +140,21 @@ if (mouse_depth == 1) {
     var cam_y = camera_get_view_y(view_camera[0]);
     
     camera_set_view_pos(view_camera[0], cam_x + movex, cam_y + movey);
+}
+
+
+// mover botones de (object edit)
+if (mouse_depth == 4) {
+    if (mouse_wheel_up()) {
+        windowObjectEdit.buttony = windowObjectEdit.buttony + 16*sf;
+    }
+    else if (mouse_wheel_down()) {
+        windowObjectEdit.buttony = windowObjectEdit.buttony - 16*sf;
+    }
+    
+    var buttonHeight = array_length(windowObjectEdit.buttons_list) * (64*sf);
+    var maxHeight = -max(0, buttonHeight - (hh - 160*sf));
+    windowObjectEdit.buttony = clamp(windowObjectEdit.buttony, maxHeight, 0);
 }
 
 

@@ -46,13 +46,23 @@ window_edit_layer = {
 }
 
 
+// ventana custom
+var TriggerID = 1 << 0; // 0001
+var ContentChest = 1 << 1; // 0010
+CustomMenu = 0;
+
+
 // ventana de edicion de objetos
 state_edit = window_type_edit.none;
 obj_edit = {
     obj : -1,
     pos : [-1, -1],
 }
-buttons_list = [];
+windowObjectEdit = {
+    buttons_list : [],
+    buttony : 0
+}
+
 
 
 #region crear primer capa
@@ -309,6 +319,7 @@ function move_object(xxm, yym) {
 // selector de objetos
 objectos_seleccionados = ds_grid_create(width, height);
 ds_grid_clear(objectos_seleccionados, false);
+seleccion_start = [-1, -1];
 
 posy_global = 0;
 

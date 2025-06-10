@@ -27,6 +27,10 @@ function textbox_create(width, height, text = "", _max = -1, color = function(ch
 /// @param {struct} tb
 /// @return {bool}
 function textbox_step(tb, xx, yy) {
+    function scaled_string_width(str) {
+        return string_width(str) * scale_factor();
+    }
+    
     var x1 = xx - (tb.width / 2);
 	var x2 = xx + (tb.width / 2);
 	var y1 = yy - (tb.height / 2) - 1;
@@ -47,8 +51,8 @@ function textbox_step(tb, xx, yy) {
 			for (var i = 1; i <= string_length(tb.text) + 1; ++i) {
 				var char = string_char_at(tb.text, i);
 				
-				var posx = x1 + string_width(string_copy(tb.text, 1, i - 1));
-				var width = string_width(char);
+				var posx = x1 + scaled_string_width(string_copy(tb.text, 1, i - 1));
+				var width = scaled_string_width(char);
 				
 				if (mousex >= posx + 12 and mousex <= posx + width + 12) {
 					tb.mousex = i;
@@ -66,8 +70,8 @@ function textbox_step(tb, xx, yy) {
 			for (var i = 1; i <= string_length(tb.text) + 1; ++i) {
 				var char = string_char_at(tb.text, i);
 				
-				var posx = x1 + string_width(string_copy(tb.text, 1, i - 1));
-				var width = string_width(char);
+				var posx = x1 + scaled_string_width(string_copy(tb.text, 1, i - 1));
+				var width = scaled_string_width(char);
 				
 				if (mousex >= posx + 12 and mousex <= posx + width + 12) {
 					pos = i;
@@ -139,7 +143,8 @@ function textbox_step(tb, xx, yy) {
 			
 			// Eliminar por palabras
 			if (tb.selx < 0 and keyboard_check_direct(vk_control) and keyboard_check_pressed(vk_backspace) and tb.mousex > 0) {
-				var posx = clamp(tb.mousex, 0, string_length(tb.text));
+				tb.mousex--;
+                var posx = clamp(tb.mousex, 0, string_length(tb.text));
 				var has_letter = false;
 				
 				for (var i = posx; i >= 0; --i) {
@@ -237,13 +242,12 @@ function textbox_step(tb, xx, yy) {
 			
 			
 			// Limitar texto
-			if (tb.maxText > 0 and string_width(tb.text) > tb.maxText) {
-				for (var i = string_length(tb.text); i >= 1; --i) {
-					if (string_width(tb.text) <= tb.maxText) break;
-					
-					tb.text = string_delete(tb.text, i, 1);
-				}
-			}
+			if (tb.maxText > 0 and scaled_string_width(tb.text) > tb.maxText) {
+                for (var i = string_length(tb.text); i >= 1; --i) {
+                    if (scaled_string_width(tb.text) <= tb.maxText) break;
+                    tb.text = string_delete(tb.text, i, 1);
+                }
+            }
 			
 			
 			// Limitar el cursor
@@ -253,6 +257,10 @@ function textbox_step(tb, xx, yy) {
 
 /// @param {struct} tb
 function textbox_draw(tb, xx, yy) {
+    function scaled_string_width(str) {
+        return string_width(str) * scale_factor();
+    }
+    
 	var x1 = xx - (tb.width / 2);
 	var x2 = xx + (tb.width / 2);
 	var y1 = yy - (tb.height / 2) - 1;
@@ -260,6 +268,8 @@ function textbox_draw(tb, xx, yy) {
 	
 	var mousex = device_mouse_x_to_gui(0);
 	var mousey = device_mouse_y_to_gui(0);
+    
+    var textH = string_height("a") * scale_factor();
 	
 	// Dibujar cuadro de texto
 	draw_set_alpha(0.5);
@@ -273,25 +283,25 @@ function textbox_draw(tb, xx, yy) {
 	
 	// Dibujar seleccion
 	if (tb.selx >= 0 and tb.active) {
-		var width = x1 + string_width(string_copy(tb.text, 1, tb.selx)) + 8;
-		var widthEnd = x1 + string_width(string_copy(tb.text, 1, tb.mousex)) + 8;
+		var width = x1 + scaled_string_width(string_copy(tb.text, 1, tb.selx)) + 8;
+		var widthEnd = x1 + scaled_string_width(string_copy(tb.text, 1, tb.mousex)) + 8;
 		draw_set_alpha(0.5);
 		draw_set_color(c_aqua);
-		draw_rectangle(width, yy + 8, widthEnd, yy - 8, false);
+		draw_rectangle(width, yy + textH, widthEnd, yy - textH, false);
 		
 		draw_set_alpha(1);
 	}
 	
 	draw_set_halign(fa_left);
 	draw_set_valign(fa_middle);
-	draw_text_vip(tb.text, x1 + 8, yy, tb.color);
+	draw_text_vip(tb.text, x1 + 8, yy, tb.color, tb.width*scale_factor());
 	
 	// Dibujar linea del mouse
 	if (tb.time < tb.timeFull and tb.active) {
-		var width = x1 + string_width(string_copy(tb.text, 1, tb.mousex)) + 8;
+		var width = x1 + scaled_string_width(string_copy(tb.text, 1, tb.mousex)) + 8;
 	
 		draw_set_color(c_white);
-		draw_rectangle(width, yy + 8, width + 1, yy - 8, false);
+		draw_rectangle(width, yy + textH, width + 1, yy - textH, false);
 	}
 }
 
@@ -510,13 +520,68 @@ function draw_button_gui(scalex, scaley, xx, yy, depth, mouse_depth, _color = c_
     
     // Dibujar boton
     draw_set_color(color0);
-    draw_rectangle_outline(x1, y1, x2, y2, color1, 2);
+    draw_rectangle_outline(x1, y1, x2, y2, color1, 2 * sf);
     
     return result;
 }
 
 
+function gui_haling(offsetx) {
+    switch (offsetx) {
+    	case "left":
+            offsetx = 0;
+        break;
+        
+        case "center":
+            offsetx = display_get_gui_width() / 2;
+        break;
+        
+        case "right":
+            offsetx = display_get_gui_width();
+        break;
+        
+        default:
+            offsetx = 0;
+        break;
+    }
+    
+    return offsetx;
+}
 
+function gui_valing(offsety) {
+    switch (offsety) {
+    	case "top":
+            offsety = 0;
+        break;
+        
+        case "middle":
+            offsety = display_get_gui_height() / 2;
+        break;
+        
+        case "bottom":
+            offsety = display_get_gui_height();
+        break;
+        
+        default:
+            offsety = 0;
+        break;
+    }
+    
+    return offsety;
+}
 
-
-
+function draw_text_gui(xx, yy, str, h = draw_get_halign(), v = draw_get_valign(), c = draw_get_color()) {
+    var vo = draw_get_halign(); // VerticalOld
+    var ho = draw_get_valign(); // HorizontalOld
+    
+    // establecer propiedades al texto
+    draw_set_halign(h);
+    draw_set_valign(v);
+    draw_set_color(c)
+    draw_text_transformed(xx, yy, str, scale_factor(), scale_factor(), 0);
+    
+    // resetear
+    draw_set_halign(ho);
+    draw_set_valign(vo);
+    draw_set_color(c);
+}

@@ -24,7 +24,7 @@ if (!is_struct(question)) {
     			buttonf[i]();
     		}
             draw_set_color(color_txt);
-    		draw_text(bx, by, button[i]);
+    		draw_text_gui(bx, by, button[i]);
     	
     		by += 64 * sf;
     	}
@@ -128,7 +128,7 @@ if (!is_struct(question)) {
                 room_goto(rmEditor);
             }
             draw_set_color(c_white);
-            draw_text(8, yy + 32, lvl.name);
+            draw_text_gui(8, yy + 32, lvl.name);
             
             yy += 67 * sf;
         }
@@ -187,7 +187,7 @@ if (!is_struct(question)) {
                 
             if (lvl.icon != -1) draw_sprite_part(lvl.icon, 0, 0, 0, 64, 64, 0, yy);
             draw_set_color(c_white);
-            draw_text(72, yy + 32, lvl.name);
+            draw_text_gui(72, yy + 32, lvl.name);
             
             yy += 67;
         }

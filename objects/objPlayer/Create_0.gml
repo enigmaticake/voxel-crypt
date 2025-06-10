@@ -12,9 +12,4 @@ InputActive = true;
 
 skin = [rsc_find_tex("player_body"), rsc_find_tex("player_hand"), rsc_find_tex("player_hand"), rsc_find_tex("player_head")];
 
-// Lista para almacenar posiciones del trail
-trail = [];
-trail_max = 10; // número máximo de partículas activas
-trail_delay = 30; // delay de creacion de particulas
-
 model = model_create(_animation, Vec2r(0, 0, 0), Vec2r(0, 0, 0), Vec2r(0, 0, 0), Vec2r(0, 0, 0));

@@ -1,6 +1,6 @@
 {
   "$GMFont":"",
-  "%Name":"fnt_normal",
+  "%Name":"fnt_pixel",
   "AntiAlias":0,
   "applyKerning":0,
   "ascender":25,
@@ -117,7 +117,7 @@
   "last":0,
   "lineHeight":20,
   "maintainGms1Font":false,
-  "name":"fnt_normal",
+  "name":"fnt_pixel",
   "parent":{
     "name":"Fuentes",
     "path":"folders/Fuentes.yy",

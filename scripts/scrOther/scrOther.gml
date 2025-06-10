@@ -79,7 +79,6 @@ function EsNumero(str) {
 /// @param {function} color
 function draw_text_vip(text, _x, _y, color = function(_char, index, text){return c_white}, width = -1) {
 	var _xstart = _x;
-	draw_set_halign(fa_left);
 	for (var i = 1; i <= string_length(text); ++i) {
 		var char = string_char_at(text, i);
 		
@@ -89,9 +88,9 @@ function draw_text_vip(text, _x, _y, color = function(_char, index, text){return
 		}
 		
 		draw_set_color(color(string(char), real(i), string(text)));
-		draw_text(_x, _y, char);
+		draw_text_gui(_x, _y, char, fa_left, fa_middle);
 		
-		_x += string_width(char);
+		_x += string_width(char) * scale_factor();
 	}
 }
 

@@ -345,4 +345,3 @@ function chunk_delete_data(xx, yy) {
         }
     }
 }
-

@@ -1,4 +1,4 @@
-draw_set_font(fnt_normal);
+draw_set_font(fnt_pixel);
 
 if (!file_exists("save/config.properties")) {
     file_save_string("save/config.properties", "sfx=1\nmusic=1\nscale_gui=1\nname=username");
@@ -68,9 +68,10 @@ enum buttonState {
 }
 
 enum EntityEvent {
-    idle = 1 << 0,
-    die = 1 << 1,
-    attack = 1 << 2,
+    EnReposo = 1 << 0,
+    Murio = 1 << 1,
+    Ataco = 1 << 2,
+    EsHerido
 }
 
 enum BODY_OFFSET {
@@ -83,7 +84,9 @@ enum BODY_OFFSET {
 enum VarType {
     int,
     float,
-    string
+    bool,
+    string,
+    menu_panel
 }
 
 #macro versionMajor 1
@@ -220,6 +223,8 @@ load_pack = [
 		if (!load_texture("editor_object_entity", "resource/gui/obj_entity.png", 32, 32, 16, 16)) return;
 		if (!load_texture("editor_object_startpoint", "resource/gui/obj_startpoint.png", 32, 32, 16, 16)) return;
         if (!load_texture("gui_layer_cape", "resource/gui/layer_ui.png", 64, 64, 0, 0)) return;
+        if (!load_texture("editor/sun", "resource/gui/sun.png", 64, 64, 0, 0)) return;
+        if (!load_texture("editor/moon", "resource/gui/moon.png", 64, 64, 0, 0)) return;
 	},
 
 	function() {
