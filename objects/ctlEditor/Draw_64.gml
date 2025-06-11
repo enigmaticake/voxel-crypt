@@ -99,8 +99,8 @@ if (question == -1) {
         if (create_button(32 * sf, 96 * sf)) {
             time_day = !time_day;
         }
-        var spr = (time_day) ? rsc_find_tex("editor/sun") : rsc_find_tex("editor:moon");
-        draw_sprite_ext(spr, 0, 64 * sf, 128 * sf, sf, sf, 0, c_white, 1);
+        var spr = (time_day) ? rsc_find_tex("editor/sun") : rsc_find_tex("editor/moon");
+        draw_sprite_ext(spr, 0, 32 * sf, 96 * sf, sf, sf, 0, c_white, 1);
         draw_text_gui(98 * sf, 128 * sf, $"Time: {time_day ? "day" : "night"}", fa_left, fa_middle, #d3d3d3);
     }
     
@@ -358,8 +358,8 @@ if (state_edit != window_type_edit.none) {
             var button = windowObjectEdit.buttons_list[i]
             
             if (button.type == VarType.menu_panel) {
-                draw_button_gui(64, 64, bx, by - 38 + windowObjectEdit.buttony, 4, mouse_depth, c_white);
-                draw_text_gui(bx + 64*sf, by + windowObjectEdit.buttony, button.name, fa_left, fa_middle, c_white);
+                draw_button_gui(64, 64, bx, by - 32 + windowObjectEdit.buttony, 4, mouse_depth, c_white);
+                draw_text_gui(bx + 72*sf, by + windowObjectEdit.buttony, button.name + " (menu)", fa_left, fa_middle, c_yellow);
             }
             else {
                 button.textbox.active = (mouse_depth != 4) ? false : button.textbox.active;

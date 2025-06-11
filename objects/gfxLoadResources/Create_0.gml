@@ -71,7 +71,8 @@ enum EntityEvent {
     EnReposo = 1 << 0,
     Murio = 1 << 1,
     Ataco = 1 << 2,
-    EsHerido
+    EsHerido = 1 << 3,
+    Caminar = 1 << 4
 }
 
 enum BODY_OFFSET {
@@ -209,6 +210,9 @@ load_pack = [
         // flechas
         if (!load_texture("gui_arrowR", "resource/gui/arrow_right.png", 64, 64, 0, 0)) return;
         if (!load_texture("gui_arrowL", "resource/gui/arrow_left.png", 64, 64, 0, 0)) return;
+        
+        // nivel visual
+        if (!load_texture("gui/health", "resource/gui/game/health.png", 32, 32, 0, 0)) return;
         
         // cursor
 		if (!load_texture("cursor_idle", "resource/gui/cursor_move.png", 32, 32, 1, 1)) return;
