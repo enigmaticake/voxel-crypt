@@ -9,7 +9,7 @@ if (keyboard_check_pressed(vk_f11)) {
 
 if (state == states.level or state == states.editor) {
     if (mouse_wheel_up()) {
-        level_posy = max(0, level_posy - 16);
+        level_posy = max(0, level_posy - 16 * scale_factor());
     }
     else if (mouse_wheel_down()) {
         level_posy += 16 * scale_factor();

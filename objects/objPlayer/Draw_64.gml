@@ -32,13 +32,27 @@ var draw_slot = function(x, y, color) {
 }
 
 // dibujar inventario (4 slots)
-for (var i = 0; i < slot_max; ++i) {
+for (var i = 0; i < slot.max; ++i) {
     var posx = i * (96 * scale_factor());
     
-    if (draw_slot(gui_haling("left") + 48 * scale_factor() + posx, gui_valing("bottom") - 48 * scale_factor(), mainhand == i ? c_green : c_white)) {
+    // input
+    if (keyboard_check_pressed(ord(string(i + 1)))) {
+        slot.mainhand = i;
+    }
+    
+    
+    // slot
+    if (draw_slot(gui_haling("left") + 48 * scale_factor() + posx, gui_valing("bottom") - 48 * scale_factor(), slot.mainhand == i ? c_green : c_white)) {
+        // input
         if (mouse_check_button_pressed(mb_left)) {
-            mainhand = i;
+            slot.mainhand = i;
         }
+    }
+    
+    // item
+    var item = slot.items[i];
+    if (struct_exists(item, "sprite")) {
+        draw_sprite_part_ext(item.sprite, 0, 0, 0, 96, 96, gui_haling("left") + 8*scale_factor() + posx, gui_valing("bottom") - 88*scale_factor(), 5*scale_factor(), 5*scale_factor(), c_white, 1);
     }
 }
 

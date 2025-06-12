@@ -15,7 +15,7 @@ if (question == -1) {
     
     // ventana de fondo de principal
     draw_set_color(#4b4b4b);
-    draw_rectangle_outline(0, 0, ww, height_window_principal * sf, (mouse_depth == 0) ? c_white : c_dkgray, 3);
+    draw_rectangle_outline(0, 0, ww, height_window_principal, (mouse_depth == 0) ? c_white : c_dkgray, 3);
     
     
     // --------------------------------------
@@ -358,7 +358,7 @@ if (state_edit != window_type_edit.none) {
             var button = windowObjectEdit.buttons_list[i]
             
             if (button.type == VarType.menu_panel) {
-                draw_button_gui(64, 64, bx, by - 32 + windowObjectEdit.buttony, 4, mouse_depth, c_white);
+                draw_button_gui(64, 64, bx, by - 32*scale_factor() + windowObjectEdit.buttony, 4, mouse_depth, c_white);
                 draw_text_gui(bx + 72*sf, by + windowObjectEdit.buttony, button.name + " (menu)", fa_left, fa_middle, c_yellow);
             }
             else {

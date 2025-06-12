@@ -61,10 +61,13 @@ function model_set_animation(model, animation, bits = 0) {
 
 /// @param {id.dsmap} model
 /// @param {array<asset.gmsprite>} skin
-function model_draw_body(model, skin, color = c_white, alpha = 1) {
+function model_draw_body(model, skin, color = c_white, alpha = 1, mainhand = -1, mainhand_sprite = -1) {
     var anim = model[? "anim"];
     
     for (var i = 0; i < array_length(anim); ++i) {
         draw_sprite_ext(skin[i], 0, x + anim[i].x * image_xscale, y + anim[i].y, image_xscale, 1, anim[i].angle * image_xscale, color, alpha);
+        if (mainhand == i)
+            if (mainhand_sprite != -1)
+                draw_sprite_ext(mainhand_sprite, 0, x + anim[i].x * image_xscale, y + anim[i].y - 16, image_xscale, 1, anim[i].angle * image_xscale, color, alpha);
     }
 }

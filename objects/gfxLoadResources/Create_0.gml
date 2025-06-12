@@ -236,5 +236,15 @@ load_pack = [
         
         // gui boton
 		if (!load_sound("sndClickUI", "resource/gui/sound/snd_click_ui.ogg")) return;
+	},
+
+	function() {
+		label = "item texture";
+        
+        // swords
+		if (!load_texture("item/diamond_sword", "resource/item/diamond_sword.png", 16, 16, 0, 0)) return;
+        
+        // foods
+		if (!load_texture("item/apple", "resource/item/apple.png", 16, 16, 0, 0)) return;
 	}
 ];

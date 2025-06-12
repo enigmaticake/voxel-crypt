@@ -52,9 +52,9 @@ function level_start(map) {
             
             var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, (obj.z <= 0) ? objBlock : objBlockMask);
             
-            inst.depth = -(pos[1] * 32 + (obj.z * 16));
+            inst.depth = -(pos[1] * 32 + (obj.z * 16)) - 16;
             inst.spr = rsc_find_tex("block/" + obj.texture);
-            inst.y -= obj.z * 16;
+            inst.y -= (obj.z * 16);
             
             // propiedad del objeto
             p.inst = inst;
@@ -138,6 +138,12 @@ function level_start(map) {
         else if (obj.id == 4) {
             objPlayer.x = pos[0] * 32;
             objPlayer.y = pos[1] * 32;
+            
+            // fijar la camara
+            var targetx = objPlayer.x - camera_get_view_width(view_camera[0]) / 2;
+            var targety = objPlayer.y - camera_get_view_height(view_camera[0]) / 2;
+            
+            camera_set_view_pos(view_camera[0], targetx, targety);
         }
         
         if not (obj.id == 4) ds_list_add(chunk[# cx, cy], p);

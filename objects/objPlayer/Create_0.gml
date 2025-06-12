@@ -4,8 +4,23 @@ create_entity(12, 10, 200);
 
 
 // slot
-slot_max = 4;
-mainhand = 0;
+slot = {
+    max : 4,
+    mainhand : 0,
+    items : [{}, {sprite:rsc_find_tex("item/diamond_sword"), type:"sword", tag:{strength:3}}, {}, {}]
+}
+
+/// @param {string} type
+function get_slots(type) {
+    switch (type) {
+    	case "count":
+            return slot.max;
+        case "slot":
+            return slot.items; 
+        case "mainhand":
+            return slot.mainhand;
+    }
+}
 
 
 // flechas

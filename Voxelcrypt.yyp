@@ -70,6 +70,7 @@
     {"$GMIncludedFile":"","%Name":"press_key_e.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"press_key_e.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"snd_click_ui.ogg","CopyToMask":-1,"filePath":"datafiles/resource/gui/sound","name":"snd_click_ui.ogg","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"sun.png","CopyToMask":-1,"filePath":"datafiles/resource/gui","name":"sun.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"apple.png","CopyToMask":-1,"filePath":"datafiles/resource/item","name":"apple.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"diamond_sword.png","CopyToMask":-1,"filePath":"datafiles/resource/item","name":"diamond_sword.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"chest_normal.png","CopyToMask":-1,"filePath":"datafiles/resource/object","name":"chest_normal.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"chest_outline.png","CopyToMask":-1,"filePath":"datafiles/resource/object","name":"chest_outline.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},

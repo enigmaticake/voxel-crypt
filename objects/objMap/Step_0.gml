@@ -4,7 +4,7 @@
 for (var i = array_length(events) - 1; i >= 0; --i) {
     var ev = events[i];
     
-    ev.time -= delta_time / 1_000_000;
+    ev.time -= 0.01; // tiempo
     
     // tiempo acabado
     if (ev.time <= 0) {
