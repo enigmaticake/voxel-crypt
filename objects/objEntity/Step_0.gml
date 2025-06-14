@@ -1,30 +1,16 @@
-view = bool(!collision_line(x, y + 9, objPlayer.x, objPlayer.y + 9, objBlock, false, false));
-
 depth = -y;
 
 // delays
 attack_delay = min(30, attack_delay + 1);
 
-// animacion
+// establecer animaciones
 event |= EntityEvent.EnReposo;
-
-// seguir al jugador
-if (distance_to_object(objPlayer) < 128 and view) {
+if (x != xprevious || y != yprevious) {
     event |= EntityEvent.Caminar;
-    
-    if (distance_to_object(objPlayer) < 64 and attack_delay >= 30) {
-        attack_delay = 0;
-        event |= EntityEvent.Ataco;
-        objPlayer.tag.health -= 0.3;
-    }
-    
-    var dir = point_direction(x, y, objPlayer.x, objPlayer.y);
-    
-    var xx = lengthdir_x(1, dir);
-    var yy = lengthdir_y(1, dir);
-    
-    move_entity(xx, yy);
 }
+
+// IA
+events.ia(id);
 
 // animaciones
 if (event_has(event, EntityEvent.Ataco)) {

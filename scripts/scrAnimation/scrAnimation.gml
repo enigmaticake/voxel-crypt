@@ -1,20 +1,15 @@
 /// @param {struct} AnimationJson animation json (load)
-/// @param {struct} Vector2D... tiene que ser un vector2D
+/// @param {real} Count Cantidad de huesos que tendra
 /// @return {Id.DsMap}
-function model_create(_anim) {
+function model_create(_anim, _count) {
     var anim = ds_map_create();
     ds_map_add(anim, "anim", []);
     ds_map_add(anim, "animationJSON", _anim);
     ds_map_add(anim, "anim_time", 0);
     ds_map_add(anim, "anim_current", "idle");
     
-    for (var i = 1; i < argument_count; ++i) {
-        if (is_struct(argument[i]) and struct_exists(argument[i], "x") and struct_exists(argument[i], "y") and struct_exists(argument[i], "angle")) {
-            array_push(anim[? "anim"], argument[i]);
-        }
-        else {
-            show_debug_message("Error: argument[{0}] no es un array válido de Transform2D.", i);
-        }
+    for (var i = 0; i < _count; ++i) {
+        array_push(anim[? "anim"], {x:0, y:0, angle:0});
     }
     
     return anim;
@@ -27,6 +22,9 @@ function model_free(model) {
 /// @param {id.dsmap} model model actual
 /// @param {string} animation la animacion que existe
 function model_set_animation(model, animation, bits = 0) {
+    function get_prop(a, b) {
+        return (b < array_length(a)) ? a[b] : undefined;
+    }
     var frame = model[? "anim_time"]; // copiar el tiempo actual
     
     if (model[? "anim_current"] != animation) {
@@ -40,10 +38,12 @@ function model_set_animation(model, animation, bits = 0) {
         for (var i = 0; i < array_length(anim.bone); ++i) {
             var frameCurrently = struct_get(anim.bone[i], string_format(frame - 0.01, 1, 2));
             
-            if (frameCurrently != undefined) {
-                model[? "anim"][i].x = frameCurrently.vec2r[0];
-                model[? "anim"][i].y = frameCurrently.vec2r[1];
-                model[? "anim"][i].angle = frameCurrently.vec2r[2];
+            if (!is_undefined(frameCurrently)) {
+                var vector = struct_get(frameCurrently, "vec2r") ?? []; // Transform2D
+                model[? "anim"][i].x = get_prop(vector, 0) ?? 0; // x
+                model[? "anim"][i].y = get_prop(vector, 1) ?? 0; // y
+                model[? "anim"][i].angle = get_prop(vector, 2) ?? 0; // angulo
+                model[? "anim"][i].color = get_prop(vector, 3) ?? c_white; // color
             }
         }
         
@@ -65,9 +65,14 @@ function model_draw_body(model, skin, color = c_white, alpha = 1, mainhand = -1,
     var anim = model[? "anim"];
     
     for (var i = 0; i < array_length(anim); ++i) {
-        draw_sprite_ext(skin[i], 0, x + anim[i].x * image_xscale, y + anim[i].y, image_xscale, 1, anim[i].angle * image_xscale, color, alpha);
+        var xx = anim[i].x * image_xscale;
+        var yy = anim[i].y;
+        var angle = anim[i].angle * image_xscale;
+        var _color = struct_get(anim[i], "color") ?? c_white;
+        
+        draw_sprite_ext(skin[i], 0, x + xx, y + yy, image_xscale, 1, angle, _color, alpha);
         if (mainhand == i)
             if (mainhand_sprite != -1)
-                draw_sprite_ext(mainhand_sprite, 0, x + anim[i].x * image_xscale, y + anim[i].y - 16, image_xscale, 1, anim[i].angle * image_xscale, color, alpha);
+                draw_sprite_ext(mainhand_sprite, 0, x + xx, y + yy - 16, image_xscale, 1, angle, _color, alpha);
     }
 }

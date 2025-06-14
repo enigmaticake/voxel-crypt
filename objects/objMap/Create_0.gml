@@ -102,12 +102,42 @@ function level_start(map) {
             var inst = instance_create_depth(pos[0] * 32, pos[1] * 32, 0, objEntity);
             show_debug_message("x:{0} y:{1}", inst.x, inst.y);
             
-            inst.skin = [rsc_find_tex("zombie_body"), rsc_find_tex("zombie_hand"), rsc_find_tex("zombie_hand"), rsc_find_tex("zombie_head")];
+            // buscar la entidad existente
+            var entity = -1;
+            for (var j = 0; j < array_length(global.assets.entity); ++j) {
+                if (global.assets.entity[j].type == obj.entity) {
+                    entity = struct_copy(global.assets.entity[j]);
+                }
+            }
+            
+            // verificar si encontro
+            if (entity == -1) {
+                show_debug_message("Error de entidad: {0}", obj.entity);
+                continue;
+            }
+            
+            // skin
+            inst.skin = [
+                rsc_find_tex(entity.type + "_body"),
+                rsc_find_tex(entity.type + "_hand"),
+                rsc_find_tex(entity.type + "_hand"),
+                rsc_find_tex(entity.type + "_head")
+            ];
+            
+            // chunk
             inst.cx = cx;
             inst.cy = cy;
-            with (inst) {
-                create_entity(100, 10, 80);
-            }
+            
+            // propiedad de la entidad
+            var Anim = struct_get(global.assets.animation, entity.model);
+            var CountBone = Anim.count_bone;
+            with (inst)
+                create_entity(entity.tag.health, entity.tag.strength, entity.tag.speed);
+            inst.attribute = entity.attribute; // atributos como fuerza, vida, velocidad de pasos, etc
+            inst.events = entity.events; // eventos que se activan cuando hace una actividad la entidad
+            inst.health_max = entity.tag.health; // eventos que se activan cuando hace una actividad la entidad
+            
+            inst.model = model_create(Anim, 4);
             
             // propiedad del objeto
             p.inst = inst;

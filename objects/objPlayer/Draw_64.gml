@@ -35,13 +35,12 @@ var draw_slot = function(x, y, color) {
 for (var i = 0; i < slot.max; ++i) {
     var posx = i * (96 * scale_factor());
     
-    // input
+    // seleccionar boton
     if (keyboard_check_pressed(ord(string(i + 1)))) {
         slot.mainhand = i;
     }
     
-    
-    // slot
+    // dibujar boton
     if (draw_slot(gui_haling("left") + 48 * scale_factor() + posx, gui_valing("bottom") - 48 * scale_factor(), slot.mainhand == i ? c_green : c_white)) {
         // input
         if (mouse_check_button_pressed(mb_left)) {
@@ -49,17 +48,17 @@ for (var i = 0; i < slot.max; ++i) {
         }
     }
     
-    // item
+    // dibujar slot item
     var item = slot.items[i];
     if (struct_exists(item, "sprite")) {
         draw_sprite_part_ext(item.sprite, 0, 0, 0, 96, 96, gui_haling("left") + 8*scale_factor() + posx, gui_valing("bottom") - 88*scale_factor(), 5*scale_factor(), 5*scale_factor(), c_white, 1);
     }
 }
 
-// dibujar vidas (10 vidas)
-for (var i = 0; i < floor(tag.health); ++i) {
-    var posx = i * (36 * scale_factor());
-    var posy = sin(random_range(current_time - 10, current_time + 10) * 0.2) * floor(6 / tag.health);
-    
-    draw_sprite_ext(rsc_find_tex("gui/health"), 0, gui_haling("left") + posx + 16*scale_factor(), gui_valing("top") + 16*scale_factor() + posy, scale_factor(), scale_factor(), 0, c_white, 1);
-}
+// dibujar vidas
+var healthmax = 40;
+var healthReal = floor((tag.health / healthmax) * 100);
+
+draw_sprite_ext(rsc_find_tex("gui/health"), 0, 16*scale_factor(), 16*scale_factor(), scale_factor() * 2, scale_factor() * 2, 0, c_white, 1);
+draw_set_color(c_lime);
+draw_text_gui(88*scale_factor(), 48*scale_factor(), healthReal, fa_left, fa_middle);

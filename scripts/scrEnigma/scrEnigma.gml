@@ -345,3 +345,9 @@ function chunk_delete_data(xx, yy) {
         }
     }
 }
+
+function struct_copy(_struct) {
+    var _json = json_stringify(_struct);
+    var _copy = json_parse(_json);
+    return _copy;
+}

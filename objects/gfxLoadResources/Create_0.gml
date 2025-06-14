@@ -14,11 +14,28 @@ global.assets = {
         // zombie
         {
             type : "zombie",
-            tag : {speed:230,health:100,strength:8},
-            type_animation : 0,
-            attribute:{attack_player:true}
+            tag : {speed:90,health:10,strength:0.25},
+            model : "biped",
+            events:{
+                ia: Zombie_ia,
+                attack: Zombie_attack
+            },
+            attribute:{distance_view:12}
+        },
+        {
+            type : "skeleton",
+            tag : {speed:90,health:5,strength:1},
+            model : "biped",
+            events:{
+                ia: Skeleton_ia,
+                attack: Skeleton_attack
+            },
+            attribute:{distance_view:5}
         }
     ],
+    animation : {
+        biped : json_parse(scrFile("resource/animation/biped_model.json"))
+    },
 	conf : {
         // log
         log_number : 0,
@@ -167,6 +184,11 @@ load_pack = [
 		if (!load_texture("zombie_body", "resource/entity/zombie_body.png", 10, 13, 5, 6)) return;
 		if (!load_texture("zombie_hand", "resource/entity/zombie_hand.png", 4, 4, 2, 2)) return;
 		if (!load_texture("zombie_head", "resource/entity/zombie_head.png", 16, 13, 8, 6)) return;
+        
+        // skeleton
+		if (!load_texture("skeleton_body", "resource/entity/skeleton_body.png", 10, 13, 5, 6)) return;
+		if (!load_texture("skeleton_hand", "resource/entity/skeleton_hand.png", 4, 4, 2, 2)) return;
+		if (!load_texture("skeleton_head", "resource/entity/skeleton_head.png", 16, 13, 8, 6)) return;
 	},
     
     function() {

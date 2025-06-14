@@ -14,6 +14,8 @@ if (InputActive) {
         
         var arrow = instance_create_depth(x, y, 0, objArrow);
         
+        arrow.target = objEntity;
+        arrow.damage_count = 1.5;
         arrow.dir = point_direction(x, y, mouse_x, mouse_y);
         event |= EntityEvent.Ataco;
     }

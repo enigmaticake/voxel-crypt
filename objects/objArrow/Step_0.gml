@@ -11,12 +11,16 @@ for (var i = 0; i < 500 * delta; ++i) {
     x += xx;
     y += yy;
     
-    if (place_meeting(x, y, objEntity)) {
-        objEntity.tag.health -= 10;
+    var inst = collision_circle(x, y + 16, 8, target, true, false);
+    if (inst) {
+        inst.tag.health -= damage_count;
+        instance_destroy();
+        break;
     }
     
-    if (place_meeting(x, y, [objBlock, objChest, objEntity])) {
+    if (place_meeting(x, y, [objBlock, objChest])) {
         instance_destroy();
+        break;
     }
 }
 
