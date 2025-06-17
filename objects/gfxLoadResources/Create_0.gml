@@ -189,6 +189,11 @@ load_pack = [
 		if (!load_texture("skeleton_body", "resource/entity/skeleton_body.png", 10, 13, 5, 6)) return;
 		if (!load_texture("skeleton_hand", "resource/entity/skeleton_hand.png", 4, 4, 2, 2)) return;
 		if (!load_texture("skeleton_head", "resource/entity/skeleton_head.png", 16, 13, 8, 6)) return;
+        
+        // armadura de diamante
+        if (!load_texture("armor/diamond_body", "resource/entity/armor/diamond_body.png", 18, 21, 9, 10)) return;
+        if (!load_texture("armor/diamond_hand", "resource/entity/armor/diamond_hand.png", 12, 12, 6, 6)) return;
+        if (!load_texture("armor/diamond_head", "resource/entity/armor/diamond_head.png", 24, 21, 12, 10)) return;
 	},
     
     function() {

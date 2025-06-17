@@ -1,4 +1,4 @@
-global.paused = false;
+display_set_gui_maximize();
 
 
 // Pagina de menu
@@ -20,17 +20,19 @@ level_editor = [];
 function reload_lvleditor() {
     level_editor = [];
     
-    var file_level = file_find_first("editor/*.", fa_directory);
+    var file_level = file_find_first(working_directory + "editor/*.", fa_directory);
     while (file_level != "") {
         array_push(level_editor, {name:file_level,path:"editor/" + file_level});
         
         file_level = file_find_next();
     }
+    
+    file_find_close();
 }
 function reload_lvlstory() {
     level_story = [];
     
-    var file_level = file_find_first("main/lvl/*.", fa_directory);
+    var file_level = file_find_first(working_directory + "main/lvl/*.", fa_directory);
     while (file_level != "") {
         var _spr = sprite_add("main/lvl/" + file_level + "/icon.png", 0, false, false, 0, 0);
         
@@ -38,6 +40,8 @@ function reload_lvlstory() {
         
         file_level = file_find_next();
     }
+    
+    file_find_close();
 }
 
 

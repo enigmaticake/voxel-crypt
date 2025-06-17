@@ -144,6 +144,12 @@ if (!is_struct(question)) {
             reload_lvleditor();
         }
         
+        // recargar niveles de editor
+        if (draw_button_v("64x64", 160 * sf, 32 * sf, c_lime, 0) == buttonState.released) {
+            directory_create(working_directory + "editor");
+            directory_create(working_directory + "editor/Mi_A3");
+        }
+        
         // limitar posicion y de los niveles
         level_posy = min(((array_length(level_editor) - 1) * 67*sf), level_posy);
     }

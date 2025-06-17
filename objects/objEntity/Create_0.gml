@@ -12,6 +12,11 @@ model = -1;
 // atacar con delay
 attack_delay = 0;
 
+// es atacado
+function is_attacked(event) {
+    
+}
+
 // propiedades
 function move(source) {
     if ((event & EntityEvent.Ataco) == 0) {

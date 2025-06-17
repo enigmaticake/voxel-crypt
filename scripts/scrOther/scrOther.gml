@@ -107,15 +107,68 @@ function scale_factor() {
 
 /// @param {real} x
 /// @param {real} y
-/// @return {struct}
-function vector2D(xx, yy) {
-    return {x:xx, y:yy};
+function Vector2(_x, _y) constructor {
+    x = _x;
+    y = _y;
+
+    add = function(v) {
+        x += v;
+        y += v;
+        return self;
+    };
+    
+    subtract = function(v) {
+        x -= v;
+        y -= v;
+        return self;
+    }
+    
+    multiply = function(v) {
+        x *= v;
+        y *= v;
+        return self;
+    }
+    
+    copy = function() {
+        return new Vector2(x, y);
+    }
+    
+    toString = function() {
+        return "(" + string(x) + ", " + string(y) + ")";
+    };
 }
 
 /// @param {real} x
 /// @param {real} y
-/// @param {real} rot
-/// @return {struct}
-function Vec2r(xx, yy, r) {
-    return {x:xx, y:yy, angle:r};
+/// @param {real} angle
+function Vec2r(xx, yy, r) constructor {
+    x = xx;
+    y = yy;
+    angle = r;
+    
+    add = function(v) {
+        x += v;
+        y += v;
+        return self;
+    };
+    
+    subtract = function(v) {
+        x -= v;
+        y -= v;
+        return self;
+    }
+    
+    multiply = function(v) {
+        x *= v;
+        y *= v;
+        return self;
+    }
+    
+    copy = function() {
+        return new Vec2r(x, y, angle);
+    }
+    
+    toString = function() {
+        return "(" + string(x) + ", " + string(y) + ")";
+    };
 }

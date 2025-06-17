@@ -9,7 +9,7 @@ function model_create(_anim, _count) {
     ds_map_add(anim, "anim_current", "idle");
     
     for (var i = 0; i < _count; ++i) {
-        array_push(anim[? "anim"], {x:0, y:0, angle:0});
+        array_push(anim[? "anim"], new Vec2r(0, 0, 0));
     }
     
     return anim;
@@ -61,7 +61,12 @@ function model_set_animation(model, animation, bits = 0) {
 
 /// @param {id.dsmap} model
 /// @param {array<asset.gmsprite>} skin
-function model_draw_body(model, skin, color = c_white, alpha = 1, mainhand = -1, mainhand_sprite = -1) {
+function model_draw_body(model, skin, color = c_white, alpha = 1, nbt = -1) {
+    var get_spr = function(nbt, type, index) {
+        var struct = struct_get(nbt, type) ?? [];
+        return (index < array_length(struct)) ? struct[index] : -1;
+    }
+    
     var anim = model[? "anim"];
     
     for (var i = 0; i < array_length(anim); ++i) {
@@ -71,8 +76,12 @@ function model_draw_body(model, skin, color = c_white, alpha = 1, mainhand = -1,
         var _color = struct_get(anim[i], "color") ?? c_white;
         
         draw_sprite_ext(skin[i], 0, x + xx, y + yy, image_xscale, 1, angle, _color, alpha);
-        if (mainhand == i)
-            if (mainhand_sprite != -1)
-                draw_sprite_ext(mainhand_sprite, 0, x + xx, y + yy - 16, image_xscale, 1, angle, _color, alpha);
+        if (nbt != -1) {
+            var _item = get_spr(nbt, "mainhand", i);
+            var _skin_cape = get_spr(nbt, "skin_cape", i);
+            
+            if (_skin_cape != -1) draw_sprite_ext(_skin_cape, 0, x + xx, y + yy, image_xscale, 1, angle, _color, alpha);
+            if (_item != -1) draw_sprite_ext(_item, 0, x + xx, y + yy - 16, image_xscale, 1, angle, _color, alpha);
+        }
     }
 }

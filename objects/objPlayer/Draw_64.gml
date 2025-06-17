@@ -3,8 +3,8 @@ draw_set_color(c_lime);
 var ww = display_get_gui_width();
 var hh = display_get_gui_height();
 
-draw_text_gui(16, 16, $"x: {floor((x + 16) / 32)}", fa_left, fa_top);
-draw_text_gui(16, 32, $"y: {floor((y + 16) / 32)}", fa_left, fa_top);
+draw_text_gui(ww, 0, $"x: {floor((x + 16) / 32)}", fa_right, fa_top);
+draw_text_gui(ww, 16*scale_factor(), $"y: {floor((y + 16) / 32)}", fa_right, fa_top);
 
 var draw_slot = function(x, y, color) {
     var x1 = x - (48 * scale_factor());

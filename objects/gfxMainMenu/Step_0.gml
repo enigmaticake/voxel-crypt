@@ -1,7 +1,3 @@
-display_set_gui_maximize();
-display_set_ui_visibility(true);
-
-
 if (keyboard_check_pressed(vk_f11)) {
 	window_set_fullscreen(!window_get_fullscreen());
 	display_mouse_set(display_get_width() / 2, display_get_height() / 2);

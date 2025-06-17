@@ -7,7 +7,8 @@ create_entity(40, 10, 200);
 slot = {
     max : 4,
     mainhand : 0,
-    items : [{}, {sprite:rsc_find_tex("item/diamond_sword"), type:"sword", tag:{strength:3}}, {}, {}]
+    items : [{}, {sprite:rsc_find_tex("item/diamond_sword"), type:"sword", tag:{strength:3}}, {}, {}],
+    armor : "diamond"
 }
 
 
