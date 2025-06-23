@@ -1,3 +1,7 @@
+// imagen
+surf = -1
+
+
 // propiedades
 var _animation = global.assets.animation.biped;
 create_entity(40, 10, 200);

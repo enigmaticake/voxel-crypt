@@ -48,10 +48,8 @@ if (question == -1) {
         // para objetos de tipo 0
         if (object_data[? "id"] == 0) {
             // texto 0
-            draw_set_halign(fa_left);
-            draw_set_valign(fa_middle);
             draw_set_color(c_black);
-            draw_text(ww - 368 * sf, 16 * sf, "z:");
+            draw_text_gui(ww - 368 * sf, 16 * sf, "z:", fa_left, fa_middle);
              
             // boton que suma el posy_global con flecha derecha
             if (draw_button_gui(64, 64, ww - 192 * sf, 16 * sf, 0, mouse_depth, c_black) == buttonState.released) {
@@ -63,7 +61,7 @@ if (question == -1) {
             draw_set_halign(fa_center);
             draw_set_valign(fa_middle);
             draw_set_color(c_white);
-            draw_text_transformed(ww - 240 * sf, 48 * sf, posy_global, 2, 2, 0);
+            draw_text_transformed(ww - 240 * sf, 48 * sf, posy_global, 2 * sf, 2 * sf, 0);
             
             // boton que resta el posy_global con flecha izquierda
             if (draw_button_gui(64, 64, ww - 352 * sf, 16 * sf, 0, mouse_depth, c_black) == buttonState.released) {
@@ -135,8 +133,7 @@ if (question == -1) {
             
             ds_map_add(object_data, "id", 1);
             ds_map_add(object_data, "sprite", "editor_object_cmd");
-            ds_map_add(object_data, "path_cmd", "tu_caca.json");
-            ds_map_add(object_data, "destroy", true);
+            ds_map_add(object_data, "path_cmd", "example.json");
             ds_map_add(object_data, "trigger_id", []);
         }
         draw_sprite_ext(rsc_find_tex("editor_object_cmd"), 0, 252 * sf, 48 * sf, sf, sf, 0, c_white, 1);
@@ -161,6 +158,7 @@ if (question == -1) {
             
             ds_map_add(object_data, "id", 4);
             ds_map_add(object_data, "sprite", "editor_object_startpoint");
+            ds_map_add(object_data, "clear", false);
             ds_map_add(object_data, "trigger_id", []);
         }
         draw_sprite_ext(rsc_find_tex("editor_object_startpoint"), 0, 356 * sf, 24 * sf, sf, sf, 0, c_white, 1);

@@ -110,18 +110,24 @@ function guardarmapa() {
                     case 0: // bloque
                         data.texture = dataObj[? "sprite"];
                         data.z = clamp(dataObj[? "z"], 0, 5);
-                        break;
+                    break;
+                    
                     case 1: // comando
                         data.path_cmd = dataObj[? "path_cmd"];
-                        data.destroy = dataObj[? "destroy"];
-                        break;
+                    break;
+                    
                     case 2: // entidad
                         data.entity = dataObj[? "entity"];
-                        break;
+                    break;
+                    
                     case 3: // cofre
                         data.type_chest = dataObj[? "type_chest"];
                         data.content = dataObj[? "content"];
-                        break;
+                    break;
+
+                    case 4: // startpoint
+                        data.clear = dataObj[? "clear"];
+                    break;
                 }
                 
                 data.triggers = dataObj[? "trigger_id"];
@@ -144,9 +150,9 @@ function guardarmapa() {
     
     
     // version
-    buffer_write(buff, buffer_u16, versionMajor);
-    buffer_write(buff, buffer_u8, versionMinor);
-    buffer_write(buff, buffer_u8, versionPatch);
+    buffer_write(buff, buffer_u8, versionMajor);
+    buffer_write(buff, buffer_u16, versionMinor);
+    buffer_write(buff, buffer_u16, versionPatch);
     
     
     // dia
@@ -168,9 +174,9 @@ function guardarmapa() {
     
     
     // version
-    buffer_write(buff, buffer_u16, versionMajor);
-    buffer_write(buff, buffer_u8, versionMinor);
-    buffer_write(buff, buffer_u8, versionPatch);
+    buffer_write(buff, buffer_u8, versionMajor);
+    buffer_write(buff, buffer_u16, versionMinor);
+    buffer_write(buff, buffer_u16, versionPatch);
     
     
     // camara
@@ -230,7 +236,6 @@ for (var i = 0; i < array_length(map); ++i) {
         case 1: // comando
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_cmd");
             ds_map_add(data, "path_cmd", obj.path_cmd ?? "");
-            ds_map_add(data, "destroy", obj.destroy ?? true);
         break;
         
         case 2: // entidad (mob)
@@ -246,6 +251,7 @@ for (var i = 0; i < array_length(map); ++i) {
         
         case 4: // punto de inicio
             ds_map_add(data, "sprite", obj.texture ?? "editor_object_startpoint");
+            ds_map_add(data, "clear", obj.clear ?? false);
         break;
     }
     

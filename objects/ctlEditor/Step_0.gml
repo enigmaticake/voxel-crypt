@@ -117,6 +117,10 @@ if (mouse_depth == 1) {
                 case 3:
                     CrearBoton("type_chest", VarType.string, 256, obj);
                 break;
+                
+                case 4:
+                    CrearBoton("clear", VarType.bool, 64, obj);
+                break;
             }
         }
     }

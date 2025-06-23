@@ -33,6 +33,23 @@ if (!is_struct(question)) {
         draw_set_color(#1e1e1e);
         draw_rectangle(0, 0, ww, hh, false);
         
+        var FullScreen = button_option[0];
+        FullScreen.draw();
+        if (FullScreen.on_click()) {
+            FullScreen.active = !FullScreen.active;
+            window_set_fullscreen(FullScreen.active);
+        }
+        
+        if (textbox_step(button_option[1], 32 * sf, 160 * sf)) {
+            var ValueSTR = (EsNumero(button_option[1].text)) ? real(button_option[1].text) : 1;
+            
+            button_option[1].text = ValueSTR;
+            global.assets.conf.scale_ui = ValueSTR;
+            room_restart();
+            return ValueSTR;
+        }
+        textbox_draw(button_option[1], 32 * sf, 160 * sf);
+        
         if (draw_button_v("64x64", 32 * sf, 32 * sf, c_gray, 2) == buttonState.released) {
             state = states.menu;
         }
@@ -83,9 +100,9 @@ if (!is_struct(question)) {
                     
                     
                     // version
-                    buffer_write(buff, buffer_u16, versionMajor);
-                    buffer_write(buff, buffer_u8, versionMinor);
-                    buffer_write(buff, buffer_u8, versionPatch);
+                    buffer_write(buff, buffer_u8, versionMajor);
+                    buffer_write(buff, buffer_u16, versionMinor);
+                    buffer_write(buff, buffer_u16, versionPatch);
                     
                     
                     // camara
@@ -109,9 +126,9 @@ if (!is_struct(question)) {
                     
                     
                     // version
-                    buffer_write(buff, buffer_u16, versionMajor);
-                    buffer_write(buff, buffer_u8, versionMinor);
-                    buffer_write(buff, buffer_u8, versionPatch);
+                    buffer_write(buff, buffer_u8, versionMajor);
+                    buffer_write(buff, buffer_u16, versionMinor);
+                    buffer_write(buff, buffer_u16, versionPatch);
                     
                     
                     // dia

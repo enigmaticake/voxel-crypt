@@ -22,7 +22,8 @@ function model_free(model) {
 /// @param {id.dsmap} model model actual
 /// @param {string} animation la animacion que existe
 function model_set_animation(model, animation, bits = 0) {
-    function get_prop(a, b) {
+    /// @return {real, undefined}
+    var get_prop = function(a, b) {
         return (b < array_length(a)) ? a[b] : undefined;
     }
     var frame = model[? "anim_time"]; // copiar el tiempo actual
@@ -61,7 +62,7 @@ function model_set_animation(model, animation, bits = 0) {
 
 /// @param {id.dsmap} model
 /// @param {array<asset.gmsprite>} skin
-function model_draw_body(model, skin, color = c_white, alpha = 1, nbt = -1) {
+function model_draw_body(model, skin, color = c_white, alpha = 1, nbt = -1, _x = x, _y = y) {
     var get_spr = function(nbt, type, index) {
         var struct = struct_get(nbt, type) ?? [];
         return (index < array_length(struct)) ? struct[index] : -1;
@@ -75,13 +76,13 @@ function model_draw_body(model, skin, color = c_white, alpha = 1, nbt = -1) {
         var angle = anim[i].angle * image_xscale;
         var _color = struct_get(anim[i], "color") ?? c_white;
         
-        draw_sprite_ext(skin[i], 0, x + xx, y + yy, image_xscale, 1, angle, _color, alpha);
+        draw_sprite_ext(skin[i], 0, _x + xx, _y + yy, image_xscale, 1, angle, _color, alpha);
         if (nbt != -1) {
             var _item = get_spr(nbt, "mainhand", i);
             var _skin_cape = get_spr(nbt, "skin_cape", i);
             
-            if (_skin_cape != -1) draw_sprite_ext(_skin_cape, 0, x + xx, y + yy, image_xscale, 1, angle, _color, alpha);
-            if (_item != -1) draw_sprite_ext(_item, 0, x + xx, y + yy - 16, image_xscale, 1, angle, _color, alpha);
+            if (_skin_cape != -1) draw_sprite_ext(_skin_cape, 0, _x + xx, _y + yy, image_xscale, 1, angle, _color, alpha);
+            if (_item != -1) draw_sprite_ext(_item, 0, _x + xx, _y + yy - 16, image_xscale, 1, angle, _color, alpha);
         }
     }
 }

@@ -6,19 +6,18 @@ if (question != -1) {
     exit;
 }
 
+var xView = floor(camera_get_view_x(view_camera[0]) / 32);
+var yView = floor(camera_get_view_y(view_camera[0]) / 32);
+var wView = floor(camera_get_view_width(view_camera[0]) / 32) + 2;
+var hView = floor(camera_get_view_height(view_camera[0]) / 32) + 2;
+
+var startX = max(xView, 0);
+var startY = max(yView, 0);
+var endX = min(startX + wView, width);
+var endY = min(startY + hView, height);
+
 // dibujar objetos por capas
 for (var i = 0; i < array_length(layers); ++i) {
-    var xView = floor(camera_get_view_x(view_camera[0]) / 32);
-    var yView = floor(camera_get_view_y(view_camera[0]) / 32);
-    var wView = floor(camera_get_view_width(view_camera[0]) / 32) + 2;
-    var hView = floor(camera_get_view_height(view_camera[0]) / 32) + 2;
-    
-    var startX = max(xView, 0);
-    var startY = max(yView, 0);
-    var endX = min(startX + wView, width);
-    var endY = min(startY + hView, height);
-    
-    
     // objeto
     for (var xx = startX; xx < endX; ++xx) {
         for (var yy = startY; yy < endY; ++yy) {
