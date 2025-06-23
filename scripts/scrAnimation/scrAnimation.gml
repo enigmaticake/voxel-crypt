@@ -1,63 +1,88 @@
-/// @param {real} type_model tipo de modelo
-/// @param {array<struct>} ... tiene que ser un vector2D
+/// @param {struct} AnimationJson animation json (load)
+/// @param {real} Count Cantidad de huesos que tendra
 /// @return {Id.DsMap}
-function model_create(type_model) {
+function model_create(_anim, _count) {
     var anim = ds_map_create();
     ds_map_add(anim, "anim", []);
-    ds_map_add(anim, "type_model", type_model);
+    ds_map_add(anim, "animationJSON", _anim);
     ds_map_add(anim, "anim_time", 0);
     ds_map_add(anim, "anim_current", "idle");
     
-    for (var i = 1; i < argument_count; ++i) {
-        if (is_struct(argument[i]) and struct_exists(argument[i], "x") and struct_exists(argument[i], "y")) {
-            array_push(anim[? "anim"], argument[i]);
-        }
-        else {
-            show_debug_message("Error: argument[{0}] no es un array válido de x, y.", i);
-        }
+    for (var i = 0; i < _count; ++i) {
+        array_push(anim[? "anim"], new Vec2r(0, 0, 0));
     }
     
     return anim;
 }
 
-function model_free(animation) {
-    ds_map_destroy(animation);
+function model_free(model) {
+    ds_map_destroy(model);
 }
 
-/// @param {Id.DsMap} animation la animacion que existe
-/// @param {string} type tipo de animacion (por ejemplo IDLE)
-/// @param {real} type_model tipo de modelo
-function model_set_animation(animation, type, type_model) {
-    var frame = animation[? "anim_time"]; // copiar el tiempo actual
+/// @param {id.dsmap} model model actual
+/// @param {string} animation la animacion que existe
+function model_set_animation(model, animation, bits = 0) {
+    /// @return {real, undefined}
+    var get_prop = function(a, b) {
+        return (b < array_length(a)) ? a[b] : undefined;
+    }
+    var frame = model[? "anim_time"]; // copiar el tiempo actual
     
-    if (animation[? "anim_current"] != type) {
-        frame = 0;
-        animation[? "anim_current"] = type;
+    if (model[? "anim_current"] != animation) {
+        frame = 0.00;
+        model[? "anim_current"] = animation;
     }
     
-    frame += delta_time / 1_000_000; // sumar por microsegundos real
+    var anim = struct_get(model[? "animationJSON"], animation);
     
-    switch (type_model) {
-        case 0:
-            switch (type) {
-            	case "idle":
-                    // head
-                    animation[? "anim"][BODY_OFFSET.head].y = -3 + sin(animation[? "anim_time"] * 3) * 1.5;
-                break;
+    if (anim != undefined) {
+        for (var i = 0; i < array_length(anim.bone); ++i) {
+            var frameCurrently = struct_get(anim.bone[i], string_format(frame - 0.01, 1, 2));
+            
+            if (!is_undefined(frameCurrently)) {
+                var vector = struct_get(frameCurrently, "vec2r") ?? []; // Transform2D
+                model[? "anim"][i].x = get_prop(vector, 0) ?? 0; // x
+                model[? "anim"][i].y = get_prop(vector, 1) ?? 0; // y
+                model[? "anim"][i].angle = get_prop(vector, 2) ?? 0; // angulo
+                model[? "anim"][i].color = get_prop(vector, 3) ?? c_white; // color
             }
-        break;
+        }
+        
+        if (frame > anim.duration) {
+            frame = 0.00;
+            event &= ~bits;
+        }
+        
+        frame += 0.01 * (struct_get(anim, "time") ?? 1);
     }
     
-    animation[? "anim_time"] = frame; // establecer al tiempo original
+    model[? "anim_time"] = frame; // establecer al tiempo original
 }
 
 
-/// @param {id.dsmap} animation
+/// @param {id.dsmap} model
 /// @param {array<asset.gmsprite>} skin
-function model_draw_body(animation, skin, color = c_white, alpha = 1) {
-    var anim = animation[? "anim"];
+function model_draw_body(model, skin, color = c_white, alpha = 1, nbt = -1, _x = x, _y = y) {
+    var get_spr = function(nbt, type, index) {
+        var struct = struct_get(nbt, type) ?? [];
+        return (index < array_length(struct)) ? struct[index] : -1;
+    }
+    
+    var anim = model[? "anim"];
     
     for (var i = 0; i < array_length(anim); ++i) {
-        draw_sprite_ext(skin[i], 0, x + anim[i].x * image_xscale, y + anim[i].y, image_xscale, 1, 0, color, alpha);
+        var xx = anim[i].x * image_xscale;
+        var yy = anim[i].y;
+        var angle = anim[i].angle * image_xscale;
+        var _color = struct_get(anim[i], "color") ?? c_white;
+        
+        draw_sprite_ext(skin[i], 0, _x + xx, _y + yy, image_xscale, 1, angle, _color, alpha);
+        if (nbt != -1) {
+            var _item = get_spr(nbt, "mainhand", i);
+            var _skin_cape = get_spr(nbt, "skin_cape", i);
+            
+            if (_skin_cape != -1) draw_sprite_ext(_skin_cape, 0, _x + xx, _y + yy, image_xscale, 1, angle, _color, alpha);
+            if (_item != -1) draw_sprite_ext(_item, 0, _x + xx, _y + yy - 16, image_xscale, 1, angle, _color, alpha);
+        }
     }
 }

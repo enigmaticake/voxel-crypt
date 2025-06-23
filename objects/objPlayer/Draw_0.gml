@@ -1,39 +1,39 @@
-// particulas del jugador
-trail_delay = min(speed_current * 0.03, trail_delay + 1);
-
-if ((x != xprevious || y != yprevious) and trail_delay == speed_current * 0.03) {
-    trail_delay = 0;
+function get_item() {
+    return struct_get(slot.items[slot.mainhand], "sprite") ?? -1;
+}
+function get_armor(index) {
+    spr = -1;
     
-    var p = {
-        x : x,
-        y : y + 8,
-        life : 3
+    switch (index) {
+    	case 0:
+            spr = "armor/" + slot.armor + "_body";
+        break;
+        
+    	case 1:
+            spr = "armor/" + slot.armor + "_hand";
+        break;
+        
+    	case 2:
+            spr = "armor/" + slot.armor + "_hand";
+        break;
+        
+    	case 3:
+            spr = "armor/" + slot.armor + "_head";
+        break;
     }
     
-    array_insert(trail, 0, p);
+    return rsc_find_tex(spr);
 }
-
-for (var i = array_length(trail) - 1; i >= 0; --i) {
-    var p = trail[i];
-    
-    p.life -= delta_time / 1_000_000;
-    
-    if (i >= trail_max) array_delete(trail, i, 1);
-}
-
-trail = array_filter(trail, function(p) {
-    return p.life > 0;
-});
-
-draw_set_alpha(0.3);
-for (var i = 0; i < array_length(trail); ++i) {
-    var p = trail[i];
-    
-    draw_set_color(c_black);
-    draw_rectangle(p.x - 1, p.y - 1, p.x + 1, p.y + 1, false);
-}
-draw_set_alpha(1);
-
 
 // dibujar jugador
-model_draw_body(animation, skin);
+if (surface_exists(surf)) {
+    surface_set_target(surf);
+    draw_clear_alpha(c_white, 0);
+    model_draw_body(model, skin, c_white, 1, {mainhand:[-1, -1, get_item(), -1],skin_cape:[get_armor(0), get_armor(1), get_armor(2), get_armor(3)]}, 48, 48);
+    surface_reset_target();
+    
+    shader_set(sh_shadow);
+    draw_surface(surf, x - 48, y - 48);
+    shader_reset();
+}
+else surf = surface_create(96, 96);

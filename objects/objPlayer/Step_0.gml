@@ -1,3 +1,5 @@
+event |= EntityEvent.EnReposo;
+
 var moveX = 0;
 var moveY = 0;
 delay_shot = min(tag.delay_shot, delay_shot + 1);
@@ -12,7 +14,10 @@ if (InputActive) {
         
         var arrow = instance_create_depth(x, y, 0, objArrow);
         
+        arrow.target = objEntity;
+        arrow.damage_count = 1.5;
         arrow.dir = point_direction(x, y, mouse_x, mouse_y);
+        event |= EntityEvent.Ataco;
     }
 }
 
@@ -21,15 +26,37 @@ if (keyboard_check_pressed(vk_escape)) {
 }
 
 
+// muerte
+if (tag.health <= 0) {
+    event |= EntityEvent.Murio;
+}
+
 // movimiento
-move_entity(moveX, moveY);
+if (!event_has(event, EntityEvent.Ataco)) {
+    move_entity(moveX, moveY);
+}
+if (x != xprevious || y != yprevious) {
+    event |= EntityEvent.Caminar;
+}
 
 x = clamp(x, 0, room_width - 32);
 y = clamp(y, 0, room_height - 32);
 
 
 // animacion
-model_set_animation(animation, "idle", 0);
+if (event_has(event, EntityEvent.Ataco)) {
+    model_set_animation(model, "animation.attack", EntityEvent.Ataco);
+}
+else if (event_has(event, EntityEvent.Caminar)) {
+    model_set_animation(model, "animation.walk", EntityEvent.Caminar);
+    event &= ~EntityEvent.Caminar;
+}
+else if (event_has(event, EntityEvent.Murio)) {
+    model_set_animation(model, "animation.death", EntityEvent.Murio);
+}
+else if (event_has(event, EntityEvent.EnReposo)) {
+    model_set_animation(model, "animation.idle");
+}
 
 
 // camara

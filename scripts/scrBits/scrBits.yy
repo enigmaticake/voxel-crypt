@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrBits",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrBits",
+  "parent":{
+    "name":"recursos",
+    "path":"folders/Scripts/recursos.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

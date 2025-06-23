@@ -1,1 +1,1 @@
-depth = clamp(-y, -2000, 2000);
+depth = -y;

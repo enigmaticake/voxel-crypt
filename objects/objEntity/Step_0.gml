@@ -1,23 +1,30 @@
-view = bool(!collision_line(x, y, objPlayer.x, objPlayer.y + 9, objBlock, false, false));
-
 depth = -y;
 
-// animacion
-model_set_animation(animation, "idle", 0);
+// delays
+attack_delay = min(30, attack_delay + 1);
 
-// seguir al jugador
-if (distance_to_object(objPlayer) < 128 and view) {
-    var dir = point_direction(x, y, objPlayer.x, objPlayer.y);
-    
-    var xx = lengthdir_x(1, dir);
-    var yy = lengthdir_y(1, dir);
-    
-    move_entity(xx, yy);
+// establecer animaciones
+event |= EntityEvent.EnReposo;
+if (x != xprevious || y != yprevious) {
+    event |= EntityEvent.Caminar;
 }
 
-// morir al tener 0 vidas
-if (tag.health <= 0) {
-    instance_destroy();
+// IA
+events.ia(id);
+
+// animaciones
+if (event_has(event, EntityEvent.Ataco)) {
+    model_set_animation(model, "animation.attack", EntityEvent.Ataco);
+}
+else if (event_has(event, EntityEvent.Caminar)) {
+    model_set_animation(model, "animation.walk", EntityEvent.Caminar);
+    event &= ~EntityEvent.Caminar;
+}
+else if (event_has(event, EntityEvent.Murio)) {
+    model_set_animation(model, "animation.death", EntityEvent.Murio);
+}
+else if (event_has(event, EntityEvent.EnReposo)) {
+    model_set_animation(model, "animation.idle");
 }
 
 // cambiar de chunks
@@ -42,4 +49,10 @@ if (new_cx != cx || new_cy != cy) {
     // Actualizar el chunk actual de la entidad
     cx = new_cx;
     cy = new_cy;
+}
+
+// morir al tener 0 vidas
+if (tag.health <= 0) {
+    event |= EntityEvent.Murio;
+    instance_destroy();
 }

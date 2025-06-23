@@ -1,4 +1,4 @@
-draw_set_font(fnt_normal);
+draw_set_font(fnt_pixel);
 
 if (!file_exists("save/config.properties")) {
     file_save_string("save/config.properties", "sfx=1\nmusic=1\nscale_gui=1\nname=username");
@@ -14,11 +14,28 @@ global.assets = {
         // zombie
         {
             type : "zombie",
-            tag : {speed:230,health:100,strength:8},
-            type_animation : 0,
-            attribute:{attack_player:true}
+            tag : {speed:90,health:10,strength:0.25},
+            model : "biped",
+            events:{
+                ia: Zombie_ia,
+                attack: Zombie_attack
+            },
+            attribute:{distance_view:12}
+        },
+        {
+            type : "skeleton",
+            tag : {speed:90,health:5,strength:1},
+            model : "biped",
+            events:{
+                ia: Skeleton_ia,
+                attack: Skeleton_attack
+            },
+            attribute:{distance_view:5}
         }
     ],
+    animation : {
+        biped : json_parse(scrFile("resource/animation/biped_model.json"))
+    },
 	conf : {
         // log
         log_number : 0,
@@ -67,11 +84,27 @@ enum buttonState {
 	released
 }
 
+enum EntityEvent {
+    EnReposo = 1 << 0,
+    Murio = 1 << 1,
+    Ataco = 1 << 2,
+    EsHerido = 1 << 3,
+    Caminar = 1 << 4
+}
+
 enum BODY_OFFSET {
 	torso,
     handL,
     handR,
     head
+}
+
+enum VarType {
+    int,
+    float,
+    bool,
+    string,
+    menu_panel
 }
 
 #macro versionMajor 1
@@ -151,6 +184,16 @@ load_pack = [
 		if (!load_texture("zombie_body", "resource/entity/zombie_body.png", 10, 13, 5, 6)) return;
 		if (!load_texture("zombie_hand", "resource/entity/zombie_hand.png", 4, 4, 2, 2)) return;
 		if (!load_texture("zombie_head", "resource/entity/zombie_head.png", 16, 13, 8, 6)) return;
+        
+        // skeleton
+		if (!load_texture("skeleton_body", "resource/entity/skeleton_body.png", 10, 13, 5, 6)) return;
+		if (!load_texture("skeleton_hand", "resource/entity/skeleton_hand.png", 4, 4, 2, 2)) return;
+		if (!load_texture("skeleton_head", "resource/entity/skeleton_head.png", 16, 13, 8, 6)) return;
+        
+        // armadura de diamante
+        if (!load_texture("armor/diamond_body", "resource/entity/armor/diamond_body.png", 18, 21, 9, 10)) return;
+        if (!load_texture("armor/diamond_hand", "resource/entity/armor/diamond_hand.png", 12, 12, 6, 6)) return;
+        if (!load_texture("armor/diamond_head", "resource/entity/armor/diamond_head.png", 24, 21, 12, 10)) return;
 	},
     
     function() {
@@ -195,6 +238,9 @@ load_pack = [
         if (!load_texture("gui_arrowR", "resource/gui/arrow_right.png", 64, 64, 0, 0)) return;
         if (!load_texture("gui_arrowL", "resource/gui/arrow_left.png", 64, 64, 0, 0)) return;
         
+        // nivel visual
+        if (!load_texture("gui/health", "resource/gui/game/health.png", 32, 32, 0, 0)) return;
+        
         // cursor
 		if (!load_texture("cursor_idle", "resource/gui/cursor_move.png", 32, 32, 1, 1)) return;
 		if (!load_texture("cursor_attack", "resource/gui/cursor_attack.png", 32, 32, 1, 1)) return;
@@ -208,6 +254,8 @@ load_pack = [
 		if (!load_texture("editor_object_entity", "resource/gui/obj_entity.png", 32, 32, 16, 16)) return;
 		if (!load_texture("editor_object_startpoint", "resource/gui/obj_startpoint.png", 32, 32, 16, 16)) return;
         if (!load_texture("gui_layer_cape", "resource/gui/layer_ui.png", 64, 64, 0, 0)) return;
+        if (!load_texture("editor/sun", "resource/gui/sun.png", 64, 64, 0, 0)) return;
+        if (!load_texture("editor/moon", "resource/gui/moon.png", 64, 64, 0, 0)) return;
 	},
 
 	function() {
@@ -215,5 +263,15 @@ load_pack = [
         
         // gui boton
 		if (!load_sound("sndClickUI", "resource/gui/sound/snd_click_ui.ogg")) return;
+	},
+
+	function() {
+		label = "item texture";
+        
+        // swords
+		if (!load_texture("item/diamond_sword", "resource/item/diamond_sword.png", 16, 16, 0, 0)) return;
+        
+        // foods
+		if (!load_texture("item/apple", "resource/item/apple.png", 16, 16, 0, 0)) return;
 	}
 ];

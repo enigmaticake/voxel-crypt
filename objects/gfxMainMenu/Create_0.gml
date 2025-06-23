@@ -1,4 +1,4 @@
-global.paused = false;
+display_set_gui_maximize();
 
 
 // Pagina de menu
@@ -20,17 +20,19 @@ level_editor = [];
 function reload_lvleditor() {
     level_editor = [];
     
-    var file_level = file_find_first("editor/*.", fa_directory);
+    var file_level = file_find_first(working_directory + "editor/*.", fa_directory);
     while (file_level != "") {
         array_push(level_editor, {name:file_level,path:"editor/" + file_level});
         
         file_level = file_find_next();
     }
+    
+    file_find_close();
 }
 function reload_lvlstory() {
     level_story = [];
     
-    var file_level = file_find_first("main/lvl/*.", fa_directory);
+    var file_level = file_find_first(working_directory + "main/lvl/*.", fa_directory);
     while (file_level != "") {
         var _spr = sprite_add("main/lvl/" + file_level + "/icon.png", 0, false, false, 0, 0);
         
@@ -38,11 +40,38 @@ function reload_lvlstory() {
         
         file_level = file_find_next();
     }
+    
+    file_find_close();
 }
 
 
 // Menu de inicios
+function ButtonToggle(_x, _y, _active) constructor {
+    x = _x;
+    y = _y;
+    w = 64 * scale_factor();
+    h = 64 * scale_factor();
+    active = _active;
+    
+    draw = function() {
+        draw_set_color((active) ? c_lime : c_red);
+        draw_rectangle_outline(x, y, x + w, y + h, c_black, 2);
+    };
+    
+    on_click = function() {
+        var ClickUI = rsc_find_snd("sndClickUI")
+        if (ClickUI != -1) audio_play_sound(ClickUI, 0, false);
+        
+        return (point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), x, y, x + w, y + h)
+                and mouse_check_button_pressed(mb_left));
+    };
+}
+
 button = [ "play", "option", "editor", "leave" ]; // Array de nombres
+button_option = [
+    new ButtonToggle(0, 64 * scale_factor(), window_get_fullscreen()),
+    textbox_create(64*scale_factor(), 64*scale_factor(), global.assets.conf.scale_ui, 60, function(a, b, c){return c_white;})
+]
 
 buttonf = [ // Array de funciones
 	function() {

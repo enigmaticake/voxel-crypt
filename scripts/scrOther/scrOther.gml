@@ -79,7 +79,6 @@ function EsNumero(str) {
 /// @param {function} color
 function draw_text_vip(text, _x, _y, color = function(_char, index, text){return c_white}, width = -1) {
 	var _xstart = _x;
-	draw_set_halign(fa_left);
 	for (var i = 1; i <= string_length(text); ++i) {
 		var char = string_char_at(text, i);
 		
@@ -89,9 +88,9 @@ function draw_text_vip(text, _x, _y, color = function(_char, index, text){return
 		}
 		
 		draw_set_color(color(string(char), real(i), string(text)));
-		draw_text(_x, _y, char);
+		draw_text_gui(_x, _y, char, fa_left, fa_middle);
 		
-		_x += string_width(char);
+		_x += string_width(char) * scale_factor();
 	}
 }
 
@@ -108,7 +107,68 @@ function scale_factor() {
 
 /// @param {real} x
 /// @param {real} y
-/// @return {struct}
-function vector2D(xx, yy) {
-    return {x:xx, y:yy};
+function Vector2(_x, _y) constructor {
+    x = _x;
+    y = _y;
+
+    add = function(v) {
+        x += v;
+        y += v;
+        return self;
+    };
+    
+    subtract = function(v) {
+        x -= v;
+        y -= v;
+        return self;
+    }
+    
+    multiply = function(v) {
+        x *= v;
+        y *= v;
+        return self;
+    }
+    
+    copy = function() {
+        return new Vector2(x, y);
+    }
+    
+    toString = function() {
+        return "(" + string(x) + ", " + string(y) + ")";
+    };
+}
+
+/// @param {real} x
+/// @param {real} y
+/// @param {real} angle
+function Vec2r(xx, yy, r) constructor {
+    x = xx;
+    y = yy;
+    angle = r;
+    
+    add = function(v) {
+        x += v;
+        y += v;
+        return self;
+    };
+    
+    subtract = function(v) {
+        x -= v;
+        y -= v;
+        return self;
+    }
+    
+    multiply = function(v) {
+        x *= v;
+        y *= v;
+        return self;
+    }
+    
+    copy = function() {
+        return new Vec2r(x, y, angle);
+    }
+    
+    toString = function() {
+        return "(" + string(x) + ", " + string(y) + ")";
+    };
 }

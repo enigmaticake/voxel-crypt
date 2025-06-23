@@ -1,18 +1,36 @@
-create_entity(100, 10, 200);
+// imagen
+surf = -1
 
+
+// propiedades
+var _animation = global.assets.animation.biped;
+create_entity(40, 10, 200);
+
+
+// slot
+slot = {
+    max : 4,
+    mainhand : 0,
+    items : [{}, {sprite:rsc_find_tex("item/diamond_sword"), type:"sword", tag:{strength:3}}, {}, {}],
+    armor : "diamond"
+}
+
+
+// flechas
 tag.delay_shot = 20;
 delay_shot = 20;
 
-xx = x - 1;
-yy = y;
 
+// poder controlar el jugador (mover, atacar, curarse, etc)
 InputActive = true;
 
+
+// es atacado
+function is_attacked(event) {
+    
+}
+
+
+// modelo 2d
 skin = [rsc_find_tex("player_body"), rsc_find_tex("player_hand"), rsc_find_tex("player_hand"), rsc_find_tex("player_head")];
-
-// Lista para almacenar posiciones del trail
-trail = [];
-trail_max = 10; // número máximo de partículas activas
-trail_delay = 30; // delay de creacion de particulas
-
-animation = model_create(0, vector2D(0, 4), vector2D(-6, 5), vector2D(6, 5), vector2D(0, -3));
+model = model_create(_animation, 4);

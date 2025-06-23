@@ -1,1 +1,1 @@
-draw_sprite(spr, 0, x, y);
+if (global.assets.conf.level_type == 1) draw_sprite(spr, 0, x, y);

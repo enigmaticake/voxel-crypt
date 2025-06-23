@@ -7,13 +7,13 @@ function guardar_objetos(_objetos, fname) {
     // Crea un buffer para almacenar los datos
     var buffer = buffer_create(1024, buffer_grow, 1);
     
-    buffer_write(buffer, buffer_string, "level_game"); // formato de archivo (level_game)
+    buffer_write(buffer, buffer_string, "db7fe596-faae-4963-b938-39649ce6f278"); // formato de archivo (level_game)
     
     
     // formato de version X.X.X
-    buffer_write(buffer, buffer_u16, versionMajor); // major
-    buffer_write(buffer, buffer_u8, versionMinor); // minor
-    buffer_write(buffer, buffer_u8, versionPatch); // patch
+    buffer_write(buffer, buffer_u8, versionMajor); // major
+    buffer_write(buffer, buffer_u16, versionMinor); // minor
+    buffer_write(buffer, buffer_u16, versionPatch); // patch
     
     
     // guardar objetos
@@ -38,12 +38,13 @@ function guardar_objetos(_objetos, fname) {
         
         buffer_write(buffer, buffer_u8, len);
         
+        // iterar IDs de trigger
         for (var j = 0; j < len; ++j) {
             buffer_write(buffer, buffer_u16, real(objeto.triggers[j]));
         }
         
         
-        // id
+        // id (tipo de objeto por ejemplo 0 es bloque, 1 es comando, 2 es entidad...)
         switch (_id) {
             case 0:
                 buffer_write(buffer, buffer_string, objeto.texture);
@@ -52,7 +53,6 @@ function guardar_objetos(_objetos, fname) {
             
             case 1:
                 buffer_write(buffer, buffer_string, objeto.path_cmd);
-                buffer_write(buffer, buffer_bool, objeto.destroy);
             break;
             
             case 2:
@@ -72,10 +72,15 @@ function guardar_objetos(_objetos, fname) {
                     buffer_write(buffer, buffer_u8, objeto.content[j]); // cualquier cosa, no?
                 }
             break;
+            
+            case 4:
+                // limpiar propiedades del jugador
+                buffer_write(buffer, buffer_bool, objeto.clear);
+            break;
         }
         
         
-        // capa
+        // capa (importante en el nivel de editor)
         buffer_write(buffer, buffer_u8, objeto.layer);
         
     }
@@ -98,9 +103,9 @@ function cargar_objetos(fname) {
     var format = buffer_read(buffer, buffer_string); // tipo de archivo
     
     // X.X.X formato de la version
-    var _major = buffer_read(buffer, buffer_u16);
-    var _minor = buffer_read(buffer, buffer_u8);
-    var _patch = buffer_read(buffer, buffer_u8);
+    var _major = buffer_read(buffer, buffer_u8);
+    var _minor = buffer_read(buffer, buffer_u16);
+    var _patch = buffer_read(buffer, buffer_u16);
     
     
     // cantidad de objetos
@@ -109,7 +114,7 @@ function cargar_objetos(fname) {
     
     
     // formato
-    if (format != "level_game") return -1;
+    if (format != "db7fe596-faae-4963-b938-39649ce6f278") return -1;
     
     
     // cargar objetos
@@ -149,7 +154,6 @@ function cargar_objetos(fname) {
             case 1:
                 objeto.texture = "editor_object_cmd";
                 objeto.path_cmd = buffer_read(buffer, buffer_string);
-                objeto.destroy = buffer_read(buffer, buffer_bool);
             break;
             
             case 2:
@@ -172,6 +176,7 @@ function cargar_objetos(fname) {
             
             case 4:
                 objeto.texture = "editor_object_startpoint";
+                objeto.clear = buffer_read(buffer, buffer_bool);
             break;
         }
         
@@ -195,9 +200,9 @@ function cargar_version_mapa(fname) {
     
     buffer_read(buffer, buffer_string);
     
-    var major = buffer_read(buffer, buffer_u16);
-    var minor = buffer_read(buffer, buffer_u8);
-    var patch = buffer_read(buffer, buffer_u8);
+    var major = buffer_read(buffer, buffer_u8);
+    var minor = buffer_read(buffer, buffer_u16);
+    var patch = buffer_read(buffer, buffer_u16);
     
     var v = {
         major:major,
@@ -223,9 +228,9 @@ function cargar_config_mapa(fname) {
     
     
     // version
-    var major = buffer_read(buffer, buffer_u16);
-    var minor = buffer_read(buffer, buffer_u8);
-    var patch = buffer_read(buffer, buffer_u8);
+    var major = buffer_read(buffer, buffer_u8);
+    var minor = buffer_read(buffer, buffer_u16);
+    var patch = buffer_read(buffer, buffer_u16);
     
     if (version_comparator(major, minor, patch) == -1) return c;
     
@@ -255,9 +260,9 @@ function cargar_config_editor(fname) {
     
     
     // version
-    var major = buffer_read(buffer, buffer_u16);
-    var minor = buffer_read(buffer, buffer_u8);
-    var patch = buffer_read(buffer, buffer_u8);
+    var major = buffer_read(buffer, buffer_u8);
+    var minor = buffer_read(buffer, buffer_u16);
+    var patch = buffer_read(buffer, buffer_u16);
     
     if (version_comparator(major, minor, patch) == -1) return c;
     
@@ -346,3 +351,8 @@ function chunk_delete_data(xx, yy) {
     }
 }
 
+function struct_copy(_struct) {
+    var _json = json_stringify(_struct);
+    var _copy = json_parse(_json);
+    return _copy;
+}
